@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        deno: ['v1.x']
+        deno: ["v1.x"]
         os: [ubuntu-latest, macOS-latest, windows-latest]
     name: Deno ${{ matrix.deno }} test in ${{ matrix.os }}
     steps:
@@ -33,3 +33,33 @@ jobs:
       #     RUST_BACKTRACE: 1
       #   run: |
       #     make test
+  release:
+    name: Release to Github
+    if: startsWith(github.ref, 'refs/tags/') && github.repository == 'axetroy/swagger2ts'
+    needs: [test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno: ["v1.x"]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno }}
+
+      - name: Bundle
+        run: make bundle
+
+      - name: Bump version
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          node ./npm/scripts/bump.js
+
+      - name: Publish to NPM
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./package.json
+          token: ${{ secrets.NPM_TOKEN }}
