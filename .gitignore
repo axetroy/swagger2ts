@@ -1,3 +1,4 @@
 node_modules
 generate.mjs
 swagger.json
+.DS_Store
