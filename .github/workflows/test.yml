@@ -1,0 +1,35 @@
+on: [push, pull_request]
+
+name: test
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        deno: ['v1.x']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    name: Deno ${{ matrix.deno }} test in ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: ${{ matrix.deno }}
+
+      - name: Env
+        run: |
+          deno --version
+
+      - name: Format
+        if: runner.os != 'Windows'
+        env:
+          RUST_BACKTRACE: 1
+        run: |
+          make format
+
+      - name: Test
+        env:
+          RUST_BACKTRACE: 1
+        run: |
+          make test
