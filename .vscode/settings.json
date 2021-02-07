@@ -1,6 +1,5 @@
 {
   "deno.enable": true,
   "deno.unstable": true,
-  "deno.lint": false,
-  "deepscan.ignoreConfirmWarning": true,
+  "deno.lint": false
 }

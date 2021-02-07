@@ -1,7 +1,9 @@
 import { generate } from "./generate.ts";
-const { readFile, stdout } = Deno;
+const { readFile, stdout, args } = Deno;
 
-const bytes = await readFile("swagger.json");
+const swaggerJSONFile = args[0];
+
+const bytes = await readFile(swaggerJSONFile);
 
 const content = new TextDecoder().decode(bytes);
 
