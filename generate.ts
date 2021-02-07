@@ -87,7 +87,13 @@ ${" ".repeat(indent - 2)}}`;
   return "unknown";
 }
 
-export function generate(swaggerJSONStr: string): string {
+/**
+ * Generate api file from swagger json
+ * @param swaggerJSONStr
+ * @param templateStr template for generation
+ * @returns
+ */
+export function generate(swaggerJSONStr: string, templateStr: string): string {
   const swaggerJSON = JSON.parse(swaggerJSONStr) as ISwagger;
 
   function extraSchema(ref: string): IComponent {
@@ -183,9 +189,7 @@ export function generate(swaggerJSONStr: string): string {
 
       routers.push(
         `//${tag ? " " + tag + " -" : ""}${instance.summary ? " " + instance.summary : ""}
-  ${method}(url: "${url}"${params ? ", params: " + params : ""}${
-          body ? ", body: " + body : ""
-        }): Promise<SwaggerApiWrapper & ${response}>`
+  ${method}(url: "${url}"${params ? ", params: " + params : ""}${body ? ", body: " + body : ""}): Promise<${response}>`
       );
     }
   }
@@ -193,18 +197,10 @@ export function generate(swaggerJSONStr: string): string {
   const template = `// Generate from swagger. DO NOT MODIFY IT.
 ${components.join("\n\n")}
 
-export interface SwaggerApiWrapper {
-  code: number;
-  message: string;
-}
-
 export interface SwaggerApi {
 ${routers.map((v) => "  " + v).join("\n")}
 }
-
-let http!: SwaggerApi
-
-export { http }`;
+`;
 
   return template;
 }
