@@ -9,4 +9,5 @@ const content = new TextDecoder().decode(bytes);
 
 const output = generate(content);
 
-stdout.write(new TextEncoder().encode(output));
+// await stdout.write(new TextEncoder().encode(output));
+console.log(output)

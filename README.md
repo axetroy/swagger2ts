@@ -5,7 +5,6 @@ Generate typescript code from swagger JSON
 ### Usage
 
 ```typescript
-
 ```
 
 ## License

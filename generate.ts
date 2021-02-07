@@ -24,7 +24,12 @@ interface IOutput {
  * @param indent Object 嵌套时的锁进
  * @param parent 父级
  */
-function generateComponent(name: string | void, c: IComponent, indent: number, parent: IComponent | void): string {
+function generateComponent(
+  name: string | void,
+  c: IComponent,
+  indent: number,
+  parent: IComponent | void,
+): string {
   const getComment = () => {
     // return `/* ${JSON.stringify(c)} */`;
     return c.description ? `/* ${c.description || ""} */` : "";
@@ -55,15 +60,25 @@ function generateComponent(name: string | void, c: IComponent, indent: number, p
     if (name) {
       return `//${c.description ? " " + c.description : ""}
 export interface ${name} {
-${output.map((v) => `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
+${
+        output.map((v) =>
+          `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`
+        ).join("\n")
+      }
 ${" ".repeat(indent - 2)}}`;
     } else {
       return `{
-${output.map((v) => `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
+${
+        output.map((v) =>
+          `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`
+        ).join("\n")
+      }
 ${" ".repeat(indent - 2)}}`;
     }
   } else if (isArrayComponent(c)) {
-    return `Array<${generateComponent(void 0, c.items, indent, c)}>${getComment()}`;
+    return `Array<${
+      generateComponent(void 0, c.items, indent, c)
+    }>${getComment()}`;
   } else if (isStringComponent(c)) {
     return `string${getComment()}`;
   } else if (isIntegerComponent(c) || isNumberComponent(c)) {
@@ -131,7 +146,12 @@ export function generate(swaggerJSONStr: string): string {
             isOptional = !!component.nullable;
           }
 
-          const type = generateComponent(void 0, params.schema, 2, params.schema);
+          const type = generateComponent(
+            void 0,
+            params.schema,
+            2,
+            params.schema,
+          );
 
           queryArr.push(`${params.name}${isOptional ? "?" : ""}: ${type}`);
         }
@@ -141,8 +161,10 @@ export function generate(swaggerJSONStr: string): string {
 
       // 请求的 Body
       if (instance.requestBody as IRequestBody) {
-        const formData = (instance.requestBody as IRequestBody).content["multipart/form-data"];
-        const json = (instance.requestBody as IRequestBody).content["application/json"];
+        const formData =
+          (instance.requestBody as IRequestBody).content["multipart/form-data"];
+        const json =
+          (instance.requestBody as IRequestBody).content["application/json"];
 
         if (formData) {
           body = "FormData";
@@ -186,8 +208,12 @@ export function generate(swaggerJSONStr: string): string {
       }
 
       routers.push(
-        `//${tag ? " " + tag + " -" : ""}${instance.summary ? " " + instance.summary : ""}
-  ${method}(url: "${url}"${params ? ", params: " + params : ""}${body ? ", body: " + body : ""}): Promise<${response}>`
+        `//${tag ? " " + tag + " -" : ""}${
+          instance.summary ? " " + instance.summary : ""
+        }
+  ${method}(url: "${url}"${params ? ", params: " + params : ""}${
+          body ? ", body: " + body : ""
+        }): Promise<${response}>`,
       );
     }
   }
@@ -197,8 +223,7 @@ ${components.join("\n\n")}
 
 export interface SwaggerApi {
 ${routers.map((v) => "  " + v).join("\n")}
-}
-`;
+}`;
 
   return template;
 }
