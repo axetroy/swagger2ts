@@ -1,4 +1,3 @@
-// import * as fs from "https://deno.land/std@0.85.0/fs/mod.ts";
 import {
   IComponent,
   IRequestBody,
@@ -90,10 +89,9 @@ ${" ".repeat(indent - 2)}}`;
 /**
  * Generate api file from swagger json
  * @param swaggerJSONStr
- * @param templateStr template for generation
  * @returns
  */
-export function generate(swaggerJSONStr: string, templateStr: string): string {
+export function generate(swaggerJSONStr: string): string {
   const swaggerJSON = JSON.parse(swaggerJSONStr) as ISwagger;
 
   function extraSchema(ref: string): IComponent {
