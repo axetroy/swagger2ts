@@ -1,12 +1,18 @@
 {
   "name": "swagger2ts",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generate typescript code from swagger JSON",
   "main": "index.mjs",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "index.mjs",
+    "generate.mjs"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/axetroy/swagger2ts.git"
