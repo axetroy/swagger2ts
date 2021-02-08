@@ -4,6 +4,9 @@
   "description": "Generate typescript code from swagger JSON",
   "main": "index.mjs",
   "type": "module",
+  "bin": {
+    "swagger2ts": "./bin/swagger.mjs"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
