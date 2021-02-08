@@ -56,7 +56,7 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
         run: |
-          node ./script/bump.js
+          node ./script/bump.mjs
 
       - name: Publish to NPM
         uses: JS-DevTools/npm-publish@v1
