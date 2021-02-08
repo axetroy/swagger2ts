@@ -16,10 +16,16 @@ deno install \
   https://github.com/axetroy/swagger2ts/raw/v0.1.0/vd.ts
 ```
 
-or install via [npm](https://npmjs.org)
+or install via [npm](https://npmjs.com)
 
 ```bash
 npm install @axetroy/swagger2ts
+```
+
+### Usage
+
+```bash
+swagger2ts swagger.json > api.ts
 ```
 
 ## License
