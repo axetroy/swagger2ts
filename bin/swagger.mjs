@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --no-deprecation --abort-on-uncaught-exception --no-warnings
+
 import { readFileSync } from "fs";
 import { generate } from "../index.mjs";
 
