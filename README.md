@@ -13,13 +13,13 @@ deno install \
   --no-check \
   --reload \
   -f \
-  https://github.com/axetroy/swagger2ts/raw/v0.1.0/vd.ts
+  https://github.com/axetroy/swagger2ts/raw/v0.1.0/swagger2ts.ts
 ```
 
 or install via [npm](https://npmjs.com)
 
 ```bash
-npm install @axetroy/swagger2ts
+npm install -g @axetroy/swagger2ts
 ```
 
 ### Usage
