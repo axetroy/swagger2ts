@@ -17,6 +17,26 @@ interface IOutput {
   value: string;
   optional?: boolean;
   readonly?: boolean;
+  comments: string[];
+}
+
+/**
+ * generate js docs with comments
+ * @param comments
+ * @param indent
+ * @returns
+ */
+function generateJSDocs(comments: string[], indent: number): string {
+  const paddingStr = " ".repeat(indent);
+
+  const rows = comments
+    .filter((v) => v)
+    .map((v) => {
+      return "\n" + paddingStr + " * " + v;
+    })
+    .join("");
+
+  return `${paddingStr}/**${rows}\n${paddingStr} */`;
 }
 
 /**
@@ -27,6 +47,8 @@ interface IOutput {
  * @param parent 父级
  */
 function generateComponent(name: string | void, c: IComponent, indent: number, parent: IComponent | void): string {
+  const comments: string[] = [];
+
   const getComment = () => {
     // return `/* ${JSON.stringify(c)} */`;
     return c.description ? ` /* ${c.description || ""} */` : "";
@@ -35,9 +57,9 @@ function generateComponent(name: string | void, c: IComponent, indent: number, p
   if (isRefComponent(c)) {
     const componentName = c.$ref.replace(/#\/components\/schemas\//, "");
     if (name) {
-      return `type name = ${componentName}${getComment()}`;
+      return `type name = ${componentName}`;
     } else {
-      return `${componentName}${getComment()}`;
+      return `${componentName}`;
     }
   } else if (isObjectComponent(c)) {
     const propertiesMap = c.properties;
@@ -52,6 +74,12 @@ function generateComponent(name: string | void, c: IComponent, indent: number, p
         readonly: propSchema.readOnly,
         value: generateComponent(void 0, propSchema, indent + 2, c),
         optional: !!propSchema.nullable,
+        comments: [
+          // description
+          propSchema.description ? propSchema.description : "",
+          // format
+          (propSchema as any).format ? "format: " + (propSchema as any).format : "",
+        ],
       });
     }
 
@@ -61,43 +89,69 @@ function generateComponent(name: string | void, c: IComponent, indent: number, p
         readonly: c.additionalProperties.readOnly,
         value: generateComponent(void 0, c.additionalProperties, indent + 2, c),
         optional: !!c.additionalProperties.nullable,
+        comments: [
+          // description
+          c.additionalProperties.description ? c.additionalProperties.description : "",
+          // format
+          (c.additionalProperties as any).format ? "format: " + (c.additionalProperties as any).format : "",
+        ],
       });
     }
 
+    c.description && comments.push(c.description);
+
     if (name) {
-      return `//${c.description ? " " + c.description : ""}
+      return `${generateJSDocs(comments, 0)}
 export interface ${name} {
-${output.map((v) => `${" ".repeat(indent)}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
+${output
+  .map((v) => {
+    const padding = " ".repeat(indent);
+
+    return `${generateJSDocs(v.comments, indent)}
+${padding}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`;
+  })
+  .join("\n")}
 ${" ".repeat(indent - 2)}}`;
     } else {
-      return `{
-${output.map((v) => `${" ".repeat(indent)}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
+      return `{${output
+        .map((v) => {
+          return `\n${generateJSDocs(v.comments, indent)}
+${" ".repeat(indent)}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`;
+        })
+        .join("\n")}
 ${" ".repeat(indent - 2)}}`;
     }
   } else if (isArrayComponent(c)) {
-    return `Array<${generateComponent(void 0, c.items, indent, c)}>${getComment()}`;
+    return `Array<${generateComponent(void 0, c.items, indent, c)}>`;
   } else if (isStringComponent(c)) {
-    return `string${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
+    return `string`;
   } else if (isIntegerComponent(c) || isNumberComponent(c)) {
     // if it's top level type
+    const comments: string[] = [
+      // description
+      c.description!,
+      // format
+      c.format ? "format: " + c.format : "",
+    ];
     if (!parent) {
+      const comment = `${generateJSDocs(comments, 0)}`;
       if (c.enum) {
-        return `//${c.description ? " " + c.description : ""}
-export type ${name} = ${c.enum.join(" | ")}${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
+        return `${comment}
+export type ${name} = ${c.enum.join(" | ")}`;
       }
-      return `//${c.description ? " " + c.description : ""}
-export type ${name} = number${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
+      return `${comment}
+export type ${name} = number`;
     } else {
       if (c.enum) {
-        return `${c.enum.join(" | ")}${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
+        return `${c.enum.join(" | ")}`;
       }
-      return `number${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
+      return `number`;
     }
   } else if (isBooleanComponent(c)) {
-    return `boolean${getComment()}`;
+    return `boolean`;
   }
 
-  return "unknown";
+  return `unknown`;
 }
 
 export interface IOption {
@@ -124,7 +178,13 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
   function extraSchema(ref: string): IComponent {
     const componentName = ref.replace(/#\/components\/schemas\//, "");
 
-    return swaggerJSON.components.schemas[componentName];
+    const component = swaggerJSON.components.schemas[componentName];
+
+    if (isRefComponent(component)) {
+      return extraSchema(component.$ref);
+    } else {
+      return component;
+    }
   }
 
   const components: string[] = []; // 公共的 interface 模型
@@ -147,7 +207,9 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
 
       //请求的 URL 参数
       if (instance.parameters?.length) {
-        const queryArr: string[] = [];
+        const indent = 2;
+
+        const queryArr: IOutput[] = [];
         for (const params of instance.parameters) {
           if (params.in !== "query") {
             continue;
@@ -158,12 +220,31 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
             isOptional = !!component.nullable;
           }
 
-          const type = generateComponent(void 0, params.schema, 2, params.schema);
+          const type = generateComponent(void 0, params.schema, indent, params.schema);
 
-          queryArr.push(`${params.name}${isOptional ? "?" : ""}: ${type}`);
+          queryArr.push({
+            key: params.name,
+            value: type,
+            optional: isOptional,
+            comments: [
+              // description
+              params.schema.description ? params.schema.description : "",
+              // format
+              (params.schema as any).format ? "format: " + (params.schema as any).format : "",
+            ],
+          });
         }
 
-        params = `{ ${queryArr.join(", ")} }`;
+        const padding = " ".repeat(indent);
+
+        params = `{
+${queryArr
+  .map((v) => {
+    return `${generateJSDocs(v.comments, indent + 2)}
+${" ".repeat(indent + 2)}${v.key}${v.optional ? "?" : ""}: ${v.value}`;
+  })
+  .join("\n")}
+${padding}}`;
       }
 
       // 请求的 Body
@@ -174,7 +255,7 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
         if (formData) {
           body = "FormData";
         } else if (json) {
-          body = generateComponent(void 0, json.schema, 2, json.schema);
+          body = generateComponent(void 0, json.schema, 4, json.schema);
         } else {
           body = "";
         }
@@ -190,7 +271,7 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
           const json = successInstance.content["application/json"];
 
           if (json) {
-            response = generateComponent(void 0, json.schema, 2, json.schema);
+            response = generateComponent(void 0, json.schema, 4, json.schema);
           } else {
             response = "unknown";
           }
@@ -215,7 +296,7 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
       let paramsAndBody = ``;
 
       if (["get", "delete", "head", "option"].includes(method)) {
-        paramsAndBody = `${params ? ", params: " + params : ""}`;
+        paramsAndBody = `${params ? ", query: " + params : ""}`;
       } else {
         paramsAndBody = `${body ? ", body: " + body : ""}`;
       }
@@ -227,7 +308,8 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
     }
   }
 
-  const template = `// Generate from swagger. DO NOT MODIFY IT.
+  const template = `// Generate by https://github.com/axetroy/swagger2ts. DO NOT MODIFY IT.
+
 ${components.join("\n\n")}
 
 export interface SwaggerApi {
