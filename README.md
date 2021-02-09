@@ -54,7 +54,7 @@ console.log(output);
 
 ```ts
 export interface IOption {
-  requestConfig?: string; // the config of the request. recommend `AxiosConfig`. defaults to 'unknown'
+  requestConfig?: string; // the config of the request. recommend `AxiosRequestConfig`. defaults to 'unknown'
 }
 ```
 
