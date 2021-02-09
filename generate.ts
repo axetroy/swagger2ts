@@ -214,7 +214,7 @@ export function generate(swaggerJSONStr: string, options: IOption = {}): string 
 
       let paramsAndBody = ``;
 
-      if (["get", "delete", "HEAD", "OPTION"]) {
+      if (["get", "delete", "head", "option"].includes(method)) {
         paramsAndBody = `${params ? ", params: " + params : ""}`;
       } else {
         paramsAndBody = `${body ? ", body: " + body : ""}`;
