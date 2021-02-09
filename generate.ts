@@ -77,21 +77,21 @@ ${" ".repeat(indent - 2)}}`;
   } else if (isArrayComponent(c)) {
     return `Array<${generateComponent(void 0, c.items, indent, c)}>${getComment()}`;
   } else if (isStringComponent(c)) {
-    return `string${getComment()}`;
+    return `string${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
   } else if (isIntegerComponent(c) || isNumberComponent(c)) {
     // if it's top level type
     if (!parent) {
       if (c.enum) {
         return `//${c.description ? " " + c.description : ""}
-export type ${name} = ${c.enum.join(" | ")}${getComment()}`;
+export type ${name} = ${c.enum.join(" | ")}${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
       }
       return `//${c.description ? " " + c.description : ""}
-export type ${name} = number${getComment()}`;
+export type ${name} = number${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
     } else {
       if (c.enum) {
-        return `${c.enum.join(" | ")}${getComment()}`;
+        return `${c.enum.join(" | ")}${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
       }
-      return `number${getComment()}`;
+      return `number${getComment()}${c.format ? " /* format: " + c.format + " */" : ""}`;
     }
   } else if (isBooleanComponent(c)) {
     return `boolean${getComment()}`;

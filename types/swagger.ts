@@ -2,7 +2,35 @@ export interface ISwagger {
   openapi: string;
   info?: {
     title: string;
+    description: string;
+    termsOfService: string;
+    contact: {
+      name: string;
+      url: string;
+      email: string;
+    };
+    license: {
+      name: string;
+      url: string;
+    };
     version: string;
+  };
+  server: Array<{
+    url: string;
+    description: string;
+    variables: {
+      [key: string]: {
+        enum: string[];
+        default: string;
+        description: string;
+      };
+    };
+  }>;
+  components: {
+    schemas: { [key: string]: IComponent };
+    requestBodies: {
+      [key: string]: IRequestBody;
+    };
   };
   paths: {
     [url: string]: {
@@ -30,12 +58,6 @@ export interface ISwagger {
       };
     };
   };
-  components: {
-    schemas: { [key: string]: IComponent };
-    requestBodies: {
-      [key: string]: IRequestBody;
-    };
-  };
   security: Array<{ [key: string]: string[] }>;
   tags: Array<{ name: string; description: string }>;
 }
@@ -53,16 +75,14 @@ export interface IRequestBodyRef {
   $ref: string;
 }
 
-export type IMethod = "get" | "post" | "delete" | "put" | "options";
+export type IMethod = "get" | "post" | "delete" | "put" | "head" | "option";
 export type IBasicType = "integer" | "string" | "boolean" | "object" | "array";
-export type IPropertyFormat = "int32" | "int64";
 
 export interface IComponentBasic {
   type: string;
   description?: string;
   nullable?: boolean;
   readOnly?: boolean;
-  format?: string;
 }
 
 export interface IObjectComponent extends IComponentBasic {
@@ -94,7 +114,7 @@ export interface IArrayComponent extends IComponentBasic {
 export interface IStringComponent extends IComponentBasic {
   type: "string";
   enum?: string[];
-  format?: "binary";
+  format?: "binary" | "date" | "date-time" | "password" | "email";
 }
 
 export interface IBooleanComponent extends IComponentBasic {
@@ -109,6 +129,7 @@ export interface IIntegerComponent extends IComponentBasic {
   maximum?: number;
   default?: number;
   required?: boolean;
+  format?: "int32" | "int64";
 }
 
 export interface INumberComponent extends IComponentBasic {
@@ -118,6 +139,7 @@ export interface INumberComponent extends IComponentBasic {
   maximum?: number;
   default?: number;
   required?: boolean;
+  format?: "int32" | "int64";
 }
 
 export type IComponent =
