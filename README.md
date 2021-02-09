@@ -13,7 +13,7 @@ deno install \
   --no-check \
   --reload \
   -f \
-  https://github.com/axetroy/swagger2ts/raw/v0.1.3/swagger2ts.ts
+  https://github.com/axetroy/swagger2ts/raw/v0.1.4/swagger2ts.ts
 ```
 
 or install via [npm](https://npmjs.com)
@@ -43,7 +43,7 @@ console.log(output);
 #### Use it in Deno api
 
 ```ts
-import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.1.3/generate.ts";
+import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.1.4/generate.ts";
 
 const output = generate("the swagger JSON content string", {});
 
