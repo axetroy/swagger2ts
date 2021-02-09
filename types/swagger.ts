@@ -61,12 +61,13 @@ export interface IComponentBasic {
   type: string;
   description?: string;
   nullable?: boolean;
+  readOnly?: boolean;
   format?: string;
 }
 
 export interface IObjectComponent extends IComponentBasic {
   type: "object";
-  additionalProperties: boolean;
+  additionalProperties: boolean | IComponentBasic;
   properties: {
     [key: string]: IComponent;
   };
@@ -129,6 +130,10 @@ export type IComponent =
   | IBooleanComponent
   | IOneOfComponent
   | IAnyOfComponent;
+
+export function isComponent(x: any): x is IComponent {
+  return x && typeof x.type === "string";
+}
 
 export function isObjectComponent(x: IComponent): x is IObjectComponent {
   return x.type === "object";

@@ -35,7 +35,7 @@ swagger2ts swagger.json > api.ts
 ```js
 import { generate } from "@axetroy/swagger2t";
 
-const output = generate("the swagger JSON content string");
+const output = generate("the swagger JSON content string", {});
 
 console.log(output);
 ```
@@ -45,9 +45,17 @@ console.log(output);
 ```ts
 import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.1.1/generate.ts";
 
-const output = generate("the swagger JSON content string");
+const output = generate("the swagger JSON content string", {});
 
 console.log(output);
+```
+
+### Option for api
+
+```ts
+export interface IOption {
+  requestConfig?: string; // the config of the request. recommend `AxiosConfig`. defaults to 'unknown'
+}
 ```
 
 ## License

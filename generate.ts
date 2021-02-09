@@ -1,6 +1,7 @@
 import {
   IComponent,
   IRequestBody,
+  isComponent,
   isArrayComponent,
   isBooleanComponent,
   isIntegerComponent,
@@ -15,6 +16,7 @@ interface IOutput {
   key: string;
   value: string;
   optional?: boolean;
+  readonly?: boolean;
 }
 
 /**
@@ -24,15 +26,10 @@ interface IOutput {
  * @param indent Object 嵌套时的锁进
  * @param parent 父级
  */
-function generateComponent(
-  name: string | void,
-  c: IComponent,
-  indent: number,
-  parent: IComponent | void,
-): string {
+function generateComponent(name: string | void, c: IComponent, indent: number, parent: IComponent | void): string {
   const getComment = () => {
     // return `/* ${JSON.stringify(c)} */`;
-    return c.description ? `/* ${c.description || ""} */` : "";
+    return c.description ? ` /* ${c.description || ""} */` : "";
   };
 
   if (isRefComponent(c)) {
@@ -52,42 +49,44 @@ function generateComponent(
 
       output.push({
         key: prop,
+        readonly: propSchema.readOnly,
         value: generateComponent(void 0, propSchema, indent + 2, c),
         optional: !!propSchema.nullable,
+      });
+    }
+
+    if (c.additionalProperties && isComponent(c.additionalProperties)) {
+      output.push({
+        key: `[key: string]`,
+        readonly: c.additionalProperties.readOnly,
+        value: generateComponent(void 0, c.additionalProperties, indent + 2, c),
+        optional: !!c.additionalProperties.nullable,
       });
     }
 
     if (name) {
       return `//${c.description ? " " + c.description : ""}
 export interface ${name} {
-${
-        output.map((v) =>
-          `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`
-        ).join("\n")
-      }
+${output.map((v) => `${" ".repeat(indent)}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
 ${" ".repeat(indent - 2)}}`;
     } else {
       return `{
-${
-        output.map((v) =>
-          `${" ".repeat(indent)}${v.key}${v.optional ? "?" : ""}: ${v.value}`
-        ).join("\n")
-      }
+${output.map((v) => `${" ".repeat(indent)}${v.readonly ? "readonly " : ""}${v.key}${v.optional ? "?" : ""}: ${v.value}`).join("\n")}
 ${" ".repeat(indent - 2)}}`;
     }
   } else if (isArrayComponent(c)) {
-    return `Array<${
-      generateComponent(void 0, c.items, indent, c)
-    }>${getComment()}`;
+    return `Array<${generateComponent(void 0, c.items, indent, c)}>${getComment()}`;
   } else if (isStringComponent(c)) {
     return `string${getComment()}`;
   } else if (isIntegerComponent(c) || isNumberComponent(c)) {
     // if it's top level type
     if (!parent) {
       if (c.enum) {
-        return `export type ${name} = ${c.enum.join(" | ")}${getComment()}`;
+        return `//${c.description ? " " + c.description : ""}
+export type ${name} = ${c.enum.join(" | ")}${getComment()}`;
       }
-      return `export type ${name} = number${getComment()}`;
+      return `//${c.description ? " " + c.description : ""}
+export type ${name} = number${getComment()}`;
     } else {
       if (c.enum) {
         return `${c.enum.join(" | ")}${getComment()}`;
@@ -101,12 +100,25 @@ ${" ".repeat(indent - 2)}}`;
   return "unknown";
 }
 
+export interface IOption {
+  requestConfig?: string; // the config of the request. recommend `AxiosConfig`. defaults to 'unknown'
+}
+
+function mergeOptions(option: IOption): IOption {
+  return {
+    requestConfig: "unknown",
+    ...option,
+  };
+}
+
 /**
  * Generate api file from swagger json
  * @param swaggerJSONStr
  * @returns
  */
-export function generate(swaggerJSONStr: string): string {
+export function generate(swaggerJSONStr: string, options: IOption = {}): string {
+  options = mergeOptions(options);
+
   const swaggerJSON = JSON.parse(swaggerJSONStr) as ISwagger;
 
   function extraSchema(ref: string): IComponent {
@@ -146,12 +158,7 @@ export function generate(swaggerJSONStr: string): string {
             isOptional = !!component.nullable;
           }
 
-          const type = generateComponent(
-            void 0,
-            params.schema,
-            2,
-            params.schema,
-          );
+          const type = generateComponent(void 0, params.schema, 2, params.schema);
 
           queryArr.push(`${params.name}${isOptional ? "?" : ""}: ${type}`);
         }
@@ -161,10 +168,8 @@ export function generate(swaggerJSONStr: string): string {
 
       // 请求的 Body
       if (instance.requestBody as IRequestBody) {
-        const formData =
-          (instance.requestBody as IRequestBody).content["multipart/form-data"];
-        const json =
-          (instance.requestBody as IRequestBody).content["application/json"];
+        const formData = (instance.requestBody as IRequestBody).content["multipart/form-data"];
+        const json = (instance.requestBody as IRequestBody).content["application/json"];
 
         if (formData) {
           body = "FormData";
@@ -207,13 +212,17 @@ export function generate(swaggerJSONStr: string): string {
         tag = tags.join(" - ");
       }
 
+      let paramsAndBody = ``;
+
+      if (["get", "delete", "HEAD", "OPTION"]) {
+        paramsAndBody = `${params ? ", params: " + params : ""}`;
+      } else {
+        paramsAndBody = `${body ? ", body: " + body : ""}`;
+      }
+
       routers.push(
-        `//${tag ? " " + tag + " -" : ""}${
-          instance.summary ? " " + instance.summary : ""
-        }
-  ${method}(url: "${url}"${params ? ", params: " + params : ""}${
-          body ? ", body: " + body : ""
-        }): Promise<${response}>`,
+        `//${tag ? " " + tag + " -" : ""}${instance.summary ? " " + instance.summary : ""}
+  ${method}(url: "${url}"${paramsAndBody}, config?: ${options.requestConfig}): Promise<${response}>`
       );
     }
   }
