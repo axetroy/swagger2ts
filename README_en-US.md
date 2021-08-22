@@ -8,6 +8,8 @@ It will generate a typescript definition and fetch-based api client. all most ou
 
 It can be applied to most scenarios, strengthen your interface calls, and eliminate annoying type declarations.
 
+Here are some [generated exquisite examples](__test__/3.0) to see if it meets your taste.
+
 ### Installation
 
 install via [Deno](https://deno.land)
