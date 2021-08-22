@@ -29,7 +29,7 @@ export async function generate(target: string): Promise<string> {
   let filename = "";
   let domain = "";
 
-  function getFileNameFromPaths(paths: string): string {
+  function getFileNameFromUrlPaths(paths: string): string {
     const arr = paths.split("/");
     return arr[arr.length - 1];
   }
@@ -41,7 +41,7 @@ export async function generate(target: string): Promise<string> {
 
     const buffer = await resp.arrayBuffer();
 
-    filename = getFileNameFromPaths(url.pathname).replace(/\.\w+$/g, "");
+    filename = getFileNameFromUrlPaths(url.pathname).replace(/\.\w+$/g, "");
     swaggerJSONFilePath = path.join(Deno.cwd(), filename);
     swaggerJSONContent = new Uint8Array(buffer);
     domain = url.origin;
