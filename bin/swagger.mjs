@@ -33,4 +33,4 @@ ${definition}
 ${implement}
 `;
 
-console.log(result.trimEnd())
+process.stdout.write(result.trimEnd())
