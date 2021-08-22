@@ -1,14 +1,13 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
 import { assertEquals } from "https://deno.land/std@0.105.0/testing/asserts.ts";
 import { generate } from "./swagger2ts.ts";
+import { URL2filepath } from "./helper.ts";
 
 Deno.test({
   name: "Generate",
   fn: async () => {
     async function testDir(dirName: string) {
-      const testDir = new URL(`./__test__/${dirName}`, import.meta.url).toString().replace(/^file:\/\//, "");
-
-      console.log(testDir);
+      const testDir = URL2filepath(new URL(`./__test__/${dirName}`, import.meta.url));
 
       for await (const dirEntry of Deno.readDir(testDir)) {
         if (/\.json$/.test(dirEntry.name)) {
