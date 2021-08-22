@@ -41,7 +41,7 @@ swagger2ts https://example.com/swagger.json > api.ts
 #### 通过 nodejs 函数调用
 
 ```js
-import { generate } from "@axetroy/swagger2t";
+import { generate } from "@axetroy/swagger2ts";
 
 const output = await generate("/path/to/swagger.json");
 // const output = await generate("https://example.com/swagger.json");

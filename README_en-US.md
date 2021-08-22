@@ -41,7 +41,7 @@ swagger2ts https://example.com/swagger.json > api.ts
 #### Use it in Node.js api
 
 ```js
-import { generate } from "@axetroy/swagger2t";
+import { generate } from "@axetroy/swagger2ts";
 
 const output = await generate("/path/to/swagger.json");
 // const output = await generate("https://example.com/swagger.json");
