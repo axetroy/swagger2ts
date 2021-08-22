@@ -172,10 +172,10 @@ interface JSONSchema {
 
   // swagger extension
   type: "integer" | "string" | "number" | "boolean" | "object" | "array";
-  allOf?: ISchemaObject;
-  oneOf?: ISchemaObject;
-  anyOf?: ISchemaObject;
-  not?: ISchemaObject;
+  allOf?: ISchemaObject[];
+  oneOf?: ISchemaObject[];
+  anyOf?: ISchemaObject[];
+  not?: ISchemaObject[];
   items?: ISchemaObject | IReferenceObject;
   properties?: { [key: string]: ISchemaObject };
   additionalProperties?: { [key: string]: ISchemaObject };
