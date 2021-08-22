@@ -11,7 +11,13 @@ interface MapString {
 
 
 export interface SwaggerApi{
+  /**
+   * @summary List API versions
+   */
   get(url: "/", options: {path?: MapString, query?: MapString, header?: MapString, body?: any}): Promise<null>
+  /**
+   * @summary Show API version details
+   */
   get(url: "/v2", options: {path?: MapString, query?: MapString, header?: MapString, body?: any}): Promise<null>
   /* default methods */
   get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>

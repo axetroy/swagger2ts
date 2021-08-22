@@ -11,6 +11,9 @@ interface MapString {
 
 
 export interface SwaggerApi{
+  /**
+   * @description subscribes a client to receive out-of-band data
+   */
   post(url: "/streams", options: {path?: MapString, query: {callbackUrl: string | undefined}, header?: MapString, body?: any}): Promise<unknown>
   /* default methods */
   get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>

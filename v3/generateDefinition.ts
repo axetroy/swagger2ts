@@ -1,3 +1,4 @@
+import { generateMultipleLineComments, indentTxt } from "./helper.ts";
 import {
   IOperationObject,
   IParameterObject,
@@ -10,16 +11,10 @@ import {
   ISwagger,
 } from "./types.ts";
 
-function generateSchema(
-  name: string,
-  schema: ISchemaObject | IReferenceObject,
-  indent: number,
-): string {
+function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number): string {
   // "#/components/schemas/Address"
   if (isReferenceObject(schema)) {
-    const schemaPropertyPaths = schema.$ref.replace(/^#\/components/, "").split(
-      "/",
-    );
+    const schemaPropertyPaths = schema.$ref.replace(/^#\/components/, "").split("/");
 
     const refSchemaName = schemaPropertyPaths[schemaPropertyPaths.length - 1];
 
@@ -66,23 +61,16 @@ function generateSchema(
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
-          outputObject.push(
-            `${prop}: ${generateSchema("", propSchema, indent)}`,
-          );
+          outputObject.push(`${prop}: ${generateSchema("", propSchema, indent)}`);
         }
-        return `${name ? `interface ${name} ` : ""}{${
-          outputObject.join(", ")
-        }}`;
+        return `${name ? `interface ${name} ` : ""}{${outputObject.join(", ")}}`;
       default:
         return `${name ? `type ${name} = ` : ""}any`;
     }
   }
 }
 
-function generateParams(
-  param: IParameterObject | IReferenceObject,
-  indent: number,
-): string {
+function generateParams(param: IParameterObject | IReferenceObject, indent: number): string {
   if (isReferenceObject(param)) {
     // TODO
     return "";
@@ -106,10 +94,7 @@ function generateComponent(swagger: ISwagger, indent: number): string {
   return output.join("\n");
 }
 
-function generateBody(
-  body: IRequestBodyObject | IResponseObject,
-  indent: number,
-) {
+function generateBody(body: IRequestBodyObject | IResponseObject, indent: number) {
   if (!body.content) return "null";
   const jsonBody = body.content["application/json"];
   const streamBody = body.content["application/octet-stream"];
@@ -124,16 +109,7 @@ function generateBody(
 
 function generateApi(swagger: ISwagger, indent: number): string {
   const urlBlock: string[] = [];
-  const methods = [
-    "get",
-    "post",
-    "delete",
-    "put",
-    "head",
-    "options",
-    "trace",
-    "patch",
-  ];
+  const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
 
   for (const url in swagger.paths) {
     const pathItemObject = swagger.paths[url];
@@ -186,8 +162,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       if (operation.responses) {
         if (operation.responses["200"] || operation.responses.default) {
-          const successResponse = operation.responses["200"] ||
-            operation.responses.default;
+          const successResponse = operation.responses["200"] || operation.responses.default;
           if (isReferenceObject(successResponse)) {
             responseBody = generateSchema("", successResponse, 0);
           } else {
@@ -199,36 +174,53 @@ function generateApi(swagger: ISwagger, indent: number): string {
       }
 
       const routerParams: string[] = [
-        generateParamsStr("path", paramsPath) === "path?: {}"
-          ? "path?: MapString"
-          : generateParamsStr("path", paramsPath),
-        generateParamsStr("query", paramsQuery) === "query?: {}"
-          ? "query?: MapString"
-          : generateParamsStr("query", paramsQuery),
-        generateParamsStr("header", paramsHeader) === "header?: {}"
-          ? "header?: MapString"
-          : generateParamsStr("header", paramsHeader),
+        generateParamsStr("path", paramsPath) === "path?: {}" ? "path?: MapString" : generateParamsStr("path", paramsPath),
+        generateParamsStr("query", paramsQuery) === "query?: {}" ? "query?: MapString" : generateParamsStr("query", paramsQuery),
+        generateParamsStr("header", paramsHeader) === "header?: {}" ? "header?: MapString" : generateParamsStr("header", paramsHeader),
         paramsBody ? `body: ${paramsBody}` : "body?: any",
       ].filter((v) => v);
 
-      const rule = `${method}(url: "${url}", options: {${
-        routerParams.join(", ")
-      }}): Promise<${responseBody}>`;
+      const docs: string[] = [];
 
-      urlBlock.push(rule);
+      if (operation.tags) {
+        for (const tag of operation.tags) {
+          docs.push(`@tag ${tag}`);
+        }
+      }
+
+      if (operation.summary) {
+        operation.summary.split("\n").filter(v => v.trim()).forEach((line) => {
+          docs.push(`@summary ${line}`);
+        });
+      }
+
+      if (operation.description) {
+        operation.description.split("\n").filter(v => v.trim()).forEach((line) => {
+          docs.push(`@description ${line}`);
+        });
+      }
+
+      const rows = [
+        generateMultipleLineComments(docs),
+        `${method}(url: "${url}", options: {${routerParams.join(", ")}}): Promise<${responseBody}>`,
+        //
+      ]
+        .filter((v) => v)
+        .join("\n");
+
+      urlBlock.push(rows);
     }
   }
 
   urlBlock.push("/* default methods */");
 
   for (const method of methods) {
-    const rule =
-      `${method}<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>`;
+    const rule = `${method}<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>`;
     urlBlock.push(rule);
   }
 
   return `export interface SwaggerApi{
-${urlBlock.map((v) => " ".repeat(2) + v).join("\n")}
+${indentTxt(urlBlock.join("\n"), indent)}
 }`;
 }
 
@@ -249,11 +241,7 @@ export function generateDefinition(content: string): string {
 
   const swagger = JSON.parse(content) as ISwagger;
 
-  const output: string[] = [
-    generateDefaultTypes(),
-    generateComponent(swagger, indent),
-    generateApi(swagger, indent),
-  ];
+  const output: string[] = [generateDefaultTypes(), generateComponent(swagger, indent), generateApi(swagger, indent)];
 
   return output.join("\n\n");
 }
