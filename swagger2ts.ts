@@ -66,15 +66,11 @@ ${definition}
 ${implement}
 `;
 
-  return result.trimEnd();
+  return result.trim();
 }
 
 if (import.meta.main) {
   const result = await generate(Deno.args[0]);
-
-  if (Deno.build.os === 'windows') {
-    console.log(result)
-  }
 
   Deno.stdout.writeSync(new TextEncoder().encode(result))
 }
