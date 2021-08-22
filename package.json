@@ -13,8 +13,10 @@
   "files": [
     "README.md",
     "LICENSE",
+    "sdk.ts",
     "index.mjs",
-    "generate.mjs"
+    "dist/v3.mjs",
+    "bin/swagger.mjs"
   ],
   "repository": {
     "type": "git",
@@ -25,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/axetroy/swagger2ts/issues"
   },
-  "homepage": "https://github.com/axetroy/swagger2ts#readme"
+  "homepage": "https://github.com/axetroy/swagger2ts#readme",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }

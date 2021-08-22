@@ -1,12 +1,36 @@
 #!/usr/bin/env node --no-deprecation --abort-on-uncaught-exception --no-warnings
 
 import { readFileSync } from "fs";
-import { generate } from "../index.mjs";
+import { URL } from 'url'
+import * as path from "path"
+import axios from 'axios'
+import { v3 } from "../index.mjs";
 
-const file = process.argv[2];
+let swaggerJSONContent = ''
+let domain = ''
 
-const content = readFileSync(file, { encoding: "utf-8" });
+if (/^https?:\/\//.test(process.argv[2])) {
+  // remote swaggerJSONFilePath
+  const url = new URL(process.argv[2])
+  const res = await axios.get(url.toString())
 
-const output = generate(content);
+  swaggerJSONContent = JSON.stringify(res.data)
+  domain = url.origin;
+} else {
+  const swaggerJSONFilePath = path.resolve(process.argv[2])
+  swaggerJSONContent = readFileSync(swaggerJSONFilePath, { encoding: "utf-8" });
+  domain = 'http://localhost'
+}
 
-console.log(output);
+const sdkFilepath = new URL("../sdk.ts", import.meta.url);
+
+const definition = v3.generateDefinition(swaggerJSONContent);
+const implement = v3.generateImplement(swaggerJSONContent, new TextDecoder().decode(readFileSync(sdkFilepath)), domain);
+
+const result = `// Generate by swagger2ts
+${definition}
+
+${implement}
+`;
+
+console.log(result.trimEnd())

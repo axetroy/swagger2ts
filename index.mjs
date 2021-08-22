@@ -1,4 +1,3 @@
-import { generate } from "./generate.mjs";
+import * as v3 from "./dist/v3.mjs";
 
-export { generate };
-export default generate;
+export { v3 };
