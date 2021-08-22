@@ -1,4 +1,4 @@
-[中文简体](README_zh-CN.md) | English
+[中文简体](README.md) | English
 
 [![Build Status](https://github.com/axetroy/swagger2ts/workflows/test/badge.svg)](https://github.com/axetroy/swagger2ts/actions)
 
