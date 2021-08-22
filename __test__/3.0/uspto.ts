@@ -73,7 +73,7 @@ class Http {
   private get baseURL(): string {
     const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
 
-    return baseUrl.replace(/\//$, "");
+    return baseUrl.replace(/\/$/, "");
   }
 
   public set domain(domain: string) {
@@ -200,4 +200,4 @@ class Http {
   }
 }
 
-export const {scheme}:/Developer.uspto.govDs-api = new Http("http://localhost", "{scheme}://developer.uspto.gov/ds-api")
+export const dsApi = new Http("http://localhost", "/ds-api")

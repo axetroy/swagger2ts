@@ -60,7 +60,7 @@ class Http {
   private get baseURL(): string {
     const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
 
-    return baseUrl.replace(/\//$, "");
+    return baseUrl.replace(/\/$/, "");
   }
 
   public set domain(domain: string) {

@@ -1,23 +1,56 @@
-import { ISwagger } from "./types.ts";
+import { camelCase } from "https://deno.land/x/case@v2.1.0/mod.ts";
+import { IServerObject, ISwagger } from "./types.ts";
 
-function path2apiName(path: string): string {
-  // full url
-  if (/https?:\/\//.test(path)) {
-    path = new URL(path).pathname;
+function getServerUrl(serverInfo: IServerObject): URL {
+  let urlStr = serverInfo.url;
+
+  if (serverInfo.variables) {
+    for (const key in serverInfo.variables) {
+      const schema = serverInfo.variables[key];
+      const reg = new RegExp(`{${key}}`, "g");
+
+      if (schema.default) {
+        urlStr = urlStr.replace(reg, schema.default);
+      } else if (schema.enum && schema.enum.length) {
+        urlStr = urlStr.replace(reg, schema.enum[0]);
+      } else {
+        urlStr = urlStr.replace(reg, "unknown");
+      }
+    }
   }
 
-  return path.replace(/^\//, "").replace(
-    /\/(\w)/g,
-    (all, letter) => letter.toUpperCase(),
-  );
+  // if it's not a valid url
+  // may be a relative path
+  if (!/https?:\/\//.test(urlStr)) {
+    urlStr = "http://localhost" + urlStr;
+  }
+
+  const url = new URL(urlStr);
+
+  return url;
+}
+
+function path2apiName(serverInfo: IServerObject): string {
+  function getNameFromUnknownString(str: string) {
+    return camelCase(str);
+  }
+
+  // relative path
+  if (/^\//.test(serverInfo.url)) {
+    return getNameFromUnknownString(serverInfo.url);
+  } else {
+    const url = getServerUrl(serverInfo);
+
+    if (url.pathname === "/") {
+      return getNameFromUnknownString(url.hostname);
+    } else {
+      return getNameFromUnknownString(url.pathname);
+    }
+  }
 }
 
 // generate HTTP implement for swagger api
-export function generateImplement(
-  content: string,
-  sdkContent: string,
-  domain: string,
-): string {
+export function generateImplement(content: string, sdkContent: string, domain: string): string {
   const swagger = JSON.parse(content) as ISwagger;
 
   domain = domain.replace(/\/$/, "");
@@ -26,10 +59,10 @@ export function generateImplement(
     const apis: string[] = [];
 
     for (const server of swagger.servers) {
-      const apiName = path2apiName(server.url);
+      const apiName = path2apiName(server);
+      const serverURL = getServerUrl(server);
 
-      const api =
-        `export const ${apiName} = new Http("${domain}", "${server.url}")`;
+      const api = `export const ${apiName} = new Http("${domain}", "${serverURL.pathname}")`;
 
       apis.push(api);
     }

@@ -219,16 +219,18 @@ interface IEncodingObject {
 
 interface IHeaderObject extends IParameterObject {}
 
-interface IServerObject {
+export interface IServerObject {
   url: string;
   description?: string;
   variables?: {
-    [key: string]: {
-      enum?: string[];
-      default: string;
-      description?: string;
-    };
+    [key: string]: IServerVariableObject;
   };
+}
+
+export interface IServerVariableObject {
+  enum?: string[];
+  default: string;
+  description?: string;
 }
 
 interface IExternalDocs {

@@ -76,7 +76,7 @@ class Http {
   private get baseURL(): string {
     const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
 
-    return baseUrl.replace(/\//$, "");
+    return baseUrl.replace(/\/$/, "");
   }
 
   public set domain(domain: string) {
@@ -203,4 +203,4 @@ class Http {
   }
 }
 
-export const api = new Http("http://localhost", "http://petstore.swagger.io/api")
+export const api = new Http("http://localhost", "/api")
