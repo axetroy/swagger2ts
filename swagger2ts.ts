@@ -13,8 +13,8 @@ async function getDeps(url: string): Promise<string | undefined> {
 
   const rawOutput = await ps.output();
 
-  ps.stderr.close()
-  ps.close()
+  ps.stderr.close();
+  ps.close();
 
   const result = JSON.parse(new TextDecoder().decode(rawOutput)) as { root: string; modules: Array<{ specifier: string; local: string }> };
 
@@ -25,8 +25,7 @@ async function getDeps(url: string): Promise<string | undefined> {
 
 export async function generate(target: string): Promise<string> {
   let swaggerJSONFilePath = "";
-  let swaggerJSONContent: Uint8Array;
-  let filename = "";
+  let swaggerJSONContent: string;
   let domain = "";
 
   function getFileNameFromUrlPaths(paths: string): string {
@@ -39,20 +38,16 @@ export async function generate(target: string): Promise<string> {
     const url = new URL(target);
     const resp = await fetch(url);
 
-    const buffer = await resp.arrayBuffer();
+    swaggerJSONContent = await resp.text();
 
-    filename = getFileNameFromUrlPaths(url.pathname).replace(/\.\w+$/g, "");
+    const filename = getFileNameFromUrlPaths(url.pathname).replace(/\.\w+$/g, "");
     swaggerJSONFilePath = path.join(Deno.cwd(), filename);
-    swaggerJSONContent = new Uint8Array(buffer);
     domain = url.origin;
   } else {
-    filename = path.basename(swaggerJSONFilePath).replace(/\.\w+$/g, "");
     swaggerJSONFilePath = path.isAbsolute(target) ? target : path.resolve(target);
-    swaggerJSONContent = await Deno.readFile(swaggerJSONFilePath);
+    swaggerJSONContent = await Deno.readTextFile(swaggerJSONFilePath);
     domain = "http://localhost";
   }
-
-  const content = new TextDecoder().decode(swaggerJSONContent);
 
   const sdkURL = new URL("./sdk.ts", import.meta.url);
 
@@ -62,8 +57,8 @@ export async function generate(target: string): Promise<string> {
     throw new Error("can not found sdk file");
   }
 
-  const definition = generateDefinition(content);
-  const implement = generateImplement(content, new TextDecoder().decode(await Deno.readFile(sdkFilepath)), domain);
+  const definition = generateDefinition(swaggerJSONContent);
+  const implement = generateImplement(swaggerJSONContent, new TextDecoder().decode(await Deno.readFile(sdkFilepath)), domain);
 
   const result = `// Generate by swagger2ts
 ${definition}
@@ -77,5 +72,5 @@ ${implement}
 if (import.meta.main) {
   const result = await generate(Deno.args[0]);
 
-  console.log(result);
+  Deno.stdout.writeSync(new TextEncoder().encode(result))
 }
