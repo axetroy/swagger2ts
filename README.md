@@ -28,6 +28,7 @@ npm install -g @axetroy/swagger2ts
 
 ```bash
 swagger2ts swagger.json > api.ts
+swagger2ts https://example.com/swagger.json > api.ts
 ```
 
 #### Use it in Node.js api
@@ -35,7 +36,8 @@ swagger2ts swagger.json > api.ts
 ```js
 import { generate } from "@axetroy/swagger2t";
 
-const output = generate("the swagger JSON content string", {});
+const output = generate("/path/to/swagger.json");
+// const output = generate("https://example.com/swagger.json");
 
 console.log(output);
 ```
@@ -45,17 +47,10 @@ console.log(output);
 ```ts
 import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.1.4/generate.ts";
 
-const output = generate("the swagger JSON content string", {});
+const output = generate("the swagger JSON content string");
+// const output = generate("[the swagger JSON content string](https://example.com/swagger.json)");
 
 console.log(output);
-```
-
-### Option for api
-
-```ts
-export interface IOption {
-  requestConfig?: string; // the config of the request. recommend `AxiosRequestConfig`. defaults to 'unknown'
-}
 ```
 
 ## License
