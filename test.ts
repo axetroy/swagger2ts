@@ -8,6 +8,8 @@ Deno.test({
     async function testDir(dirName: string) {
       const testDir = new URL(`./__test__/${dirName}`, import.meta.url).toString().replace(/^file:\/\//, "");
 
+      console.log(testDir);
+
       for await (const dirEntry of Deno.readDir(testDir)) {
         if (/\.json$/.test(dirEntry.name)) {
           const actual = await generate(path.join(testDir, dirEntry.name));
