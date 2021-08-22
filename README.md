@@ -8,8 +8,7 @@ install via [Deno](https://deno.land)
 
 ```typescript
 deno install \
-  --allow-read \
-  --allow-net \
+  -A \
   --no-check \
   --reload \
   -f \

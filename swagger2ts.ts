@@ -1,6 +1,24 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
 import { generateDefinition, generateImplement } from "./v3/index.ts";
-import "./sdk.ts"
+import "./sdk.ts"; // import to check type and download deps
+
+async function getDeps(url: string): Promise<string | undefined> {
+  const ps = Deno.run({
+    cmd: [Deno.execPath(), "info", url, "--json"],
+    stdout: "piped",
+    stderr: "piped",
+  });
+
+  await ps.status();
+
+  const rawOutput = await ps.output();
+
+  const result = JSON.parse(new TextDecoder().decode(rawOutput)) as { root: string; modules: Array<{ specifier: string; local: string }> };
+
+  const module = result.modules.find((v) => v.specifier === url);
+
+  return module?.local;
+}
 
 export async function generate(target: string): Promise<string> {
   let swaggerJSONFilePath = "";
@@ -33,9 +51,13 @@ export async function generate(target: string): Promise<string> {
 
   const content = new TextDecoder().decode(swaggerJSONContent);
 
-  const sdkFilepath = new URL("./sdk.ts", import.meta.url);
+  const sdkURL = new URL("./sdk.ts", import.meta.url);
 
-  console.log(sdkFilepath)
+  const sdkFilepath = await getDeps(sdkURL.toString());
+
+  if (!sdkFilepath) {
+    throw new Error("can not found sdk file");
+  }
 
   const definition = generateDefinition(content);
   const implement = generateImplement(content, new TextDecoder().decode(await Deno.readFile(sdkFilepath)), domain);
