@@ -6,8 +6,6 @@ import { URL2filepath } from "./helper.ts";
 async function testDir(dirName: string) {
   const testDir = URL2filepath(new URL(`./__test__/${dirName}`, import.meta.url));
 
-  console.log("testDir: ", testDir);
-
   for await (const dirEntry of Deno.readDir(testDir)) {
     if (/\.json$/.test(dirEntry.name)) {
       const actual = await generate(path.join(testDir, dirEntry.name));
