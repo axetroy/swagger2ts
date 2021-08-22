@@ -13,6 +13,9 @@ async function getDeps(url: string): Promise<string | undefined> {
 
   const rawOutput = await ps.output();
 
+  ps.stderr.close()
+  ps.close()
+
   const result = JSON.parse(new TextDecoder().decode(rawOutput)) as { root: string; modules: Array<{ specifier: string; local: string }> };
 
   const module = result.modules.find((v) => v.specifier === url);
