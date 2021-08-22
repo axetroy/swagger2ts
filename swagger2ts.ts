@@ -1,7 +1,6 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
 import { generateDefinition, generateImplement } from "./v3/index.ts";
 import "./sdk.ts"
-const { readFile, args, cwd } = Deno;
 
 export async function generate(target: string): Promise<string> {
   let swaggerJSONFilePath = "";
@@ -22,13 +21,13 @@ export async function generate(target: string): Promise<string> {
     const buffer = await resp.arrayBuffer();
 
     filename = getFileNameFromPaths(url.pathname).replace(/\.\w+$/g, "");
-    swaggerJSONFilePath = path.join(cwd(), filename);
+    swaggerJSONFilePath = path.join(Deno.cwd(), filename);
     swaggerJSONContent = new Uint8Array(buffer);
     domain = url.origin;
   } else {
     filename = path.basename(swaggerJSONFilePath).replace(/\.\w+$/g, "");
     swaggerJSONFilePath = path.isAbsolute(target) ? target : path.resolve(target);
-    swaggerJSONContent = await readFile(swaggerJSONFilePath);
+    swaggerJSONContent = await Deno.readFile(swaggerJSONFilePath);
     domain = "http://localhost";
   }
 
@@ -36,8 +35,10 @@ export async function generate(target: string): Promise<string> {
 
   const sdkFilepath = new URL("./sdk.ts", import.meta.url);
 
+  console.log(sdkFilepath)
+
   const definition = generateDefinition(content);
-  const implement = generateImplement(content, new TextDecoder().decode(await readFile(sdkFilepath)), domain);
+  const implement = generateImplement(content, new TextDecoder().decode(await Deno.readFile(sdkFilepath)), domain);
 
   const result = `// Generate by swagger2ts
 ${definition}
@@ -49,7 +50,7 @@ ${implement}
 }
 
 if (import.meta.main) {
-  const result = await generate(args[0]);
+  const result = await generate(Deno.args[0]);
 
   console.log(result);
 }
