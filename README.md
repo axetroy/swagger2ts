@@ -47,8 +47,8 @@ console.log(output);
 ```ts
 import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.1.4/generate.ts";
 
-const output = generate("the swagger JSON content string");
-// const output = generate("[the swagger JSON content string](https://example.com/swagger.json)");
+const output = generate("/path/to/swagger.json");
+// const output = generate("https://example.com/swagger.json");
 
 console.log(output);
 ```
