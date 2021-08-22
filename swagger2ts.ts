@@ -1,5 +1,6 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
 import { generateDefinition, generateImplement } from "./v3/index.ts";
+import "./sdk.ts"
 const { readFile, args, cwd } = Deno;
 
 export async function generate(target: string): Promise<string> {

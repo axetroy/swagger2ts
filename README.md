@@ -9,7 +9,7 @@ install via [Deno](https://deno.land)
 ```typescript
 deno install \
   --allow-read \
-  --allow-write \
+  --allow-net \
   --no-check \
   --reload \
   -f \
