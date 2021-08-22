@@ -5,16 +5,21 @@ import { generate } from "./swagger2ts.ts";
 Deno.test({
   name: "Generate",
   fn: async () => {
-    const testDir = new URL("./__test__/3.0", import.meta.url).toString().replace(/^file:\/\//, "");
+    async function testDir(dirName: string) {
+      const testDir = new URL(`./__test__/${dirName}`, import.meta.url).toString().replace(/^file:\/\//, "");
 
-    for await (const dirEntry of Deno.readDir(testDir)) {
-      if (/\.json$/.test(dirEntry.name)) {
-        const actual = await generate(path.join(testDir, dirEntry.name));
+      for await (const dirEntry of Deno.readDir(testDir)) {
+        if (/\.json$/.test(dirEntry.name)) {
+          const actual = await generate(path.join(testDir, dirEntry.name));
 
-        const expect = await Deno.readTextFile(path.join(testDir, dirEntry.name.replace(/\.json$/, ".ts")));
+          const expect = await Deno.readTextFile(path.join(testDir, dirEntry.name.replace(/\.json$/, ".ts")));
 
-        assertEquals(actual.trim(), expect.trim());
+          assertEquals(actual.trim(), expect.trim());
+        }
       }
     }
+
+    await testDir("3.0");
+    await testDir("3.1");
   },
 });
