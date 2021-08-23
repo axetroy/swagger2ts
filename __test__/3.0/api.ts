@@ -283,4 +283,4 @@ class Http {
   }
 }
 
-export const 192_168_0_21 = new Http("http://localhost", "/")
+export const unknownApi = new Http("http://localhost", "/")

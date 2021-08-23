@@ -32,7 +32,13 @@ function getServerUrl(serverInfo: IServerObject): URL {
 
 function path2apiName(serverInfo: IServerObject): string {
   function getNameFromUnknownString(str: string) {
-    return camelCase(str);
+    const result = camelCase(str);
+
+    if (/^[a-z][a-zA-Z\d]+/.test(result)) {
+      return result;
+    } else {
+      return "unknownApi";
+    }
   }
 
   // relative path
