@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 export interface user {
@@ -30,35 +30,35 @@ export interface pullrequest {
 export interface SwaggerApi{
   get(url: "/2.0/users/{username}", options: {path: {
     username: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<user>
+  }, body?: any} & IDefaultOptions): Promise<user>
   
   get(url: "/2.0/repositories/{username}", options: {path: {
     username: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<repository>>
+  }, body?: any} & IDefaultOptions): Promise<Array<repository>>
   
   get(url: "/2.0/repositories/{username}/{slug}", options: {path: {
     username: string
     slug: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<repository>
+  }, body?: any} & IDefaultOptions): Promise<repository>
   
   get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {
     username: string
     slug: string
   }, query: {
     state?: "open" | "merged" | "declined"
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<pullrequest>>
+  }, body?: any} & IDefaultOptions): Promise<Array<pullrequest>>
   
   get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {
     username: string
     slug: string
     pid: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<pullrequest>
+  }, body?: any} & IDefaultOptions): Promise<pullrequest>
   
   post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {
     username: string
     slug: string
     pid: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
 }
 
 // swagger runtime. generate by swagger2ts

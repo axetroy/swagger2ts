@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 
@@ -16,9 +16,9 @@ export interface SwaggerApi{
   /**
    * @description subscribes a client to receive out-of-band data
    */
-  post(url: "/streams", options: {path?: {}, query: {
+  post(url: "/streams", options: {query: {
     callbackUrl: string
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
 }
 
 // swagger runtime. generate by swagger2ts

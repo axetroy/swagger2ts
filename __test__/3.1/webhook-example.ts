@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 export type Pet = any

@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 /**
@@ -97,25 +97,25 @@ export interface SwaggerApi{
    * @tag 公共接口
    * @summary 按钮
    */
-  get(url: "/button", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+  get(url: "/button", options: {body?: any} & IDefaultOptions): Promise<Array<MenuTreeVO>>
   
   /**
    * @tag 公共接口
    * @summary 导航条
    */
-  get(url: "/navbar", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+  get(url: "/navbar", options: {body?: any} & IDefaultOptions): Promise<Array<MenuTreeVO>>
   
   /**
    * @tag 角色管理
    * @summary 查询
    */
-  get(url: "/role", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<Array<角色树查询>>
+  get(url: "/role", options: {body?: any} & IDefaultOptions): Promise<Array<角色树查询>>
   
   /**
    * @tag 角色管理
    * @summary 新增
    */
-  post(url: "/role", options: {body: RoleDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  post(url: "/role", options: {body: RoleDTO} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 角色管理
@@ -124,7 +124,7 @@ export interface SwaggerApi{
    */
   delete(url: "/role/{id}", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body?: any} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 角色管理
@@ -133,7 +133,7 @@ export interface SwaggerApi{
    */
   put(url: "/role/{id}", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body: RoleDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: RoleDTO} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 角色管理
@@ -141,7 +141,7 @@ export interface SwaggerApi{
    */
   get(url: "/role/{id}/authority", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<number | undefined>>
+  }, body?: any} & IDefaultOptions): Promise<Array<number | undefined>>
   
   /**
    * @tag 角色管理
@@ -149,7 +149,7 @@ export interface SwaggerApi{
    */
   post(url: "/role/{id}/authority", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body: Array<number | undefined>, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: Array<number | undefined>} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 角色管理
@@ -158,7 +158,7 @@ export interface SwaggerApi{
    */
   get(url: "/role/{id}/menu", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<number | undefined>>
+  }, body?: any} & IDefaultOptions): Promise<Array<number | undefined>>
   
   /**
    * @tag 角色管理
@@ -167,27 +167,27 @@ export interface SwaggerApi{
    */
   post(url: "/role/{id}/menu", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body: Array<number | undefined>, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: Array<number | undefined>} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 菜单管理
    * @summary 查询
    * @description 系统管理，菜单树结构
    */
-  get(url: "/sitemap", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<Array<菜单树>>
+  get(url: "/sitemap", options: {body?: any} & IDefaultOptions): Promise<Array<菜单树>>
   
   /**
    * @tag 菜单管理
    * @summary 新增
    * @description 添加菜单
    */
-  post(url: "/sitemap", options: {body: SitemapDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  post(url: "/sitemap", options: {body: SitemapDTO} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 菜单管理
    * @summary 添加按钮
    */
-  post(url: "/sitemap/button", options: {body: ButtonDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  post(url: "/sitemap/button", options: {body: ButtonDTO} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 菜单管理
@@ -195,7 +195,7 @@ export interface SwaggerApi{
    */
   put(url: "/sitemap/button/{id}", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body: ButtonDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: ButtonDTO} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 菜单管理
@@ -204,7 +204,7 @@ export interface SwaggerApi{
    */
   delete(url: "/sitemap/{id}", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body?: any} & IDefaultOptions): Promise<null>
   
   /**
    * @tag 菜单管理
@@ -213,7 +213,7 @@ export interface SwaggerApi{
    */
   put(url: "/sitemap/{id}", options: {path: {
     id: number
-  }, query?: {}, header?: {}, body: SitemapDTO, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: SitemapDTO} & IDefaultOptions): Promise<null>
 }
 
 // swagger runtime. generate by swagger2ts

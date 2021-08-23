@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 export interface Order {
@@ -74,32 +74,32 @@ export interface SwaggerApi{
    * @summary Add a new pet to the store
    * @description Add a new pet to the store
    */
-  post(url: "/pet", options: {body: Pet, timeout?: number} & IDefaultOptions): Promise<Pet>
+  post(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
   
   /**
    * @tag pet
    * @summary Update an existing pet
    * @description Update an existing pet by Id
    */
-  put(url: "/pet", options: {body: Pet, timeout?: number} & IDefaultOptions): Promise<Pet>
+  put(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
   
   /**
    * @tag pet
    * @summary Finds Pets by status
    * @description Multiple status values can be provided with comma separated strings
    */
-  get(url: "/pet/findByStatus", options: {path?: {}, query: {
+  get(url: "/pet/findByStatus", options: {query: {
     status?: "available" | "pending" | "sold"
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<Pet>>
+  }, body?: any} & IDefaultOptions): Promise<Array<Pet>>
   
   /**
    * @tag pet
    * @summary Finds Pets by tags
    * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    */
-  get(url: "/pet/findByTags", options: {path?: {}, query: {
+  get(url: "/pet/findByTags", options: {query: {
     tags?: Array<string | undefined>
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<Pet>>
+  }, body?: any} & IDefaultOptions): Promise<Array<Pet>>
   
   /**
    * @tag pet
@@ -108,7 +108,7 @@ export interface SwaggerApi{
    */
   get(url: "/pet/{petId}", options: {path: {
     petId: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Pet>
+  }, body?: any} & IDefaultOptions): Promise<Pet>
   
   /**
    * @tag pet
@@ -119,7 +119,7 @@ export interface SwaggerApi{
   }, query: {
     name?: string
     status?: string
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
   
   /**
    * @tag pet
@@ -127,9 +127,9 @@ export interface SwaggerApi{
    */
   delete(url: "/pet/{petId}", options: {path: {
     petId: number
-  }, query?: {}, header: {
+  }, header: {
     api_key?: string
-  }, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
   
   /**
    * @tag pet
@@ -139,21 +139,21 @@ export interface SwaggerApi{
     petId: number
   }, query: {
     additionalMetadata?: string
-  }, header?: {}, body: File | Blob | undefined, timeout?: number} & IDefaultOptions): Promise<ApiResponse>
+  }, body: File | Blob | undefined} & IDefaultOptions): Promise<ApiResponse>
   
   /**
    * @tag store
    * @summary Returns pet inventories by status
    * @description Returns a map of status codes to quantities
    */
-  get(url: "/store/inventory", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<{}>
+  get(url: "/store/inventory", options: {body?: any} & IDefaultOptions): Promise<{}>
   
   /**
    * @tag store
    * @summary Place an order for a pet
    * @description Place a new order in the store
    */
-  post(url: "/store/order", options: {body: Order, timeout?: number} & IDefaultOptions): Promise<Order>
+  post(url: "/store/order", options: {body: Order} & IDefaultOptions): Promise<Order>
   
   /**
    * @tag store
@@ -162,7 +162,7 @@ export interface SwaggerApi{
    */
   get(url: "/store/order/{orderId}", options: {path: {
     orderId: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Order>
+  }, body?: any} & IDefaultOptions): Promise<Order>
   
   /**
    * @tag store
@@ -171,36 +171,36 @@ export interface SwaggerApi{
    */
   delete(url: "/store/order/{orderId}", options: {path: {
     orderId: number
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
   
   /**
    * @tag user
    * @summary Create user
    * @description This can only be done by the logged in user.
    */
-  post(url: "/user", options: {body: User, timeout?: number} & IDefaultOptions): Promise<User>
+  post(url: "/user", options: {body: User} & IDefaultOptions): Promise<User>
   
   /**
    * @tag user
    * @summary Creates list of users with given input array
    * @description Creates list of users with given input array
    */
-  post(url: "/user/createWithList", options: {body: Array<User>, timeout?: number} & IDefaultOptions): Promise<User>
+  post(url: "/user/createWithList", options: {body: Array<User>} & IDefaultOptions): Promise<User>
   
   /**
    * @tag user
    * @summary Logs user into the system
    */
-  get(url: "/user/login", options: {path?: {}, query: {
+  get(url: "/user/login", options: {query: {
     username?: string
     password?: string
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<string | undefined>
+  }, body?: any} & IDefaultOptions): Promise<string | undefined>
   
   /**
    * @tag user
    * @summary Logs out current logged in user session
    */
-  get(url: "/user/logout", options: {path?: {}, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  get(url: "/user/logout", options: {body?: any} & IDefaultOptions): Promise<null>
   
   /**
    * @tag user
@@ -208,7 +208,7 @@ export interface SwaggerApi{
    */
   get(url: "/user/{username}", options: {path: {
     username: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<User>
+  }, body?: any} & IDefaultOptions): Promise<User>
   
   /**
    * @tag user
@@ -217,7 +217,7 @@ export interface SwaggerApi{
    */
   delete(url: "/user/{username}", options: {path: {
     username: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  }, body?: any} & IDefaultOptions): Promise<unknown>
   
   /**
    * @tag user
@@ -226,7 +226,7 @@ export interface SwaggerApi{
    */
   put(url: "/user/{username}", options: {path: {
     username: string
-  }, query?: {}, header?: {}, body: User, timeout?: number} & IDefaultOptions): Promise<null>
+  }, body: User} & IDefaultOptions): Promise<null>
 }
 
 // swagger runtime. generate by swagger2ts

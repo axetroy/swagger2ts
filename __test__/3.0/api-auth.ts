@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 /**
@@ -45,30 +45,30 @@ export interface SwaggerApi{
    * @tag auth-server-endpoint
    * @summary 文件上传测试
    */
-  post(url: "/other", options: {path?: {}, query: {
+  post(url: "/other", options: {query: {
     name?: string
-  }, header?: {}, body: File | Blob | undefined, timeout?: number} & IDefaultOptions): Promise<ResponseEntity>
+  }, body: File | Blob | undefined} & IDefaultOptions): Promise<ResponseEntity>
   
   /**
    * @tag 应用接入管理
    * @summary 查询
    * @description oauth2.0 应用接入信息查询
    */
-  get(url: "/register/client", options: {path?: {}, query: {
+  get(url: "/register/client", options: {query: {
     page: number
     size: number
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<PageResultVOOfClientVO>
+  }, body?: any} & IDefaultOptions): Promise<PageResultVOOfClientVO>
   
   /**
    * @tag 应用接入管理
    * @summary 新增
    * @description oauth2.0 应用接入提交信息
    */
-  post(url: "/register/client", options: {path?: {}, query: {
+  post(url: "/register/client", options: {query: {
     clientSecret: string
     name: string
     redirectUri: string
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<ResponseEntity>
+  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
   
   /**
    * @tag 应用接入管理
@@ -81,7 +81,7 @@ export interface SwaggerApi{
     clientSecret: string
     name: string
     redirectUri: string
-  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<ResponseEntity>
+  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
   
   /**
    * @tag 应用接入管理
@@ -90,7 +90,7 @@ export interface SwaggerApi{
    */
   delete(url: "/register/client/{id}", options: {path: {
     id: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<ResponseEntity>
+  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
 }
 
 // swagger runtime. generate by swagger2ts

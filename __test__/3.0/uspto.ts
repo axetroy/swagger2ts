@@ -7,7 +7,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */
 
 export interface dataSetList {
@@ -25,7 +25,7 @@ export interface SwaggerApi{
    * @tag metadata
    * @summary List available data sets
    */
-  get(url: "/", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<dataSetList>
+  get(url: "/", options: {body?: any} & IDefaultOptions): Promise<dataSetList>
   
   /**
    * @tag metadata
@@ -35,7 +35,7 @@ export interface SwaggerApi{
   get(url: "/{dataset}/{version}/fields", options: {path: {
     dataset: string
     version: string
-  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<string | undefined>
+  }, body?: any} & IDefaultOptions): Promise<string | undefined>
   
   /**
    * @tag search
@@ -45,7 +45,7 @@ export interface SwaggerApi{
   post(url: "/{dataset}/{version}/records", options: {path: {
     version: string
     dataset: string
-  }, query?: {}, header?: {}, body: null, timeout?: number} & IDefaultOptions): Promise<Array<{}>>
+  }, body: null} & IDefaultOptions): Promise<Array<{}>>
 }
 
 // swagger runtime. generate by swagger2ts

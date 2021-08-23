@@ -197,7 +197,11 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
           const pathsType = generateParamsArray(paths, 0);
 
-          paramsArray.push(`${action}${pathsType === "{}" ? "?" : ""}: ${pathsType}`);
+          const isEmpty = pathsType === "{}"
+
+          if (!isEmpty) {
+            paramsArray.push(`${action}: ${pathsType}`);
+          }
         });
       }
 
@@ -224,8 +228,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       const options: string[] = [
         ...paramsArray,
-        paramsBody ? `body: ${paramsBody}` : "body?: any",
-        "timeout?: number",
+        paramsBody ? `body: ${paramsBody}` : "body?: any"
         //
       ].filter((v) => v);
 
@@ -279,7 +282,7 @@ interface MapString {
   [key: string]: string | undefined
 }
 
-type IDefaultOptions = Omit<RequestInit, "body" | "method">
+type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
 /* default type by generation end */`;
 }
 
