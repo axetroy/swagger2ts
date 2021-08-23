@@ -879,4 +879,4 @@ class Http {
   }
 }
 
-export const defaultApi = new Http("http://localhost", "")
+export const defaultApi = new Http("http://localhost", "") as unknown as SwaggerApi

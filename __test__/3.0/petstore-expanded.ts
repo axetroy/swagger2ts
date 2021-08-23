@@ -209,4 +209,4 @@ class Http {
   }
 }
 
-export const api = new Http("http://localhost", "/api")
+export const api = new Http("http://localhost", "/api") as unknown as SwaggerApi

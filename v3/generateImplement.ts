@@ -68,14 +68,14 @@ export function generateImplement(content: string, sdkContent: string, domain: s
       const apiName = path2apiName(server);
       const serverURL = getServerUrl(server);
 
-      const api = `export const ${apiName} = new Http("${domain}", "${serverURL.pathname}")`;
+      const api = `export const ${apiName} = new Http("${domain}", "${serverURL.pathname}") as unknown as SwaggerApi`;
 
       apis.push(api);
     }
 
     sdkContent += "\n" + apis.join("\n");
   } else {
-    sdkContent += `\nexport const defaultApi = new Http("${domain}", "")`;
+    sdkContent += `\nexport const defaultApi = new Http("${domain}", "") as unknown as SwaggerApi`;
   }
 
   return sdkContent;

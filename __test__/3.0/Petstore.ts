@@ -304,4 +304,4 @@ class Http {
   }
 }
 
-export const apiV3 = new Http("http://localhost", "/api/v3")
+export const apiV3 = new Http("http://localhost", "/api/v3") as unknown as SwaggerApi

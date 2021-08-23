@@ -206,4 +206,4 @@ class Http {
   }
 }
 
-export const dsApi = new Http("http://localhost", "/ds-api")
+export const dsApi = new Http("http://localhost", "/ds-api") as unknown as SwaggerApi
