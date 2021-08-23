@@ -17,11 +17,12 @@ export interface SwaggerApi{
   post(url: "/streams", options: {path?: MapString, query: {callbackUrl: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
 }
 
-interface RuntimeHeaderMapString {
+// swagger runtime. generate by swagger2ts
+interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface RuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions {
   path?: {
     [key: string]: string;
   };
@@ -36,26 +37,30 @@ interface RuntimeRequestCommonOptions {
   timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
 }
 
-interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
+interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
   method: string;
 }
 
 interface IRequestInterceptor {
-  use(fn: RequestInterceptorFn): InterceptorCancelFn;
+  use(fn: IRequestInterceptorFn): IInterceptorCancelFn;
 }
 
 interface IResponseInterceptor {
-  use(success: ResponseInterceptorSuccessFn<any>, error: ResponseInterceptorErrorFn<any>): InterceptorCancelFn;
+  use(success: IResponseInterceptorSuccessFn<any>, error: IResponseInterceptorErrorFn<any>): IInterceptorCancelFn;
 }
 
-type InterceptorCancelFn = () => void;
-type RequestInterceptorFn = (config: RuntimeRequestOptions) => Promise<RuntimeRequestOptions>;
-type ResponseInterceptorSuccessFn<T> = (config: RuntimeRequestOptions, response: Response, data: T) => Promise<T>;
-type ResponseInterceptorErrorFn<T> = (config: RuntimeRequestOptions, Error: Error) => Promise<T>;
+type IInterceptorCancelFn = () => void;
+type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntimeRequestOptions>;
+type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
+type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: Error) => Promise<T>;
+
+interface IRuntimeForm {
+  [key: string]: any;
+}
 class RequestInterceptor implements IRequestInterceptor {
-  private _fns: RequestInterceptorFn[] = [];
-  public use(fn: RequestInterceptorFn) {
+  private _fns: IRequestInterceptorFn[] = [];
+  public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
 
     return () => {
@@ -67,7 +72,7 @@ class RequestInterceptor implements IRequestInterceptor {
     };
   }
 
-  async run(config: RuntimeRequestOptions): Promise<RuntimeRequestOptions> {
+  async run(config: IRuntimeRequestOptions): Promise<IRuntimeRequestOptions> {
     for (const fn of this._fns) {
       config = await fn(config);
     }
@@ -77,9 +82,9 @@ class RequestInterceptor implements IRequestInterceptor {
 }
 
 class ResponseInterceptor implements IResponseInterceptor {
-  private _fnsSuccess: ResponseInterceptorSuccessFn<any>[] = [];
-  private _fnsError: ResponseInterceptorErrorFn<any>[] = [];
-  public use(successFn: ResponseInterceptorSuccessFn<any>, errorFn: ResponseInterceptorErrorFn<any>) {
+  private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
+  private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
+  public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
     this._fnsSuccess.push(successFn);
     this._fnsError.push(errorFn);
 
@@ -97,7 +102,7 @@ class ResponseInterceptor implements IResponseInterceptor {
     };
   }
 
-  async runSuccess<T>(config: RuntimeRequestOptions, response: Response, data: T): Promise<T> {
+  async runSuccess<T>(config: IRuntimeRequestOptions, response: Response, data: T): Promise<T> {
     for (const fn of this._fnsSuccess) {
       data = await fn(config, response, data);
     }
@@ -105,7 +110,7 @@ class ResponseInterceptor implements IResponseInterceptor {
     return data;
   }
 
-  async runError<T>(config: RuntimeRequestOptions, err: Error): Promise<T> {
+  async runError<T>(config: IRuntimeRequestOptions, err: Error): Promise<T> {
     let res = null;
 
     for (const fn of this._fnsError) {
@@ -114,10 +119,6 @@ class ResponseInterceptor implements IResponseInterceptor {
 
     return res;
   }
-}
-
-interface IRuntimeForm {
-  [key: string]: any;
 }
 
 export class RuntimeForm<T extends IRuntimeForm> {
@@ -137,7 +138,7 @@ export class RuntimeForm<T extends IRuntimeForm> {
 
 const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
-class Runtime {
+export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
 
   private _requestInterceptor = new RequestInterceptor();
@@ -162,7 +163,7 @@ class Runtime {
         common: {
           "Content-Type": "application/json",
         },
-      } as { common: RuntimeHeaderMapString; [method: string]: RuntimeHeaderMapString },
+      } as { common: IRuntimeHeaderMapString; [method: string]: IRuntimeHeaderMapString },
     };
   }
 
@@ -198,7 +199,7 @@ class Runtime {
     this._prefix = prefix;
   }
 
-  public async request<T>(config: RuntimeRequestOptions): Promise<T> {
+  public async request<T>(config: IRuntimeRequestOptions): Promise<T> {
     const url = new URL(this.baseURL + config.url);
     config.header = config.header || {};
 
@@ -282,7 +283,7 @@ class Runtime {
     }
   }
 
-  public get<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public get<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "GET",
       url,
@@ -290,7 +291,7 @@ class Runtime {
     });
   }
 
-  public post<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public post<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "POST",
       url,
@@ -298,7 +299,7 @@ class Runtime {
     });
   }
 
-  public put<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public put<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PUT",
       url,
@@ -306,7 +307,7 @@ class Runtime {
     });
   }
 
-  public delete<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public delete<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "DELETE",
       url,
@@ -314,7 +315,7 @@ class Runtime {
     });
   }
 
-  public head<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public head<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "HEAD",
       url,
@@ -322,7 +323,7 @@ class Runtime {
     });
   }
 
-  public options<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public options<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "OPTIONS",
       url,
@@ -330,7 +331,7 @@ class Runtime {
     });
   }
 
-  public patch<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public patch<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PATCH",
       url,
@@ -338,7 +339,7 @@ class Runtime {
     });
   }
 
-  public trace<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
+  public trace<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "TRACE",
       url,
