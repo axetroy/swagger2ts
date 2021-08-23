@@ -15,28 +15,28 @@ export interface SwaggerApi{
    * @tag metadata
    * @summary List available data sets
    */
-  get(url: "/", options: {path?: MapString, query?: MapString, header?: MapString, body?: any}): Promise<dataSetList>
+  get(url: "/", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<dataSetList>
   /**
    * @tag metadata
    * @summary Provides the general information about the API and the list of fields that can be used to query the dataset.
    * @description This GET API returns the list of all the searchable field names that are in the oa_citations. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the syntax options shown below.
    */
-  get(url: "/{dataset}/{version}/fields", options: {path: {dataset: string | undefined, version: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<string | undefined>
+  get(url: "/{dataset}/{version}/fields", options: {path: {dataset: string | undefined, version: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<string | undefined>
   /**
    * @tag search
    * @summary Provides search capability for the data set with the given search criteria.
    * @description This API is based on Solr/Lucene Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
    */
-  post(url: "/{dataset}/{version}/records", options: {path: {version: string | undefined, dataset: string | undefined}, query?: MapString, header?: MapString, body: {criteria: string | undefined, start: number | undefined, rows: number | undefined}}): Promise<Array<{}>>
+  post(url: "/{dataset}/{version}/records", options: {path: {version: string | undefined, dataset: string | undefined}, query?: MapString, header?: MapString, body: {criteria: string | undefined, start: number | undefined, rows: number | undefined}, signal?: AbortSignal}): Promise<Array<{}>>
   /* default methods */
-  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
+  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
 }
 
 interface RequestConfig extends Config {
@@ -59,6 +59,7 @@ interface Config {
     [key: string]: string;
   };
   body?: any;
+  signal?: AbortSignal;
 }
 
 class Http {
@@ -116,10 +117,11 @@ class Http {
       }
     }
 
-    return fetch(url, {
+    return fetch(url.toString(), {
       method: config.method,
       body: config.body,
       headers: headers,
+      signal: config.signal,
     }).then((resp) => {
       const contentType = resp.headers.get("content-type");
       switch (contentType) {

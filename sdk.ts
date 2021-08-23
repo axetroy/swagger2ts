@@ -18,6 +18,7 @@ interface Config {
     [key: string]: string;
   };
   body?: any;
+  signal?: AbortSignal;
 }
 
 class Http {
@@ -75,10 +76,11 @@ class Http {
       }
     }
 
-    return fetch(url, {
+    return fetch(url.toString(), {
       method: config.method,
       body: config.body,
       headers: headers,
+      signal: config.signal,
     }).then((resp) => {
       const contentType = resp.headers.get("content-type");
       switch (contentType) {

@@ -178,6 +178,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
         generateParamsStr("query", paramsQuery) === "query?: {}" ? "query?: MapString" : generateParamsStr("query", paramsQuery),
         generateParamsStr("header", paramsHeader) === "header?: {}" ? "header?: MapString" : generateParamsStr("header", paramsHeader),
         paramsBody ? `body: ${paramsBody}` : "body?: any",
+        "signal?: AbortSignal"
       ].filter((v) => v);
 
       const docs: string[] = [];
@@ -215,7 +216,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
   urlBlock.push("/* default methods */");
 
   for (const method of methods) {
-    const rule = `${method}<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>`;
+    const rule = `${method}<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>`;
     urlBlock.push(rule);
   }
 

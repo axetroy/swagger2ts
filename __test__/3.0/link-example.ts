@@ -13,21 +13,21 @@ export interface repository {slug: string | undefined, owner: user}
 export interface pullrequest {id: number | undefined, title: string | undefined, repository: repository, author: user}
 
 export interface SwaggerApi{
-  get(url: "/2.0/users/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<user>
-  get(url: "/2.0/repositories/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<Array<repository>>
-  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {username: string | undefined, slug: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<repository>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string | undefined, slug: string | undefined}, query: {state: "open" | "merged" | "declined" | undefined}, header?: MapString, body?: any}): Promise<Array<pullrequest>>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<pullrequest>
-  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<unknown>
+  get(url: "/2.0/users/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<user>
+  get(url: "/2.0/repositories/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<repository>>
+  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {username: string | undefined, slug: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<repository>
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string | undefined, slug: string | undefined}, query: {state: "open" | "merged" | "declined" | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<pullrequest>>
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<pullrequest>
+  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
   /* default methods */
-  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
+  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
 }
 
 interface RequestConfig extends Config {
@@ -50,6 +50,7 @@ interface Config {
     [key: string]: string;
   };
   body?: any;
+  signal?: AbortSignal;
 }
 
 class Http {
@@ -107,10 +108,11 @@ class Http {
       }
     }
 
-    return fetch(url, {
+    return fetch(url.toString(), {
       method: config.method,
       body: config.body,
       headers: headers,
+      signal: config.signal,
     }).then((resp) => {
       const contentType = resp.headers.get("content-type");
       switch (contentType) {

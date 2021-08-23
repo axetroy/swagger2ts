@@ -23,118 +23,118 @@ export interface SwaggerApi{
    * @summary Add a new pet to the store
    * @description Add a new pet to the store
    */
-  post(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet}): Promise<Pet>
+  post(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
   /**
    * @tag pet
    * @summary Update an existing pet
    * @description Update an existing pet by Id
    */
-  put(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet}): Promise<Pet>
+  put(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
   /**
    * @tag pet
    * @summary Finds Pets by status
    * @description Multiple status values can be provided with comma separated strings
    */
-  get(url: "/pet/findByStatus", options: {path?: MapString, query: {status: "available" | "pending" | "sold" | undefined}, header?: MapString, body?: any}): Promise<Array<Pet>>
+  get(url: "/pet/findByStatus", options: {path?: MapString, query: {status: "available" | "pending" | "sold" | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
   /**
    * @tag pet
    * @summary Finds Pets by tags
    * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    */
-  get(url: "/pet/findByTags", options: {path?: MapString, query: {tags: Array<string | undefined>}, header?: MapString, body?: any}): Promise<Array<Pet>>
+  get(url: "/pet/findByTags", options: {path?: MapString, query: {tags: Array<string | undefined>}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
   /**
    * @tag pet
    * @summary Find pet by ID
    * @description Returns a single pet
    */
-  get(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<Pet>
+  get(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Pet>
   /**
    * @tag pet
    * @summary Updates a pet in the store with form data
    */
-  post(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query: {name: string | undefined, status: string | undefined}, header?: MapString, body?: any}): Promise<unknown>
+  post(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query: {name: string | undefined, status: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
   /**
    * @tag pet
    * @summary Deletes a pet
    */
-  delete(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header: {api_key: string | undefined}, body?: any}): Promise<unknown>
+  delete(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header: {api_key: string | undefined}, body?: any, signal?: AbortSignal}): Promise<unknown>
   /**
    * @tag pet
    * @summary uploads an image
    */
-  post(url: "/pet/{petId}/uploadImage", options: {path: {petId: number | undefined}, query: {additionalMetadata: string | undefined}, header?: MapString, body: File | undefined}): Promise<ApiResponse>
+  post(url: "/pet/{petId}/uploadImage", options: {path: {petId: number | undefined}, query: {additionalMetadata: string | undefined}, header?: MapString, body: File | undefined, signal?: AbortSignal}): Promise<ApiResponse>
   /**
    * @tag store
    * @summary Returns pet inventories by status
    * @description Returns a map of status codes to quantities
    */
-  get(url: "/store/inventory", options: {path?: MapString, query?: MapString, header?: MapString, body?: any}): Promise<{}>
+  get(url: "/store/inventory", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<{}>
   /**
    * @tag store
    * @summary Place an order for a pet
    * @description Place a new order in the store
    */
-  post(url: "/store/order", options: {path?: MapString, query?: MapString, header?: MapString, body: Order}): Promise<Order>
+  post(url: "/store/order", options: {path?: MapString, query?: MapString, header?: MapString, body: Order, signal?: AbortSignal}): Promise<Order>
   /**
    * @tag store
    * @summary Find purchase order by ID
    * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
    */
-  get(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<Order>
+  get(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Order>
   /**
    * @tag store
    * @summary Delete purchase order by ID
    * @description For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
    */
-  delete(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<unknown>
+  delete(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
   /**
    * @tag user
    * @summary Create user
    * @description This can only be done by the logged in user.
    */
-  post(url: "/user", options: {path?: MapString, query?: MapString, header?: MapString, body: User}): Promise<User>
+  post(url: "/user", options: {path?: MapString, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<User>
   /**
    * @tag user
    * @summary Creates list of users with given input array
    * @description Creates list of users with given input array
    */
-  post(url: "/user/createWithList", options: {path?: MapString, query?: MapString, header?: MapString, body: Array<User>}): Promise<User>
+  post(url: "/user/createWithList", options: {path?: MapString, query?: MapString, header?: MapString, body: Array<User>, signal?: AbortSignal}): Promise<User>
   /**
    * @tag user
    * @summary Logs user into the system
    */
-  get(url: "/user/login", options: {path?: MapString, query: {username: string | undefined, password: string | undefined}, header?: MapString, body?: any}): Promise<string | undefined>
+  get(url: "/user/login", options: {path?: MapString, query: {username: string | undefined, password: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<string | undefined>
   /**
    * @tag user
    * @summary Logs out current logged in user session
    */
-  get(url: "/user/logout", options: {path?: MapString, query?: MapString, header?: MapString, body?: any}): Promise<null>
+  get(url: "/user/logout", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag user
    * @summary Get user by user name
    */
-  get(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<User>
+  get(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<User>
   /**
    * @tag user
    * @summary Delete user
    * @description This can only be done by the logged in user.
    */
-  delete(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any}): Promise<unknown>
+  delete(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
   /**
    * @tag user
    * @summary Update user
    * @description This can only be done by the logged in user.
    */
-  put(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body: User}): Promise<null>
+  put(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<null>
   /* default methods */
-  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
-  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any }): Promise<T>
+  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
+  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
 }
 
 interface RequestConfig extends Config {
@@ -157,6 +157,7 @@ interface Config {
     [key: string]: string;
   };
   body?: any;
+  signal?: AbortSignal;
 }
 
 class Http {
@@ -214,10 +215,11 @@ class Http {
       }
     }
 
-    return fetch(url, {
+    return fetch(url.toString(), {
       method: config.method,
       body: config.body,
       headers: headers,
+      signal: config.signal,
     }).then((resp) => {
       const contentType = resp.headers.get("content-type");
       switch (contentType) {
