@@ -9,8 +9,8 @@ interface MapString {
 /* default type by generation end */
 
 export type Pet = any
-export interface NewPet {name: string | undefined, tag: string | undefined}
-export interface Error {code: number | undefined, message: string | undefined}
+export interface NewPet {name?: string, tag?: string}
+export interface Error {code?: number, message?: string}
 
 export interface SwaggerApi{
   /**

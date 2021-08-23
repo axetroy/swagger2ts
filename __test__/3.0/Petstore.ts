@@ -8,14 +8,14 @@ interface MapString {
 }
 /* default type by generation end */
 
-export interface Order {id: number | undefined, petId: number | undefined, quantity: number | undefined, shipDate: string | undefined, status: "placed" | "approved" | "delivered" | undefined, complete: boolean | undefined}
-export interface Customer {id: number | undefined, username: string | undefined, address: Array<Address>}
-export interface Address {street: string | undefined, city: string | undefined, state: string | undefined, zip: string | undefined}
-export interface Category {id: number | undefined, name: string | undefined}
-export interface User {id: number | undefined, username: string | undefined, firstName: string | undefined, lastName: string | undefined, email: string | undefined, password: string | undefined, phone: string | undefined, userStatus: number | undefined}
-export interface Tag {id: number | undefined, name: string | undefined}
-export interface Pet {id: number | undefined, name: string | undefined, category: Category, photoUrls: Array<string | undefined>, tags: Array<Tag>, status: "available" | "pending" | "sold" | undefined}
-export interface ApiResponse {code: number | undefined, type: string | undefined, message: string | undefined}
+export interface Order {id?: number, petId?: number, quantity?: number, shipDate?: string, status?: "placed" | "approved" | "delivered", complete?: boolean}
+export interface Customer {id?: number, username?: string, address?: Array<Address>}
+export interface Address {street?: string, city?: string, state?: string, zip?: string}
+export interface Category {id?: number, name?: string}
+export interface User {id?: number, username?: string, firstName?: string, lastName?: string, email?: string, password?: string, phone?: string, userStatus?: number}
+export interface Tag {id?: number, name?: string}
+export interface Pet {id?: number, name?: string, category?: Category, photoUrls?: Array<string | undefined>, tags?: Array<Tag>, status?: "available" | "pending" | "sold"}
+export interface ApiResponse {code?: number, type?: string, message?: string}
 
 export interface SwaggerApi{
   /**

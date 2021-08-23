@@ -11,7 +11,10 @@ import {
   ISwagger,
 } from "./types.ts";
 
-function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number): string {
+/**
+ * generate document for rate
+ */
+function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number, parent?: ISchemaObject | IReferenceObject): string {
   // "#/components/schemas/Address"
   if (isReferenceObject(schema)) {
     const schemaPropertyPaths = schema.$ref.replace(/^#\/components/, "").split("/");
@@ -26,7 +29,9 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
     function generateLiteral(type: string) {
       let stringResult = `${name ? `type ${name} = ` : ""}${type}`;
       if (!isRequired) {
-        stringResult += " | undefined";
+        if (!parent) {
+          stringResult += " | undefined";
+        }
       }
 
       if (isNullable) {
@@ -61,7 +66,7 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
-          outputObject.push(`${prop}: ${generateSchema("", propSchema, indent)}`);
+          outputObject.push(`${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, schema)}`);
         }
         return `${name ? `interface ${name} ` : ""}{${outputObject.join(", ")}}`;
       default:

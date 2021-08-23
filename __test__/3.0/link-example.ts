@@ -8,9 +8,9 @@ interface MapString {
 }
 /* default type by generation end */
 
-export interface user {username: string | undefined, uuid: string | undefined}
-export interface repository {slug: string | undefined, owner: user}
-export interface pullrequest {id: number | undefined, title: string | undefined, repository: repository, author: user}
+export interface user {username?: string, uuid?: string}
+export interface repository {slug?: string, owner?: user}
+export interface pullrequest {id?: number, title?: string, repository?: repository, author?: user}
 
 export interface SwaggerApi{
   get(url: "/2.0/users/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<user>
