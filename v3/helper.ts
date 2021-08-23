@@ -19,8 +19,9 @@ export function generateMultipleLineComments(comments: string[]): string {
 }
 
 export function indentTxt(txt: string, indent: number): string {
-  return txt
-    .split("\n")
-    .map((line) => " ".repeat(indent) + line)
-    .join("\n");
+  const arrayOfLines = txt.match(/[^\r\n]+/g);
+
+  if (!arrayOfLines) return txt
+
+  return arrayOfLines.map((line) => " ".repeat(indent) + line).join("\n");
 }
