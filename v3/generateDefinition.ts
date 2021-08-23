@@ -225,11 +225,6 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
   urlBlock.push("/* default methods */");
 
-  for (const method of methods) {
-    const rule = `${method}<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>`;
-    urlBlock.push(rule);
-  }
-
   return `export interface SwaggerApi{
 ${indentTxt(urlBlock.join("\n"), indent)}
 }`;

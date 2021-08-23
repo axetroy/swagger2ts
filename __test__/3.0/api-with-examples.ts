@@ -20,26 +20,13 @@ export interface SwaggerApi{
    */
   get(url: "/v2", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /* default methods */
-  get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  delete<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  put<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  head<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  options<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  trace<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
-  patch<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
 }
 
-interface RequestConfig extends Config {
-  url: string;
-  method: string;
-}
-
-interface HeaderMapString {
+interface RuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface Config {
+interface RuntimeRequestCommonOptions {
   path?: {
     [key: string]: string;
   };
@@ -53,8 +40,66 @@ interface Config {
   signal?: AbortSignal;
 }
 
-class Http {
-  public readonly defaultHeaders: { default: HeaderMapString; [method: string]: HeaderMapString } = {
+interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
+  url: string;
+  method: string;
+}
+
+interface IRequestInterceptor {
+  use(fn: RequestInterceptorFn): void;
+}
+
+interface IResponseInterceptor {
+  use(success: ResponseInterceptorSuccessFn<any>, error: ResponseInterceptorErrorFn<any>): void;
+}
+
+type RequestInterceptorFn = (config: RuntimeRequestOptions) => Promise<RuntimeRequestOptions>;
+type ResponseInterceptorSuccessFn<T> = (config: RuntimeRequestOptions, response: T) => Promise<T>;
+type ResponseInterceptorErrorFn<T> = (config: RuntimeRequestOptions, Error: Error) => Promise<T>;
+class RequestInterceptor implements IRequestInterceptor {
+  #fns: RequestInterceptorFn[] = [];
+  public use(fn: RequestInterceptorFn) {
+    this.#fns.push(fn);
+  }
+
+  async run(config: RuntimeRequestOptions): Promise<RuntimeRequestOptions> {
+    for (const fn of this.#fns) {
+      config = await fn(config);
+    }
+
+    return config;
+  }
+}
+
+class ResponseInterceptor implements IResponseInterceptor {
+  #fnsSuccess: ResponseInterceptorSuccessFn<any>[] = [];
+  #fnsError: ResponseInterceptorErrorFn<any>[] = [];
+  public use(successFn: ResponseInterceptorSuccessFn<any>, errorFn: ResponseInterceptorErrorFn<any>) {
+    this.#fnsSuccess.push(successFn);
+    this.#fnsError.push(errorFn);
+  }
+
+  async runSuccess<T>(config: RuntimeRequestOptions, res: T): Promise<T> {
+    for (const fn of this.#fnsSuccess) {
+      res = await fn(config, res);
+    }
+
+    return res;
+  }
+
+  async runError<T>(config: RuntimeRequestOptions, err: Error): Promise<T> {
+    let res = null;
+
+    for (const fn of this.#fnsError) {
+      res = await fn(config, err);
+    }
+
+    return res;
+  }
+}
+
+class Runtime {
+  public readonly defaultHeaders: { default: RuntimeHeaderMapString; [method: string]: RuntimeHeaderMapString } = {
     default: {
       "Content-Type": "application/json",
     },
@@ -62,7 +107,22 @@ class Http {
 
   constructor(private _domain: string, private _prefix: string) {}
 
-  private get baseURL(): string {
+  #requestInterceptor = new RequestInterceptor();
+  #responseInterceptor = new ResponseInterceptor();
+
+  public get interceptors() {
+    const self = this;
+    return {
+      get request() {
+        return self.#requestInterceptor as IRequestInterceptor;
+      },
+      get response() {
+        return self.#responseInterceptor as IResponseInterceptor;
+      },
+    };
+  }
+
+  get #baseURL(): string {
     const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
 
     return baseUrl.replace(/\/$/, "");
@@ -76,25 +136,18 @@ class Http {
     this._prefix = prefix;
   }
 
-  public request<T>(config: RequestConfig): Promise<T> {
-    const url = new URL(this.baseURL + config.url);
-    const headers = new Headers();
+  public async request<T>(config: RuntimeRequestOptions): Promise<T> {
+    const url = new URL(this.#baseURL + config.url);
+    config.header = config.header || {};
 
     // set default header
     for (const key in this.defaultHeaders.default) {
-      headers.set(key, this.defaultHeaders.default[key]);
+      config.header[key] = this.defaultHeaders.default[key];
     }
 
     // set header for this method
     for (const key in this.defaultHeaders[config.method] || {}) {
-      headers.set(key, this.defaultHeaders.default[key]);
-    }
-
-    // set header for this config
-    if (config.header) {
-      for (const key in config.header) {
-        headers.set(key, config.header[key]);
-      }
+      config.header[key] = this.defaultHeaders[config.method][key];
     }
 
     if (config.query) {
@@ -112,27 +165,49 @@ class Http {
       }
     }
 
-    return fetch(url.toString(), {
-      method: config.method,
-      body: config.body,
-      headers: headers,
-      signal: config.signal,
-    }).then((resp) => {
-      const contentType = resp.headers.get("content-type");
-      switch (contentType) {
-        case "application/json":
-          return resp.json();
-        case "application/x-www-form-urlencoded":
-          return resp.formData();
-        case "application/octet-stream":
-          return resp.blob();
-        default:
-          return resp.text();
+    config = await this.#requestInterceptor.run(config);
+
+    const headers = new Headers();
+
+    if (config.header) {
+      for (const key in config.header) {
+        headers.set(key, config.header[key]);
       }
-    });
+    }
+
+    try {
+      return await fetch(url.toString(), {
+        method: config.method,
+        body: config.body,
+        headers: headers,
+        signal: config.signal,
+      })
+        .then((resp) => {
+          const contentType = resp.headers.get("content-type");
+          switch (contentType) {
+            case "application/json":
+              return resp.json();
+            case "application/x-www-form-urlencoded":
+              return resp.formData();
+            case "application/octet-stream":
+              return resp.blob();
+            default:
+              return resp.text();
+          }
+        })
+        .then((data) => {
+          return this.#responseInterceptor.runSuccess(config, data);
+        });
+    } catch (err) {
+      if (err instanceof Error) {
+        return await this.#responseInterceptor.runError(config, err);
+      } else {
+        return Promise.reject(err);
+      }
+    }
   }
 
-  public get<T>(url: string, config: Config): Promise<T> {
+  public get<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "GET",
       url,
@@ -140,7 +215,7 @@ class Http {
     });
   }
 
-  public post<T>(url: string, config: Config): Promise<T> {
+  public post<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "POST",
       url,
@@ -148,7 +223,7 @@ class Http {
     });
   }
 
-  public put<T>(url: string, config: Config): Promise<T> {
+  public put<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PUT",
       url,
@@ -156,7 +231,7 @@ class Http {
     });
   }
 
-  public delete<T>(url: string, config: Config): Promise<T> {
+  public delete<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "DELETE",
       url,
@@ -164,7 +239,7 @@ class Http {
     });
   }
 
-  public head<T>(url: string, config: Config): Promise<T> {
+  public head<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "HEAD",
       url,
@@ -172,7 +247,7 @@ class Http {
     });
   }
 
-  public options<T>(url: string, config: Config): Promise<T> {
+  public options<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "OPTIONS",
       url,
@@ -180,7 +255,7 @@ class Http {
     });
   }
 
-  public patch<T>(url: string, config: Config): Promise<T> {
+  public patch<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PATCH",
       url,
@@ -188,7 +263,7 @@ class Http {
     });
   }
 
-  public trace<T>(url: string, config: Config): Promise<T> {
+  public trace<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "TRACE",
       url,
@@ -197,4 +272,4 @@ class Http {
   }
 }
 
-export const defaultApi = new Http("http://localhost", "") as unknown as SwaggerApi
+export const defaultApi = new Runtime("http://localhost", "") as unknown as (SwaggerApi & Runtime)
