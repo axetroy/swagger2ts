@@ -6,19 +6,59 @@ interface MapAny {
 interface MapString {
   [key: string]: string | undefined
 }
+
+type IDefaultOptions = Omit<RequestInit, "body" | "method">
 /* default type by generation end */
 
-export interface user {username?: string, uuid?: string}
-export interface repository {slug?: string, owner?: user}
-export interface pullrequest {id?: number, title?: string, repository?: repository, author?: user}
+export interface user {
+  username?: string
+  uuid?: string
+}
+
+export interface repository {
+  slug?: string
+  owner?: user
+}
+
+export interface pullrequest {
+  id?: number
+  title?: string
+  repository?: repository
+  author?: user
+}
 
 export interface SwaggerApi{
-  get(url: "/2.0/users/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<user>
-  get(url: "/2.0/repositories/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<repository>>
-  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {username: string, slug: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<repository>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string, slug: string}, query: {state?: "open" | "merged" | "declined"}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<pullrequest>>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string, slug: string, pid: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<pullrequest>
-  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string, slug: string, pid: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  get(url: "/2.0/users/{username}", options: {path: {
+    username: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<user>
+  
+  get(url: "/2.0/repositories/{username}", options: {path: {
+    username: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<repository>>
+  
+  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {
+    username: string
+    slug: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<repository>
+  
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {
+    username: string
+    slug: string
+  }, query: {
+    state?: "open" | "merged" | "declined"
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<pullrequest>>
+  
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {
+    username: string
+    slug: string
+    pid: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<pullrequest>
+  
+  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {
+    username: string
+    slug: string
+    pid: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -26,7 +66,7 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface IRuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -36,14 +76,13 @@ interface IRuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any; // the request body
-  signal?: AbortSignal; // abort signal to cancel request
-  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
+  body?: any;
+  timeout?: number;
 }
 
 interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
-  method: string;
+  method: Uppercase<string>;
 }
 
 interface IRequestInterceptor {
@@ -139,8 +178,6 @@ export class RuntimeForm<T extends IRuntimeForm> {
     return form;
   }
 }
-
-const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
 export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
@@ -258,7 +295,18 @@ export class Runtime {
           method: config.method,
           body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
+
+          // common options
+          cache: config.cache,
+          credentials: config.credentials,
+          integrity: config.integrity,
+          keepalive: config.keepalive,
+          mode: config.mode,
+          redirect: config.redirect,
+          referrer: config.referrer,
+          referrerPolicy: config.referrerPolicy,
           signal: config.signal,
+          window: config.window,
         });
 
       return (timeout ? this._timeout<Response>(timeout, exec()) : exec())

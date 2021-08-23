@@ -6,28 +6,46 @@ interface MapAny {
 interface MapString {
   [key: string]: string | undefined
 }
+
+type IDefaultOptions = Omit<RequestInit, "body" | "method">
 /* default type by generation end */
 
-export interface dataSetList {total?: number, apis?: Array<{apiKey?: string /* To be used as a dataset parameter value */, apiVersionNumber?: string /* To be used as a version parameter value */, apiUrl?: string /* The URL describing the dataset's fields */, apiDocumentationUrl?: string /* A URL to the API console for each API */}>}
+export interface dataSetList {
+  total?: number
+  apis?: Array<{
+  apiKey?: string /* To be used as a dataset parameter value */
+  apiVersionNumber?: string /* To be used as a version parameter value */
+  apiUrl?: string /* The URL describing the dataset's fields */
+  apiDocumentationUrl?: string /* A URL to the API console for each API */
+}>
+}
 
 export interface SwaggerApi{
   /**
    * @tag metadata
    * @summary List available data sets
    */
-  get(url: "/", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<dataSetList>
+  get(url: "/", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<dataSetList>
+  
   /**
    * @tag metadata
    * @summary Provides the general information about the API and the list of fields that can be used to query the dataset.
    * @description This GET API returns the list of all the searchable field names that are in the oa_citations. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the syntax options shown below.
    */
-  get(url: "/{dataset}/{version}/fields", options: {path: {dataset: string, version: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<string | undefined>
+  get(url: "/{dataset}/{version}/fields", options: {path: {
+    dataset: string
+    version: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<string | undefined>
+  
   /**
    * @tag search
    * @summary Provides search capability for the data set with the given search criteria.
    * @description This API is based on Solr/Lucene Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
    */
-  post(url: "/{dataset}/{version}/records", options: {path: {version: string, dataset: string}, query?: MapString, header?: MapString, body: null, signal?: AbortSignal}): Promise<Array<{}>>
+  post(url: "/{dataset}/{version}/records", options: {path: {
+    version: string
+    dataset: string
+  }, query?: {}, header?: {}, body: null, timeout?: number} & IDefaultOptions): Promise<Array<{}>>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -35,7 +53,7 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface IRuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -45,14 +63,13 @@ interface IRuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any; // the request body
-  signal?: AbortSignal; // abort signal to cancel request
-  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
+  body?: any;
+  timeout?: number;
 }
 
 interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
-  method: string;
+  method: Uppercase<string>;
 }
 
 interface IRequestInterceptor {
@@ -148,8 +165,6 @@ export class RuntimeForm<T extends IRuntimeForm> {
     return form;
   }
 }
-
-const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
 export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
@@ -267,7 +282,18 @@ export class Runtime {
           method: config.method,
           body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
+
+          // common options
+          cache: config.cache,
+          credentials: config.credentials,
+          integrity: config.integrity,
+          keepalive: config.keepalive,
+          mode: config.mode,
+          redirect: config.redirect,
+          referrer: config.referrer,
+          referrerPolicy: config.referrerPolicy,
           signal: config.signal,
+          window: config.window,
         });
 
       return (timeout ? this._timeout<Response>(timeout, exec()) : exec())

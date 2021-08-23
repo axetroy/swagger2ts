@@ -18,7 +18,9 @@ function generateParamsComment(schema: ISchemaObject) {
 /**
  * generate document for rate
  */
-function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number, optionalThenUndefined?: boolean): string {
+function generateSchema(name: string, schema: ISchemaObject | IReferenceObject | undefined, indent: number, optionalThenUndefined?: boolean): string {
+  if (!schema) return "any";
+
   // "#/components/schemas/Address"
   if (isReferenceObject(schema)) {
     const schemaPropertyPaths = schema.$ref.replace(/^#\/components/, "").split("/");
@@ -72,21 +74,43 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
-          outputObject.push(`${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, true)}`);
+          outputObject.push(`${" ".repeat(indent + 2)}${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, true)}`);
         }
-        return `${name ? `interface ${name} ` : generateParamsComment(schema)}{${outputObject.join(", ")}}`;
+        if (!outputObject.length) return name ? `interface ${name} {}` : "{}";
+        return [name ? `interface ${name} {` : "{", ...outputObject, "}"].filter((v) => v.trim()).join("\n");
       default:
         return `${name ? `type ${name} = ` : ""}any${generateParamsComment(schema)}`;
     }
   }
 }
 
+function generateParamsArray(params: Array<IParameterObject | IReferenceObject>, indent: number): string {
+  const output: string[] = [];
+  for (const param of params) {
+    if (isReferenceObject(param)) {
+      throw new Error("not support ref param");
+    }
+
+    output.push(`${param.name}${!param.required ? "?" : ""}: ${generateSchema("", param.schema, 0, true)}`);
+  }
+
+  if (!output.length) return "{}";
+
+  return ["{", ...output.map((v) => " ".repeat(indent + 2) + v), "}"].join("\n");
+}
+
 function generateParams(param: IParameterObject | IReferenceObject, indent: number): string {
   if (isReferenceObject(param)) {
-    // TODO
-    return "";
+    const schemaPropertyPaths = param.$ref.replace(/^#\/components/, "").split("/");
+
+    const refSchemaName = schemaPropertyPaths[schemaPropertyPaths.length - 1];
+
+    return refSchemaName;
+  } else if (!param.schema) {
+    return "any";
+  } else {
+    return generateSchema("", param.schema, indent, true);
   }
-  return generateSchema("", param.schema!, indent, true);
 }
 
 function generateComponent(swagger: ISwagger, indent: number): string {
@@ -124,7 +148,7 @@ function generateComponent(swagger: ISwagger, indent: number): string {
     }
   }
 
-  return output.join("\n");
+  return output.join("\n\n");
 }
 
 function generateBody(body: IRequestBodyObject | IResponseObject, indent: number) {
@@ -159,41 +183,22 @@ function generateApi(swagger: ISwagger, indent: number): string {
       const operation = pathItemObject[method] as IOperationObject;
       if (!operation) continue;
 
-      const paramsPath: { [key: string]: string } = {};
-      const paramsHeader: { [key: string]: string } = {};
-      const paramsQuery: { [key: string]: string } = {};
+      const paramsArray: string[] = [];
+
       let paramsBody: string = "";
       let responseBody: string = "";
 
       if (operation.parameters) {
-        for (const param of operation.parameters) {
-          if (!isReferenceObject(param)) {
-            const isRequired = param.required === true;
-            const suffix = !isRequired ? "?" : "";
-            switch (param.in) {
-              case "path":
-                paramsPath[param.name + suffix] = generateParams(param, indent);
-                break;
-              case "header":
-                paramsHeader[param.name + suffix] = generateParams(param, indent);
-                break;
-              case "query":
-                paramsQuery[param.name + suffix] = generateParams(param, indent);
-                break;
-            }
-          } else {
-            console.warn("ignore params");
-          }
-        }
-      }
+        const inTypes = ["path", "query", "header"];
+        const parameters = operation.parameters;
 
-      function generateParamsStr(name: string, obj: { [key: string]: string }) {
-        const keys = Object.keys(obj);
-        if (!keys.length) return `${name}?: {}`;
+        inTypes.forEach((action) => {
+          const paths = parameters.filter((v) => !isReferenceObject(v)).filter((v) => (v as IParameterObject).in === action);
 
-        const str = keys.map((key) => `${key}: ${obj[key]}`).join(", ");
+          const pathsType = generateParamsArray(paths, 0);
 
-        return `${name}: {${str}}`;
+          paramsArray.push(`${action}${pathsType === "{}" ? "?" : ""}: ${pathsType}`);
+        });
       }
 
       if (operation.requestBody) {
@@ -217,12 +222,11 @@ function generateApi(swagger: ISwagger, indent: number): string {
         }
       }
 
-      const routerParams: string[] = [
-        generateParamsStr("path", paramsPath) === "path?: {}" ? "path?: MapString" : generateParamsStr("path", paramsPath),
-        generateParamsStr("query", paramsQuery) === "query?: {}" ? "query?: MapString" : generateParamsStr("query", paramsQuery),
-        generateParamsStr("header", paramsHeader) === "header?: {}" ? "header?: MapString" : generateParamsStr("header", paramsHeader),
+      const options: string[] = [
+        ...paramsArray,
         paramsBody ? `body: ${paramsBody}` : "body?: any",
-        "signal?: AbortSignal",
+        "timeout?: number",
+        //
       ].filter((v) => v);
 
       const docs: string[] = [];
@@ -251,7 +255,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       const rows = [
         generateMultipleLineComments(docs),
-        `${method}(url: "${url}", options: {${routerParams.join(", ")}}): Promise<${responseBody}>`,
+        `${method}(url: "${url}", options: {${options.join(", ")}} & IDefaultOptions): Promise<${responseBody}>`,
         //
       ]
         .filter((v) => v)
@@ -262,7 +266,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
   }
 
   return `export interface SwaggerApi{
-${indentTxt(urlBlock.join("\n"), indent)}
+${indentTxt(urlBlock.join("\n\n"), indent)}
 }`;
 }
 
@@ -274,6 +278,8 @@ interface MapAny {
 interface MapString {
   [key: string]: string | undefined
 }
+
+type IDefaultOptions = Omit<RequestInit, "body" | "method">
 /* default type by generation end */`;
 }
 
@@ -283,7 +289,7 @@ export function generateDefinition(content: string): string {
 
   const swagger = JSON.parse(content) as ISwagger;
 
-  const output: string[] = [generateDefaultTypes(), generateComponent(swagger, indent), generateApi(swagger, indent)];
+  const output: string[] = [generateDefaultTypes(), generateComponent(swagger, 0), generateApi(swagger, indent)];
 
   return output.join("\n\n");
 }

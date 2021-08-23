@@ -6,854 +6,2102 @@ interface MapAny {
 interface MapString {
   [key: string]: string | undefined
 }
+
+type IDefaultOptions = Omit<RequestInit, "body" | "method">
 /* default type by generation end */
 
 export type AccountType = 0 | 1 | 2 | -1 | undefined
+
 export type PlatformEnum = 0 | 1 | 2 | 3 | 4 | 5 | undefined
+
 /**
  * @description 登录模型
  */
-export interface LoginModel {clientId?: string | null /* 客户端 */, userName?: string | null /* 用户名 */, password?: string | null /* 密码 */, accountType?: AccountType, platform?: PlatformEnum, pictureId?: string | null /* 验证码图片编号 */, code?: string | null /* 验证码 */}
+export interface LoginModel {
+  clientId?: string | null /* 客户端 */
+  userName?: string | null /* 用户名 */
+  password?: string | null /* 密码 */
+  accountType?: AccountType
+  platform?: PlatformEnum
+  pictureId?: string | null /* 验证码图片编号 */
+  code?: string | null /* 验证码 */
+}
+
 /**
  * @description 用户登录返回信息Dto
  */
-export interface LoginUserOutput {userId?: string | null /* 用户Id */, userName?: string | null /* 用户名称 */, realName?: string | null /* 姓名（昵称） */}
-export interface LoginUserOutputAuthResut {error?: string | null, access_token?: string | null, expires_in?: number, token_type?: string | null, refresh_token?: string | null, error_description?: string | null, user?: LoginUserOutput}
-export interface LoginUserOutputAuthResutIResultModel {data?: LoginUserOutputAuthResut}
-export interface SpaLoginModel {userName?: string | null, password?: string | null, returnUrl?: string | null}
-export interface IResultModel {successful?: boolean, code?: number, msg?: string | null}
+export interface LoginUserOutput {
+  userId?: string | null /* 用户Id */
+  userName?: string | null /* 用户名称 */
+  realName?: string | null /* 姓名（昵称） */
+}
+
+export interface LoginUserOutputAuthResut {
+  error?: string | null
+  access_token?: string | null
+  expires_in?: number
+  token_type?: string | null
+  refresh_token?: string | null
+  error_description?: string | null
+  user?: LoginUserOutput
+}
+
+export interface LoginUserOutputAuthResutIResultModel {
+  data?: LoginUserOutputAuthResut
+}
+
+export interface SpaLoginModel {
+  userName?: string | null
+  password?: string | null
+  returnUrl?: string | null
+}
+
+export interface IResultModel {
+  successful?: boolean
+  code?: number
+  msg?: string | null
+}
+
 /**
  * @description 客户端枚举
  */
 export type ClientEnums = 1 | 2 | undefined /* 客户端枚举 */
-export interface MenuOutput {id?: string | null /* 标识 */, name?: string | null /* 名称 */, link?: string | null /* 链接、路由 */, remarks?: string | null /* 备注 */, show?: boolean /* 是否显示 */, sort?: number /* 排序码 */, target?: number /* 打开方式 */, type?: number /* 菜单类型 */, client?: ClientEnums, icon?: string | null /* 图标 */, children?: Array<MenuOutput> /* 子菜单 */, component?: string | null /* 组件 */, routeParams?: string | null /* 路由参数 */}
+
+export interface MenuOutput {
+  id?: string | null /* 标识 */
+  name?: string | null /* 名称 */
+  link?: string | null /* 链接、路由 */
+  remarks?: string | null /* 备注 */
+  show?: boolean /* 是否显示 */
+  sort?: number /* 排序码 */
+  target?: number /* 打开方式 */
+  type?: number /* 菜单类型 */
+  client?: ClientEnums
+  icon?: string | null /* 图标 */
+  children?: Array<MenuOutput> /* 子菜单 */
+  component?: string | null /* 组件 */
+  routeParams?: string | null /* 路由参数 */
+}
+
 /**
  * @description 角色Dto
  */
-export interface RolesDto {id?: string | null /* 标识 */, roleName?: string | null /* 角色名/组名 */, code?: string | null /* 编码 */, remarks?: string | null /* 备注 */, sortId?: number /* 排序值 */}
+export interface RolesDto {
+  id?: string | null /* 标识 */
+  roleName?: string | null /* 角色名/组名 */
+  code?: string | null /* 编码 */
+  remarks?: string | null /* 备注 */
+  sortId?: number /* 排序值 */
+}
+
 /**
  * @description 用户信息
  */
-export interface InitAppUserInfoOutput {id?: string | null /* 主键 */, userId?: string | null /* 用户编号 */, userName?: string | null /* 用户名 */, email?: string | null /* 邮箱 */, phoneNumber?: string | null /* 手机号 */, headPortraitCode?: string | null /* 头像url */, realName?: string | null /* 真实姓名 */, sex?: number /* 性别(1.男 2.女) */, status?: number /* 状态 */, contact?: string | null /* 办公电话 */, rolesId?: Array<string | undefined> /* 角色id */, rolesName?: Array<string | undefined> /* 角色id */, userType?: number /* 用户类型 */, idCard?: string | null /* 身份证号 */, roles?: Array<RolesDto> /* 角色 */, enterpriseName?: string | null /* 机构名称 */}
+export interface InitAppUserInfoOutput {
+  id?: string | null /* 主键 */
+  userId?: string | null /* 用户编号 */
+  userName?: string | null /* 用户名 */
+  email?: string | null /* 邮箱 */
+  phoneNumber?: string | null /* 手机号 */
+  headPortraitCode?: string | null /* 头像url */
+  realName?: string | null /* 真实姓名 */
+  sex?: number /* 性别(1.男 2.女) */
+  status?: number /* 状态 */
+  contact?: string | null /* 办公电话 */
+  rolesId?: Array<string | undefined> /* 角色id */
+  rolesName?: Array<string | undefined> /* 角色id */
+  userType?: number /* 用户类型 */
+  idCard?: string | null /* 身份证号 */
+  roles?: Array<RolesDto> /* 角色 */
+  enterpriseName?: string | null /* 机构名称 */
+}
+
 /**
  * @description 初始化客户端返回Dto
  */
-export interface InitAppOutput {menus?: Array<MenuOutput> /* 菜单 */, buttons?: Array<string | undefined> /* 按钮权限点 */, userInfo?: InitAppUserInfoOutput}
-export interface InitAppOutputIResultModel {data?: InitAppOutput}
+export interface InitAppOutput {
+  menus?: Array<MenuOutput> /* 菜单 */
+  buttons?: Array<string | undefined> /* 按钮权限点 */
+  userInfo?: InitAppUserInfoOutput
+}
+
+export interface InitAppOutputIResultModel {
+  data?: InitAppOutput
+}
+
 /**
  * @description APP版本Dto
  */
-export interface AppVersionDto {id?: string | null /* Id */, appId?: string | null /* app_id */, describe?: string | null /* 更新描述 */, fileCode?: string | null /* 文件编码 */, showTips?: boolean /* 是否显示更新提示 */, version?: string | null /* 版本号 */, type?: number /* 类型（安卓/IOS） */, creationTime?: string /* 版本更新时间（前端无需赋值） */}
-export interface AppVersionDtoPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<AppVersionDto>}
-export interface AppVersionDtoPageListIResultModel {data?: AppVersionDtoPageList}
+export interface AppVersionDto {
+  id?: string | null /* Id */
+  appId?: string | null /* app_id */
+  describe?: string | null /* 更新描述 */
+  fileCode?: string | null /* 文件编码 */
+  showTips?: boolean /* 是否显示更新提示 */
+  version?: string | null /* 版本号 */
+  type?: number /* 类型（安卓/IOS） */
+  creationTime?: string /* 版本更新时间（前端无需赋值） */
+}
+
+export interface AppVersionDtoPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<AppVersionDto>
+}
+
+export interface AppVersionDtoPageListIResultModel {
+  data?: AppVersionDtoPageList
+}
+
 /**
  * @description AreaListOutput
  */
-export interface AreaListOutput {id?: string | null /* 编号 */, name?: string | null /* 名称 */, code?: string | null /* 编码 */, parentId?: string | null /* 父级编号 */, pinYin?: string | null /* 拼音简码 */, level?: number /* 级数 */, type?: boolean /* 启用 */}
-export interface AreaListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<AreaListOutput>}
-export interface AreaListOutputPageListIResultModel {data?: AreaListOutputPageList}
+export interface AreaListOutput {
+  id?: string | null /* 编号 */
+  name?: string | null /* 名称 */
+  code?: string | null /* 编码 */
+  parentId?: string | null /* 父级编号 */
+  pinYin?: string | null /* 拼音简码 */
+  level?: number /* 级数 */
+  type?: boolean /* 启用 */
+}
+
+export interface AreaListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<AreaListOutput>
+}
+
+export interface AreaListOutputPageListIResultModel {
+  data?: AreaListOutputPageList
+}
+
 /**
  * @description 区域Dto
  */
-export interface AreaDto {id?: string | null /* 编号 */, code?: string | null /* 区域编码 */, name?: string | null /* 区域名称 */, enabled?: boolean /* 是否启用 */, sortId?: number | null /* 排序号 */, pinYin?: string | null /* 拼音简码 */, fullPinYin?: string | null /* 拼音 */, isLeaf?: boolean /* 是否叶子节点 */, level?: number /* 级数 */, parentId?: string | null /* 父编号 */, path?: string | null /* 路径 */, type?: boolean /* 是否启用 */}
-export interface RemoveModel {id?: string | null, ids?: string | null}
-export interface StringTreeOptionResultModel {label?: string | null, value?: string | null, disabled?: boolean, isLeaf?: boolean, level?: number | null, data?: any, id?: string | null, pid?: string | null, children?: Array<StringTreeOptionResultModel>, sortId?: number}
-export interface TreeOptionResultModel {label?: string | null, value?: string | null, disabled?: boolean, isLeaf?: boolean, level?: number | null, data?: any, id?: string | null, pid?: string | null, children?: Array<StringTreeOptionResultModel>, sortId?: number}
-export interface TreeOptionResultModelListIResultModel {data?: Array<TreeOptionResultModel>}
-export interface StringOptionResultModel {label?: string | null, value?: string | null, disabled?: boolean, data?: any, sortId?: number}
-export interface StringOptionResultModelListIResultModel {data?: Array<StringOptionResultModel>}
-export interface AuditListOutput {id?: string | null, route?: string | null, routeSummary?: string | null, url?: string | null, method?: string | null, statusCode?: number, remoteIP?: string | null, userId?: string | null, userName?: string | null, creationTime?: string}
-export interface AuditListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<AuditListOutput>}
-export interface AuditListOutputPageListIResultModel {data?: AuditListOutputPageList}
+export interface AreaDto {
+  id?: string | null /* 编号 */
+  code?: string | null /* 区域编码 */
+  name?: string | null /* 区域名称 */
+  enabled?: boolean /* 是否启用 */
+  sortId?: number | null /* 排序号 */
+  pinYin?: string | null /* 拼音简码 */
+  fullPinYin?: string | null /* 拼音 */
+  isLeaf?: boolean /* 是否叶子节点 */
+  level?: number /* 级数 */
+  parentId?: string | null /* 父编号 */
+  path?: string | null /* 路径 */
+  type?: boolean /* 是否启用 */
+}
+
+export interface RemoveModel {
+  id?: string | null
+  ids?: string | null
+}
+
+export interface StringTreeOptionResultModel {
+  label?: string | null
+  value?: string | null
+  disabled?: boolean
+  isLeaf?: boolean
+  level?: number | null
+  data?: any
+  id?: string | null
+  pid?: string | null
+  children?: Array<StringTreeOptionResultModel>
+  sortId?: number
+}
+
+export interface TreeOptionResultModel {
+  label?: string | null
+  value?: string | null
+  disabled?: boolean
+  isLeaf?: boolean
+  level?: number | null
+  data?: any
+  id?: string | null
+  pid?: string | null
+  children?: Array<StringTreeOptionResultModel>
+  sortId?: number
+}
+
+export interface TreeOptionResultModelListIResultModel {
+  data?: Array<TreeOptionResultModel>
+}
+
+export interface StringOptionResultModel {
+  label?: string | null
+  value?: string | null
+  disabled?: boolean
+  data?: any
+  sortId?: number
+}
+
+export interface StringOptionResultModelListIResultModel {
+  data?: Array<StringOptionResultModel>
+}
+
+export interface AuditListOutput {
+  id?: string | null
+  route?: string | null
+  routeSummary?: string | null
+  url?: string | null
+  method?: string | null
+  statusCode?: number
+  remoteIP?: string | null
+  userId?: string | null
+  userName?: string | null
+  creationTime?: string
+}
+
+export interface AuditListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<AuditListOutput>
+}
+
+export interface AuditListOutputPageListIResultModel {
+  data?: AuditListOutputPageList
+}
+
 /**
  * @description 数据字典Dto
  */
-export interface DictionaryDto {id?: string | null /* 标识 */, extend?: string | null /* 扩展 */, name?: string | null /* 名称 */, parentId?: string | null /* 父级id */, remark?: string | null /* 备注 */, sortId?: number | null /* 排序 */, typeId?: string | null /* 数据字典类型 */, value?: string | null /* 枚举值 */, isEnable?: boolean /* 启用 */}
+export interface DictionaryDto {
+  id?: string | null /* 标识 */
+  extend?: string | null /* 扩展 */
+  name?: string | null /* 名称 */
+  parentId?: string | null /* 父级id */
+  remark?: string | null /* 备注 */
+  sortId?: number | null /* 排序 */
+  typeId?: string | null /* 数据字典类型 */
+  value?: string | null /* 枚举值 */
+  isEnable?: boolean /* 启用 */
+}
+
 /**
  * @description dictionary_type（数据字典类型）
  */
-export interface DictionaryType {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, code?: string | null /* 唯一编码 */, name?: string | null /* 名称 */, dictionarys?: Array<Dictionary>}
+export interface DictionaryType {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  code?: string | null /* 唯一编码 */
+  name?: string | null /* 名称 */
+  dictionarys?: Array<Dictionary>
+}
+
 /**
  * @description dictionary（数据字典）
  */
-export interface Dictionary {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, typeId?: string | null /* 数据字典类型 */, isEnable?: boolean /* 启用 */, parentId?: string | null /* 父级Id */, extend?: string | null /* 扩展 */, name?: string | null /* 名称 */, remark?: string | null /* 备注 */, sortId?: number | null /* 排序 */, value?: string | null /* 枚举值 */, pDictionary?: Dictionary, dictionaryType?: DictionaryType, dictionarys?: Array<Dictionary>}
-export interface DictionaryIResultModel {data?: Dictionary}
-export interface DictionaryDtoPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<DictionaryDto>}
-export interface DictionaryDtoPageListIResultModel {data?: DictionaryDtoPageList}
-export interface StringRemoveModel {id?: string | null, ids?: string | null}
-export interface DictionaryListIResultModel {data?: Array<Dictionary>}
-export interface StringTreeOptionResultModelDto {label?: string | null, value?: string | null, disabled?: boolean, isLeaf?: boolean, level?: number | null, data?: any, id?: string | null, pid?: string | null, children?: Array<StringTreeOptionResultModelDto> /* 重写隐藏父类Children */, sortId?: number, extend?: string | null /* 扩展 */}
-export interface StringTreeOptionResultModelDtoListIResultModel {data?: Array<StringTreeOptionResultModelDto>}
+export interface Dictionary {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  typeId?: string | null /* 数据字典类型 */
+  isEnable?: boolean /* 启用 */
+  parentId?: string | null /* 父级Id */
+  extend?: string | null /* 扩展 */
+  name?: string | null /* 名称 */
+  remark?: string | null /* 备注 */
+  sortId?: number | null /* 排序 */
+  value?: string | null /* 枚举值 */
+  pDictionary?: Dictionary
+  dictionaryType?: DictionaryType
+  dictionarys?: Array<Dictionary>
+}
+
+export interface DictionaryIResultModel {
+  data?: Dictionary
+}
+
+export interface DictionaryDtoPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<DictionaryDto>
+}
+
+export interface DictionaryDtoPageListIResultModel {
+  data?: DictionaryDtoPageList
+}
+
+export interface StringRemoveModel {
+  id?: string | null
+  ids?: string | null
+}
+
+export interface DictionaryListIResultModel {
+  data?: Array<Dictionary>
+}
+
+export interface StringTreeOptionResultModelDto {
+  label?: string | null
+  value?: string | null
+  disabled?: boolean
+  isLeaf?: boolean
+  level?: number | null
+  data?: any
+  id?: string | null
+  pid?: string | null
+  children?: Array<StringTreeOptionResultModelDto> /* 重写隐藏父类Children */
+  sortId?: number
+  extend?: string | null /* 扩展 */
+}
+
+export interface StringTreeOptionResultModelDtoListIResultModel {
+  data?: Array<StringTreeOptionResultModelDto>
+}
+
 /**
  * @description 数据字典类型Dto
  */
-export interface DictionaryTypeDto {id?: string | null /* 标识 */, code?: string | null /* 唯一编码 */, name?: string | null /* 名称 */}
-export interface DictionaryTypeIResultModel {data?: DictionaryType}
-export interface DictionaryTypeDtoPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<DictionaryTypeDto>}
-export interface DictionaryTypeDtoPageListIResultModel {data?: DictionaryTypeDtoPageList}
+export interface DictionaryTypeDto {
+  id?: string | null /* 标识 */
+  code?: string | null /* 唯一编码 */
+  name?: string | null /* 名称 */
+}
+
+export interface DictionaryTypeIResultModel {
+  data?: DictionaryType
+}
+
+export interface DictionaryTypeDtoPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<DictionaryTypeDto>
+}
+
+export interface DictionaryTypeDtoPageListIResultModel {
+  data?: DictionaryTypeDtoPageList
+}
+
 /**
  * @description 企业(enterprise)分页列表输出模型
  */
-export interface EnterpriseListOutput {id?: string | null /* 机构标识 */, areaCode?: string | null /* 行政区代码 */, areaName?: string | null /* 行政区名称 */, code?: string | null /* 机构编码 */, contactNumber?: string | null /* 联系人电话 */, contactPerson?: string | null /* 联系人 */, isEnabled?: boolean /* 是否启用 */, legalRepresentative?: string | null /* 法人代表 */, legalRepresentativeNumber?: string | null /* 法人代表电话 */, level?: number /* 级数 */, name?: string | null /* 机构名称 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文全路径 */, pinYin?: string | null /* 拼音简码 */, simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */, sortId?: number /* 排序号 */, type?: number /* 企业类型(1:企业, 2:个人) */}
-export interface EnterpriseListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<EnterpriseListOutput>}
-export interface EnterpriseListOutputPageListIResultModel {data?: EnterpriseListOutputPageList}
+export interface EnterpriseListOutput {
+  id?: string | null /* 机构标识 */
+  areaCode?: string | null /* 行政区代码 */
+  areaName?: string | null /* 行政区名称 */
+  code?: string | null /* 机构编码 */
+  contactNumber?: string | null /* 联系人电话 */
+  contactPerson?: string | null /* 联系人 */
+  isEnabled?: boolean /* 是否启用 */
+  legalRepresentative?: string | null /* 法人代表 */
+  legalRepresentativeNumber?: string | null /* 法人代表电话 */
+  level?: number /* 级数 */
+  name?: string | null /* 机构名称 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文全路径 */
+  pinYin?: string | null /* 拼音简码 */
+  simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */
+  sortId?: number /* 排序号 */
+  type?: number /* 企业类型(1:企业, 2:个人) */
+}
+
+export interface EnterpriseListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<EnterpriseListOutput>
+}
+
+export interface EnterpriseListOutputPageListIResultModel {
+  data?: EnterpriseListOutputPageList
+}
+
 /**
  * @description 企业(enterprise)输出模型
  */
-export interface EnterpriseOutput {id?: string | null /* 机构标识 */, areaCode?: string | null /* 行政区代码 */, areaName?: string | null /* 行政区名称 */, code?: string | null /* 机构编码 */, contactNumber?: string | null /* 联系人电话 */, contactPerson?: string | null /* 联系人 */, isEnabled?: boolean /* 是否启用 */, legalRepresentative?: string | null /* 法人代表 */, legalRepresentativeNumber?: string | null /* 法人代表电话 */, level?: number /* 级数 */, name?: string | null /* 机构名称 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文全路径 */, pinYin?: string | null /* 拼音简码 */, simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */, sortId?: number /* 排序号 */, type?: number /* 企业类型(1:企业, 2:个人) */}
-export interface EnterpriseOutputIResultModel {data?: EnterpriseOutput}
+export interface EnterpriseOutput {
+  id?: string | null /* 机构标识 */
+  areaCode?: string | null /* 行政区代码 */
+  areaName?: string | null /* 行政区名称 */
+  code?: string | null /* 机构编码 */
+  contactNumber?: string | null /* 联系人电话 */
+  contactPerson?: string | null /* 联系人 */
+  isEnabled?: boolean /* 是否启用 */
+  legalRepresentative?: string | null /* 法人代表 */
+  legalRepresentativeNumber?: string | null /* 法人代表电话 */
+  level?: number /* 级数 */
+  name?: string | null /* 机构名称 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文全路径 */
+  pinYin?: string | null /* 拼音简码 */
+  simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */
+  sortId?: number /* 排序号 */
+  type?: number /* 企业类型(1:企业, 2:个人) */
+}
+
+export interface EnterpriseOutputIResultModel {
+  data?: EnterpriseOutput
+}
+
 /**
  * @description 企业(enterprise)输入模型
  */
-export interface EnterpriseInput {id?: string | null /* 机构标识 */, parentId?: string | null /* 父级Id */, areaCode?: string | null /* 行政区代码 */, areaName?: string | null /* 行政区名称 */, code?: string | null /* 机构编码 */, contactNumber?: string | null /* 联系人电话 */, contactPerson?: string | null /* 联系人 */, isEnabled?: boolean /* 是否启用 */, legalRepresentative?: string | null /* 法人代表 */, legalRepresentativeNumber?: string | null /* 法人代表电话 */, name?: string | null /* 机构名称 */, sortId?: number /* 排序号 */, type?: number /* 企业类型(1:企业, 2:个人) */}
+export interface EnterpriseInput {
+  id?: string | null /* 机构标识 */
+  parentId?: string | null /* 父级Id */
+  areaCode?: string | null /* 行政区代码 */
+  areaName?: string | null /* 行政区名称 */
+  code?: string | null /* 机构编码 */
+  contactNumber?: string | null /* 联系人电话 */
+  contactPerson?: string | null /* 联系人 */
+  isEnabled?: boolean /* 是否启用 */
+  legalRepresentative?: string | null /* 法人代表 */
+  legalRepresentativeNumber?: string | null /* 法人代表电话 */
+  name?: string | null /* 机构名称 */
+  sortId?: number /* 排序号 */
+  type?: number /* 企业类型(1:企业, 2:个人) */
+}
+
 /**
  * @description 枚举
  */
 export type FaqCategoryOutputType = 0 | 1 | undefined /* 枚举 */
+
 /**
  * @description 帮助分类分页列表输出模型
  */
-export interface FaqCategoryTreeOutput {id?: string | null /* 编号 */, parentId?: string | null /* 父编号 */, icon?: string | null /* 图标 */, name?: string | null /* 名称 */, path?: string | null /* 路径 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */, type?: FaqCategoryOutputType, children?: Array<FaqCategoryTreeOutput> /* 子级 */}
-export interface FaqCategoryTreeOutputListIResultModel {data?: Array<FaqCategoryTreeOutput>}
+export interface FaqCategoryTreeOutput {
+  id?: string | null /* 编号 */
+  parentId?: string | null /* 父编号 */
+  icon?: string | null /* 图标 */
+  name?: string | null /* 名称 */
+  path?: string | null /* 路径 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+  type?: FaqCategoryOutputType
+  children?: Array<FaqCategoryTreeOutput> /* 子级 */
+}
+
+export interface FaqCategoryTreeOutputListIResultModel {
+  data?: Array<FaqCategoryTreeOutput>
+}
+
 /**
  * @description 帮助分类输出模型
  */
-export interface FaqCategoryOutput {id?: string | null /* 编号 */, parentId?: string | null /* 父编号 */, icon?: string | null /* 图标 */, name?: string | null /* 名称 */, path?: string | null /* 路径 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */}
-export interface FaqCategoryOutputIResultModel {data?: FaqCategoryOutput}
+export interface FaqCategoryOutput {
+  id?: string | null /* 编号 */
+  parentId?: string | null /* 父编号 */
+  icon?: string | null /* 图标 */
+  name?: string | null /* 名称 */
+  path?: string | null /* 路径 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+}
+
+export interface FaqCategoryOutputIResultModel {
+  data?: FaqCategoryOutput
+}
+
 /**
  * @description 帮助分类输入模型
  */
-export interface FaqCategoryInput {id?: string | null /* 编号 */, parentId?: string | null /* 父编号 */, icon?: string | null /* 图标 */, name?: string | null /* 名称 */, path?: string | null /* 路径 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */}
+export interface FaqCategoryInput {
+  id?: string | null /* 编号 */
+  parentId?: string | null /* 父编号 */
+  icon?: string | null /* 图标 */
+  name?: string | null /* 名称 */
+  path?: string | null /* 路径 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+}
+
 /**
  * @description 帮助内容分页列表输出模型
  */
-export interface FaqContentListOutput {id?: string | null /* 标识 */, categoryId?: string | null /* 分类标识 */, content?: string | null /* 内容 */, readingQuantity?: number /* 阅读量 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */, title?: string | null /* 标题 */}
-export interface FaqContentListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<FaqContentListOutput>}
-export interface FaqContentListOutputPageListIResultModel {data?: FaqContentListOutputPageList}
+export interface FaqContentListOutput {
+  id?: string | null /* 标识 */
+  categoryId?: string | null /* 分类标识 */
+  content?: string | null /* 内容 */
+  readingQuantity?: number /* 阅读量 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+  title?: string | null /* 标题 */
+}
+
+export interface FaqContentListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<FaqContentListOutput>
+}
+
+export interface FaqContentListOutputPageListIResultModel {
+  data?: FaqContentListOutputPageList
+}
+
 /**
  * @description 帮助内容输出模型
  */
-export interface FaqContentOutput {id?: string | null /* 标识 */, categoryId?: string | null /* 分类标识 */, content?: string | null /* 内容 */, readingQuantity?: number /* 阅读量 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */, title?: string | null /* 标题 */}
-export interface FaqContentOutputIResultModel {data?: FaqContentOutput}
+export interface FaqContentOutput {
+  id?: string | null /* 标识 */
+  categoryId?: string | null /* 分类标识 */
+  content?: string | null /* 内容 */
+  readingQuantity?: number /* 阅读量 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+  title?: string | null /* 标题 */
+}
+
+export interface FaqContentOutputIResultModel {
+  data?: FaqContentOutput
+}
+
 /**
  * @description 帮助内容输入模型
  */
-export interface FaqContentInput {id?: string | null /* 标识 */, categoryId?: string | null /* 分类标识 */, content?: string | null /* 内容 */, readingQuantity?: number /* 阅读量 */, remarks?: string | null /* 备注 */, sort?: number /* 排序码 */, title?: string | null /* 标题 */}
+export interface FaqContentInput {
+  id?: string | null /* 标识 */
+  categoryId?: string | null /* 分类标识 */
+  content?: string | null /* 内容 */
+  readingQuantity?: number /* 阅读量 */
+  remarks?: string | null /* 备注 */
+  sort?: number /* 排序码 */
+  title?: string | null /* 标题 */
+}
+
 /**
  * @description LoginLogListOutput
  */
-export interface LoginLogListOutput {id?: string | null /* Id */, ip?: string | null /* 登录IP */, browser?: string | null /* 浏览器 */, os?: string | null /* 操作系统 */, device?: string | null /* 设备 */, elapsedMilliseconds?: number /* 耗时（毫秒） */, status?: boolean /* 登录状态（true成功，false失败） */, msg?: string | null /* 返回消息 */, userName?: string | null /* 用户名 */, creationTime?: string /* 创建时间 */, realName?: string | null /* 姓名（昵称） */}
-export interface LoginLogListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<LoginLogListOutput>}
-export interface LoginLogListOutputPageListIResultModel {data?: LoginLogListOutputPageList}
-export interface MenuInput {id?: string | null /* 标识 */, parentId?: string | null /* 父级Id */, icon?: string | null /* 图标 */, iconColor?: string | null /* 图表颜色 */, link?: string | null /* 链接、路由 */, moduleCode?: string | null /* 所属模块 */, name?: string | null /* 名称 */, remarks?: string | null /* 备注 */, routeParams?: string | null /* 路由参数 */, show?: boolean /* 是否显示 */, sort?: number /* 排序码 */, target?: number /* 打开方式 */, client?: ClientEnums, component?: string | null /* 组件 */}
+export interface LoginLogListOutput {
+  id?: string | null /* Id */
+  ip?: string | null /* 登录IP */
+  browser?: string | null /* 浏览器 */
+  os?: string | null /* 操作系统 */
+  device?: string | null /* 设备 */
+  elapsedMilliseconds?: number /* 耗时（毫秒） */
+  status?: boolean /* 登录状态（true成功，false失败） */
+  msg?: string | null /* 返回消息 */
+  userName?: string | null /* 用户名 */
+  creationTime?: string /* 创建时间 */
+  realName?: string | null /* 姓名（昵称） */
+}
+
+export interface LoginLogListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<LoginLogListOutput>
+}
+
+export interface LoginLogListOutputPageListIResultModel {
+  data?: LoginLogListOutputPageList
+}
+
+export interface MenuInput {
+  id?: string | null /* 标识 */
+  parentId?: string | null /* 父级Id */
+  icon?: string | null /* 图标 */
+  iconColor?: string | null /* 图表颜色 */
+  link?: string | null /* 链接、路由 */
+  moduleCode?: string | null /* 所属模块 */
+  name?: string | null /* 名称 */
+  remarks?: string | null /* 备注 */
+  routeParams?: string | null /* 路由参数 */
+  show?: boolean /* 是否显示 */
+  sort?: number /* 排序码 */
+  target?: number /* 打开方式 */
+  client?: ClientEnums
+  component?: string | null /* 组件 */
+}
+
 /**
  * @description 接口(api)
  */
-export interface Api {id?: string | null, parentId?: string | null /* 父级id(默认为"") */, code?: string | null /* 权限点 */, enable?: boolean /* 启用(默认为启用) */, httpMethod?: string | null /* 请求方式 */, level?: number /* 层级(从1开始) */, name?: string | null /* 资源名称 */, path?: string | null /* id全路径 */, pathText?: string | null /* 中文全路径 */, remarks?: string | null /* 备注 */}
+export interface Api {
+  id?: string | null
+  parentId?: string | null /* 父级id(默认为"") */
+  code?: string | null /* 权限点 */
+  enable?: boolean /* 启用(默认为启用) */
+  httpMethod?: string | null /* 请求方式 */
+  level?: number /* 层级(从1开始) */
+  name?: string | null /* 资源名称 */
+  path?: string | null /* id全路径 */
+  pathText?: string | null /* 中文全路径 */
+  remarks?: string | null /* 备注 */
+}
+
 /**
  * @description 企业(enterprise)
  */
-export interface Enterprise {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, parentId?: string | null /* 父级编号 */, areaCode?: string | null /* 行政区代码 */, areaName?: string | null /* 行政区名称 */, code?: string | null /* 机构编码 */, contactNumber?: string | null /* 联系人电话 */, contactPerson?: string | null /* 联系人 */, isEnabled?: boolean /* 是否启用 */, legalRepresentative?: string | null /* 法人代表 */, legalRepresentativeNumber?: string | null /* 法人代表电话 */, level?: number /* 级数 */, name?: string | null /* 机构名称 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文全路径 */, pinYin?: string | null /* 拼音简码 */, simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */, sortId?: number /* 排序号 */, type?: number /* 企业类型(1:企业, 2:个人) */, organizations?: Array<Organizations>, userInfos?: Array<UserInfo>}
+export interface Enterprise {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  parentId?: string | null /* 父级编号 */
+  areaCode?: string | null /* 行政区代码 */
+  areaName?: string | null /* 行政区名称 */
+  code?: string | null /* 机构编码 */
+  contactNumber?: string | null /* 联系人电话 */
+  contactPerson?: string | null /* 联系人 */
+  isEnabled?: boolean /* 是否启用 */
+  legalRepresentative?: string | null /* 法人代表 */
+  legalRepresentativeNumber?: string | null /* 法人代表电话 */
+  level?: number /* 级数 */
+  name?: string | null /* 机构名称 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文全路径 */
+  pinYin?: string | null /* 拼音简码 */
+  simpleName?: string | null /* 机构简称(用于上报部级数据展示名称) */
+  sortId?: number /* 排序号 */
+  type?: number /* 企业类型(1:企业, 2:个人) */
+  organizations?: Array<Organizations>
+  userInfos?: Array<UserInfo>
+}
+
 /**
  * @description 组织架构(organizations)
  */
-export interface Organizations {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, enterpriseId?: string | null /* 所属企业id */, leader?: string | null /* 负责人 */, level?: number /* 级别 */, name?: string | null /* 名称 */, parentId?: string | null /* 父级编号 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文路径 */, sortId?: number /* 排序号 */, enterprise?: Enterprise, userInfos?: Array<UserInfo>}
-export interface ClaimsIdentity {authenticationType?: string | null, isAuthenticated?: boolean, actor?: ClaimsIdentity, bootstrapContext?: any, claims?: Array<Claim>, label?: string | null, name?: string | null, nameClaimType?: string | null, roleClaimType?: string | null}
-export interface Claim {issuer?: string | null, originalIssuer?: string | null, properties?: {}, subject?: ClaimsIdentity, type?: string | null, value?: string | null, valueType?: string | null}
+export interface Organizations {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  enterpriseId?: string | null /* 所属企业id */
+  leader?: string | null /* 负责人 */
+  level?: number /* 级别 */
+  name?: string | null /* 名称 */
+  parentId?: string | null /* 父级编号 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文路径 */
+  sortId?: number /* 排序号 */
+  enterprise?: Enterprise
+  userInfos?: Array<UserInfo>
+}
+
+export interface ClaimsIdentity {
+  authenticationType?: string | null
+  isAuthenticated?: boolean
+  actor?: ClaimsIdentity
+  bootstrapContext?: any
+  claims?: Array<Claim>
+  label?: string | null
+  name?: string | null
+  nameClaimType?: string | null
+  roleClaimType?: string | null
+}
+
+export interface Claim {
+  issuer?: string | null
+  originalIssuer?: string | null
+  properties?: {}
+  subject?: ClaimsIdentity
+  type?: string | null
+  value?: string | null
+  valueType?: string | null
+}
+
 /**
  * @description 用户(user_info)
  */
-export interface UserInfo {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, enterpriseId?: string | null /* 企业Id */, orgId?: string | null /* 组织架构Id */, email?: string | null /* 邮箱 */, headPortraitCode?: string | null /* 头像 */, idCard?: string | null /* 身份证 */, passwordHash?: string | null /* 密码加密字符 */, passwordSalt?: string | null /* 密码加密盐值 */, phoneNumber?: string | null /* 手机号 */, realName?: string | null /* 真实姓名 */, sex?: number /* 性别(1.男 2.女) */, status?: number /* 状态 */, type?: number /* 用户类型 */, userName?: string | null /* 用户名 */, organizations?: Organizations, enterprise?: Enterprise, roles?: Array<Roles>, claims?: Array<Claim> /* 用户身份声明 */}
+export interface UserInfo {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  enterpriseId?: string | null /* 企业Id */
+  orgId?: string | null /* 组织架构Id */
+  email?: string | null /* 邮箱 */
+  headPortraitCode?: string | null /* 头像 */
+  idCard?: string | null /* 身份证 */
+  passwordHash?: string | null /* 密码加密字符 */
+  passwordSalt?: string | null /* 密码加密盐值 */
+  phoneNumber?: string | null /* 手机号 */
+  realName?: string | null /* 真实姓名 */
+  sex?: number /* 性别(1.男 2.女) */
+  status?: number /* 状态 */
+  type?: number /* 用户类型 */
+  userName?: string | null /* 用户名 */
+  organizations?: Organizations
+  enterprise?: Enterprise
+  roles?: Array<Roles>
+  claims?: Array<Claim> /* 用户身份声明 */
+}
+
 /**
  * @description 角色(roles)
  */
-export interface Roles {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, code?: string | null /* 枚举编码 */, remarks?: string | null /* 备注 */, roleName?: string | null /* 角色名/组名 */, sortId?: number /* 排序值 */, menus?: Array<Menu> /* Menus导航属性 */, users?: Array<UserInfo> /* Users导航属性 */, buttons?: Array<Button> /* Buttons导航属性 */}
+export interface Roles {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  code?: string | null /* 枚举编码 */
+  remarks?: string | null /* 备注 */
+  roleName?: string | null /* 角色名/组名 */
+  sortId?: number /* 排序值 */
+  menus?: Array<Menu> /* Menus导航属性 */
+  users?: Array<UserInfo> /* Users导航属性 */
+  buttons?: Array<Button> /* Buttons导航属性 */
+}
+
 /**
  * @description 按钮(button)
  */
-export interface Button {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, menuId?: string | null /* 菜单编号 */, code?: string | null /* 权限点 */, enable?: boolean /* 启用(默认为启用) */, name?: string | null /* 资源名称 */, remarks?: string | null /* 备注 */, menu?: Menu, apis?: Array<Api>, roles?: Array<Roles>}
+export interface Button {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  menuId?: string | null /* 菜单编号 */
+  code?: string | null /* 权限点 */
+  enable?: boolean /* 启用(默认为启用) */
+  name?: string | null /* 资源名称 */
+  remarks?: string | null /* 备注 */
+  menu?: Menu
+  apis?: Array<Api>
+  roles?: Array<Roles>
+}
+
 /**
  * @description 菜单(menu)
  */
-export interface Menu {id?: string | null, creationTime?: string, creatorUserId?: string | null, creatorUserName?: string | null, lastModificationTime?: string, lastModifierUserId?: string | null, lastModifierUserName?: string | null, isDeleted?: boolean, client?: ClientEnums, icon?: string | null /* 图标 */, iconColor?: string | null /* 图表颜色 */, parentId?: string | null /* 父级编号 */, level?: number /* 等级 */, link?: string | null /* 链接、路由 */, moduleCode?: string | null /* 所属模块 */, name?: string | null /* 名称 */, path?: string | null /* 路径 */, remarks?: string | null /* 备注 */, routeParams?: string | null /* 路由参数 */, show?: boolean /* 是否显示 */, sort?: number /* 排序码 */, target?: number /* 打开方式（1：当前页面，2：新页面） */, type?: number /* 菜单类型 */, component?: string | null /* 组件 */, buttons?: Array<Button>, menus?: Array<Menu>, roles?: Array<Roles>}
-export interface MenuIResultModel {data?: Menu}
-export interface MenuPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<Menu>}
-export interface MenuPageListIResultModel {data?: MenuPageList}
-export interface MenuOutputListIResultModel {data?: Array<MenuOutput>}
+export interface Menu {
+  id?: string | null
+  creationTime?: string
+  creatorUserId?: string | null
+  creatorUserName?: string | null
+  lastModificationTime?: string
+  lastModifierUserId?: string | null
+  lastModifierUserName?: string | null
+  isDeleted?: boolean
+  client?: ClientEnums
+  icon?: string | null /* 图标 */
+  iconColor?: string | null /* 图表颜色 */
+  parentId?: string | null /* 父级编号 */
+  level?: number /* 等级 */
+  link?: string | null /* 链接、路由 */
+  moduleCode?: string | null /* 所属模块 */
+  name?: string | null /* 名称 */
+  path?: string | null /* 路径 */
+  remarks?: string | null /* 备注 */
+  routeParams?: string | null /* 路由参数 */
+  show?: boolean /* 是否显示 */
+  sort?: number /* 排序码 */
+  target?: number /* 打开方式（1：当前页面，2：新页面） */
+  type?: number /* 菜单类型 */
+  component?: string | null /* 组件 */
+  buttons?: Array<Button>
+  menus?: Array<Menu>
+  roles?: Array<Roles>
+}
+
+export interface MenuIResultModel {
+  data?: Menu
+}
+
+export interface MenuPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<Menu>
+}
+
+export interface MenuPageListIResultModel {
+  data?: MenuPageList
+}
+
+export interface MenuOutputListIResultModel {
+  data?: Array<MenuOutput>
+}
+
 /**
  * @description 按钮信息
  */
-export interface ButtonInfoDto {id?: string | null /* 菜单唯一标识 */, name?: string | null /* 名称 */, code?: string | null /* 权限点 */, remarks?: string | null /* 备注 */, apisId?: Array<string | undefined> /* 按钮关联的接口 */}
+export interface ButtonInfoDto {
+  id?: string | null /* 菜单唯一标识 */
+  name?: string | null /* 名称 */
+  code?: string | null /* 权限点 */
+  remarks?: string | null /* 备注 */
+  apisId?: Array<string | undefined> /* 按钮关联的接口 */
+}
+
 /**
  * @description 按钮配置Dto
  */
-export interface ButtonDto {menuId?: string | null /* 菜单Id */, buttons?: Array<ButtonInfoDto> /* 按钮信息 */}
-export interface ButtonDtoIResultModel {data?: ButtonDto}
+export interface ButtonDto {
+  menuId?: string | null /* 菜单Id */
+  buttons?: Array<ButtonInfoDto> /* 按钮信息 */
+}
+
+export interface ButtonDtoIResultModel {
+  data?: ButtonDto
+}
+
 /**
  * @description 消息发送类型
  */
 export type NotifySendType = 1 | 2 | 3 | undefined /* 消息发送类型 */
+
 /**
  * @description 通知分页返回模型
  */
-export interface NotifyListOutput {id?: string | null /* 通知标识 */, title?: string | null /* 通知标题 */, desc?: string | null /* 通知描述 */, payload?: any /* 通知数据 */, readed?: boolean /* 是否已读(true:已读) */, creationTime?: string /* 通知创建时间 */, type?: string | null /* 通知类型 */, typeLabel?: string | null /* 类型文本 */, sendType?: NotifySendType}
-export interface NotifyListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<NotifyListOutput>}
-export interface NotifyListOutputPageListIResultModel {data?: NotifyListOutputPageList}
-export interface NotifyCountOutput {count?: number /* 未读数量 */}
-export interface NotifyCountOutputIResultModel {data?: NotifyCountOutput}
+export interface NotifyListOutput {
+  id?: string | null /* 通知标识 */
+  title?: string | null /* 通知标题 */
+  desc?: string | null /* 通知描述 */
+  payload?: any /* 通知数据 */
+  readed?: boolean /* 是否已读(true:已读) */
+  creationTime?: string /* 通知创建时间 */
+  type?: string | null /* 通知类型 */
+  typeLabel?: string | null /* 类型文本 */
+  sendType?: NotifySendType
+}
+
+export interface NotifyListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<NotifyListOutput>
+}
+
+export interface NotifyListOutputPageListIResultModel {
+  data?: NotifyListOutputPageList
+}
+
+export interface NotifyCountOutput {
+  count?: number /* 未读数量 */
+}
+
+export interface NotifyCountOutputIResultModel {
+  data?: NotifyCountOutput
+}
+
 /**
  * @description 已读
  */
-export interface NotifyReadedInput {ids?: Array<string | undefined> /* 已读Ids */}
+export interface NotifyReadedInput {
+  ids?: Array<string | undefined> /* 已读Ids */
+}
+
 /**
  * @description 通知添加模型
  */
-export interface StringNotifyInput {sendType?: NotifySendType, type?: string | null /* 类型 */, title?: string | null /* 标题 */, desc?: string | null /* 描述 */, payload?: string | null /* 数据 */, userIds?: Array<string | undefined> /* 用户Id(发送类型为用户时必填) */, roldCodes?: Array<string | undefined> /* 用户角色(发送类型为角色时必填) */}
-export interface OpenApiTreeOutput {id?: string | null /* 标识 */, name?: string | null /* 名称 */, level?: number /* 层级，从1开始 */, children?: Array<OpenApiTreeOutput> /* 子级 */}
-export interface OpenApiTreeOutputListIResultModel {data?: Array<OpenApiTreeOutput>}
+export interface StringNotifyInput {
+  sendType?: NotifySendType
+  type?: string | null /* 类型 */
+  title?: string | null /* 标题 */
+  desc?: string | null /* 描述 */
+  payload?: string | null /* 数据 */
+  userIds?: Array<string | undefined> /* 用户Id(发送类型为用户时必填) */
+  roldCodes?: Array<string | undefined> /* 用户角色(发送类型为角色时必填) */
+}
+
+export interface OpenApiTreeOutput {
+  id?: string | null /* 标识 */
+  name?: string | null /* 名称 */
+  level?: number /* 层级，从1开始 */
+  children?: Array<OpenApiTreeOutput> /* 子级 */
+}
+
+export interface OpenApiTreeOutputListIResultModel {
+  data?: Array<OpenApiTreeOutput>
+}
+
 /**
  * @description 组织架构(organizations)分页列表输出模型
  */
-export interface OrganizationsListOutput {id?: string | null /* 标识 */, enterpriseId?: string | null /* 所属企业id */, leader?: string | null /* 负责人 */, level?: number /* 级别 */, name?: string | null /* 名称 */, parentId?: string | null /* 父级编号 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文路径 */, sortId?: number /* 排序号 */}
-export interface OrganizationsListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<OrganizationsListOutput>}
-export interface OrganizationsListOutputPageListIResultModel {data?: OrganizationsListOutputPageList}
+export interface OrganizationsListOutput {
+  id?: string | null /* 标识 */
+  enterpriseId?: string | null /* 所属企业id */
+  leader?: string | null /* 负责人 */
+  level?: number /* 级别 */
+  name?: string | null /* 名称 */
+  parentId?: string | null /* 父级编号 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文路径 */
+  sortId?: number /* 排序号 */
+}
+
+export interface OrganizationsListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<OrganizationsListOutput>
+}
+
+export interface OrganizationsListOutputPageListIResultModel {
+  data?: OrganizationsListOutputPageList
+}
+
 /**
  * @description 组织架构(organizations)输出模型
  */
-export interface OrganizationsOutput {id?: string | null /* 标识 */, enterpriseId?: string | null /* 所属企业id */, leader?: string | null /* 负责人 */, level?: number /* 级别 */, name?: string | null /* 名称 */, parentId?: string | null /* 父级编号 */, path?: string | null /* 路径 */, pathText?: string | null /* 中文路径 */, sortId?: number /* 排序号 */}
-export interface OrganizationsOutputIResultModel {data?: OrganizationsOutput}
+export interface OrganizationsOutput {
+  id?: string | null /* 标识 */
+  enterpriseId?: string | null /* 所属企业id */
+  leader?: string | null /* 负责人 */
+  level?: number /* 级别 */
+  name?: string | null /* 名称 */
+  parentId?: string | null /* 父级编号 */
+  path?: string | null /* 路径 */
+  pathText?: string | null /* 中文路径 */
+  sortId?: number /* 排序号 */
+}
+
+export interface OrganizationsOutputIResultModel {
+  data?: OrganizationsOutput
+}
+
 /**
  * @description 组织架构(organizations)输入模型
  */
-export interface OrganizationsInput {id?: string | null /* 标识 */, enterpriseId?: string | null /* 所属企业id */, leader?: string | null /* 负责人 */, name?: string | null /* 名称 */, parentId?: string | null /* 父级编号 */, sortId?: number /* 排序号 */}
+export interface OrganizationsInput {
+  id?: string | null /* 标识 */
+  enterpriseId?: string | null /* 所属企业id */
+  leader?: string | null /* 负责人 */
+  name?: string | null /* 名称 */
+  parentId?: string | null /* 父级编号 */
+  sortId?: number /* 排序号 */
+}
+
 /**
  * @description 组织架构级联选项参数
  */
-export interface OrganizationTreeOptionsQuery {path?: string | null /* 路径 */}
+export interface OrganizationTreeOptionsQuery {
+  path?: string | null /* 路径 */
+}
+
 /**
  * @description 角色(roles)分页列表输出模型
  */
-export interface RolesListOutput {id?: string | null /* 角色标识 */, code?: string | null /* 枚举编码 */, remarks?: string | null /* 备注 */, roleName?: string | null /* 角色名/组名 */, sortId?: number /* 排序值 */}
-export interface RolesListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<RolesListOutput>}
-export interface RolesListOutputPageListIResultModel {data?: RolesListOutputPageList}
-export interface RolesDtoIResultModel {data?: RolesDto}
+export interface RolesListOutput {
+  id?: string | null /* 角色标识 */
+  code?: string | null /* 枚举编码 */
+  remarks?: string | null /* 备注 */
+  roleName?: string | null /* 角色名/组名 */
+  sortId?: number /* 排序值 */
+}
+
+export interface RolesListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<RolesListOutput>
+}
+
+export interface RolesListOutputPageListIResultModel {
+  data?: RolesListOutputPageList
+}
+
+export interface RolesDtoIResultModel {
+  data?: RolesDto
+}
+
 /**
  * @description 设置菜单Dto
  */
-export interface SetMenusDto {roleId?: string | null /* 角色Id */, menus?: string | null /* 菜单Ids */}
+export interface SetMenusDto {
+  roleId?: string | null /* 角色Id */
+  menus?: string | null /* 菜单Ids */
+}
+
 /**
  * @description 角色按钮
  */
-export interface RoleButtonDto {id?: string | null /* 标识 */, name?: string | null /* 名称 */, checked?: boolean /* 是否选中 */}
-export interface RoleMenuTreeOutput {id?: string | null /* 标识 */, name?: string | null /* 名称 */, checked?: boolean /* 是否选中 */, children?: Array<RoleMenuTreeOutput> /* 子级 */, buttons?: Array<RoleButtonDto> /* 按钮 */}
-export interface RoleMenuTreeOutputListIResultModel {data?: Array<RoleMenuTreeOutput>}
+export interface RoleButtonDto {
+  id?: string | null /* 标识 */
+  name?: string | null /* 名称 */
+  checked?: boolean /* 是否选中 */
+}
+
+export interface RoleMenuTreeOutput {
+  id?: string | null /* 标识 */
+  name?: string | null /* 名称 */
+  checked?: boolean /* 是否选中 */
+  children?: Array<RoleMenuTreeOutput> /* 子级 */
+  buttons?: Array<RoleButtonDto> /* 按钮 */
+}
+
+export interface RoleMenuTreeOutputListIResultModel {
+  data?: Array<RoleMenuTreeOutput>
+}
+
 /**
  * @description 示例
  */
-export interface SampleOutput {id?: string | null}
-export interface SampleOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<SampleOutput>}
-export interface SampleOutputPageListIResultModel {data?: SampleOutputPageList}
+export interface SampleOutput {
+  id?: string | null
+}
+
+export interface SampleOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<SampleOutput>
+}
+
+export interface SampleOutputPageListIResultModel {
+  data?: SampleOutputPageList
+}
+
 /**
  * @description 用户列表Dto
  */
-export interface UserInfoListOutput {id?: string | null /* 主键 */, userName?: string | null /* 用户名 */, email?: string | null /* 邮箱 */, phoneNumber?: string | null /* 手机号 */, headPortraitCode?: string | null /* 头像url */, realName?: string | null /* 真实姓名 */, sex?: number /* 性别(1.男 2.女) */, status?: number /* 状态 */, contact?: string | null /* 办公电话 */, rolesId?: Array<string | undefined> /* 角色id */, rolesName?: Array<string | undefined> /* 角色id */, orgId?: string | null /* 企业部门主键 */, orgName?: string | null /* 企业部门名称 */, enterpriseId?: string | null /* 企业主键 */, type?: number /* 员工类型 */, userType?: number /* 用户类型 */, idCard?: string | null /* 身份证号 */}
-export interface UserInfoListOutputPageList {page?: number, pageSize?: number, totalCount?: number, order?: string | null, list?: Array<UserInfoListOutput>}
-export interface UserInfoListOutputPageListIResultModel {data?: UserInfoListOutputPageList}
+export interface UserInfoListOutput {
+  id?: string | null /* 主键 */
+  userName?: string | null /* 用户名 */
+  email?: string | null /* 邮箱 */
+  phoneNumber?: string | null /* 手机号 */
+  headPortraitCode?: string | null /* 头像url */
+  realName?: string | null /* 真实姓名 */
+  sex?: number /* 性别(1.男 2.女) */
+  status?: number /* 状态 */
+  contact?: string | null /* 办公电话 */
+  rolesId?: Array<string | undefined> /* 角色id */
+  rolesName?: Array<string | undefined> /* 角色id */
+  orgId?: string | null /* 企业部门主键 */
+  orgName?: string | null /* 企业部门名称 */
+  enterpriseId?: string | null /* 企业主键 */
+  type?: number /* 员工类型 */
+  userType?: number /* 用户类型 */
+  idCard?: string | null /* 身份证号 */
+}
+
+export interface UserInfoListOutputPageList {
+  page?: number
+  pageSize?: number
+  totalCount?: number
+  order?: string | null
+  list?: Array<UserInfoListOutput>
+}
+
+export interface UserInfoListOutputPageListIResultModel {
+  data?: UserInfoListOutputPageList
+}
+
 /**
  * @description 用户信息
  */
-export interface UserInfoOutput {id?: string | null /* 主键 */, userId?: string | null /* 用户编号 */, userName?: string | null /* 用户名 */, email?: string | null /* 邮箱 */, phoneNumber?: string | null /* 手机号 */, headPortraitCode?: string | null /* 头像url */, realName?: string | null /* 真实姓名 */, sex?: number /* 性别(1.男 2.女) */, status?: number /* 状态 */, contact?: string | null /* 办公电话 */, rolesId?: Array<string | undefined> /* 角色id */, rolesName?: Array<string | undefined> /* 角色id */, userType?: number /* 用户类型 */, idCard?: string | null /* 身份证号 */, roles?: Array<RolesDto> /* 角色 */}
-export interface UserInfoOutputIResultModel {data?: UserInfoOutput}
+export interface UserInfoOutput {
+  id?: string | null /* 主键 */
+  userId?: string | null /* 用户编号 */
+  userName?: string | null /* 用户名 */
+  email?: string | null /* 邮箱 */
+  phoneNumber?: string | null /* 手机号 */
+  headPortraitCode?: string | null /* 头像url */
+  realName?: string | null /* 真实姓名 */
+  sex?: number /* 性别(1.男 2.女) */
+  status?: number /* 状态 */
+  contact?: string | null /* 办公电话 */
+  rolesId?: Array<string | undefined> /* 角色id */
+  rolesName?: Array<string | undefined> /* 角色id */
+  userType?: number /* 用户类型 */
+  idCard?: string | null /* 身份证号 */
+  roles?: Array<RolesDto> /* 角色 */
+}
+
+export interface UserInfoOutputIResultModel {
+  data?: UserInfoOutput
+}
+
 /**
  * @description 用户信息
  */
-export interface UserInfoInput {id?: string | null /* 标识 */, enterpriseId?: string | null /* 企业Id(可空) */, orgId?: string | null /* 组织架构Id(可空) */, email?: string | null /* 邮箱 */, headPortraitCode?: string | null /* 头像 */, idCard?: string | null /* 身份证 */, phoneNumber?: string | null /* 手机号 */, realName?: string | null /* 真实姓名 */, sex?: number /* 性别(1.男 2.女) */, status?: number /* 状态 */, type?: number /* 用户类型 */, userName?: string | null /* 用户名 */, password?: string | null /* 密码 */, rolesId?: Array<string | undefined> /* 角色Ids */}
+export interface UserInfoInput {
+  id?: string | null /* 标识 */
+  enterpriseId?: string | null /* 企业Id(可空) */
+  orgId?: string | null /* 组织架构Id(可空) */
+  email?: string | null /* 邮箱 */
+  headPortraitCode?: string | null /* 头像 */
+  idCard?: string | null /* 身份证 */
+  phoneNumber?: string | null /* 手机号 */
+  realName?: string | null /* 真实姓名 */
+  sex?: number /* 性别(1.男 2.女) */
+  status?: number /* 状态 */
+  type?: number /* 用户类型 */
+  userName?: string | null /* 用户名 */
+  password?: string | null /* 密码 */
+  rolesId?: Array<string | undefined> /* 角色Ids */
+}
+
 /**
  * @description 修改密码Dto
  */
-export interface UsersPwdDto {oldPassword?: string | null /* 旧密码 */, password?: string | null /* 新密码 */, rePassword?: string | null /* 确认新密码 */}
+export interface UsersPwdDto {
+  oldPassword?: string | null /* 旧密码 */
+  password?: string | null /* 新密码 */
+  rePassword?: string | null /* 确认新密码 */
+}
+
 /**
  * @description 重置密码Dto
  */
-export interface ResetPwdDto {id?: string | null /* 用户Id */, password?: string | null /* 重置后密码 */, rePassword?: string | null /* 重置后密码确认 */}
+export interface ResetPwdDto {
+  id?: string | null /* 用户Id */
+  password?: string | null /* 重置后密码 */
+  rePassword?: string | null /* 重置后密码确认 */
+}
+
 /**
  * @description UpdateUserBasicInfoInput
  */
-export interface UpdateUserBasicInfoInput {headPortraitCode?: string | null /* 文件Code */, realName?: string | null /* 姓名 */, email?: string | null /* 电子邮件 */}
+export interface UpdateUserBasicInfoInput {
+  headPortraitCode?: string | null /* 文件Code */
+  realName?: string | null /* 姓名 */
+  email?: string | null /* 电子邮件 */
+}
 
 export interface SwaggerApi{
   /**
    * @tag Account
    * @summary 登录(密码模式)
    */
-  post(url: "/api/Account/LoginWithPwd", options: {path?: MapString, query?: MapString, header?: MapString, body: LoginModel, signal?: AbortSignal}): Promise<LoginUserOutputAuthResutIResultModel>
+  post(url: "/api/Account/LoginWithPwd", options: {body: LoginModel, timeout?: number} & IDefaultOptions): Promise<LoginUserOutputAuthResutIResultModel>
+  
   /**
    * @tag Account
    * @summary 登录
    */
-  post(url: "/api/Account/Login", options: {path?: MapString, query?: MapString, header?: MapString, body: SpaLoginModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Account/Login", options: {body: SpaLoginModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Account
    * @summary 退出登录
    */
-  get(url: "/api/Account/Logout", options: {path?: MapString, query: {logoutId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Account/Logout", options: {path?: {}, query: {
+    logoutId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Account
    * @summary Ids登录错误信息
    */
-  get(url: "/api/Account/Error", options: {path?: MapString, query: {errorId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Account/Error", options: {path?: {}, query: {
+    errorId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag App
    * @summary 获取初始化数据
    */
-  get(url: "/api/App/Init", options: {path?: MapString, query: {client?: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<InitAppOutputIResultModel>
+  get(url: "/api/App/Init", options: {path?: {}, query: {
+    client?: ClientEnums
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<InitAppOutputIResultModel>
+  
   /**
    * @tag AppVersion
    * @summary 获取最新版本信息
    */
-  get(url: "/api/AppVersion/GetVersion", options: {path?: MapString, query: {type?: number}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/AppVersion/GetVersion", options: {path?: {}, query: {
+    type?: number
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag AppVersion
    * @summary 增加版本信息
    */
-  post(url: "/api/AppVersion/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: AppVersionDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/AppVersion/Add", options: {body: AppVersionDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag AppVersion
    * @summary 获取版本记录
    */
-  get(url: "/api/AppVersion/GetVersionRecords", options: {path?: MapString, query: {Type?: number /* 类型 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AppVersionDtoPageListIResultModel>
+  get(url: "/api/AppVersion/GetVersionRecords", options: {path?: {}, query: {
+    Type?: number /* 类型 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<AppVersionDtoPageListIResultModel>
+  
   /**
    * @tag Area
    * @summary 分页查询
    */
-  get(url: "/api/Area/Page", options: {path?: MapString, query: {Level?: number | null /* 层级 */, ParentCode?: string | null /* 父级编号 */, ParentId?: string | null /* 父级编号 */, Code?: string | null /* 编码 */, Name?: string | null /* 名称 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AreaListOutputPageListIResultModel>
+  get(url: "/api/Area/Page", options: {path?: {}, query: {
+    Level?: number | null /* 层级 */
+    ParentCode?: string | null /* 父级编号 */
+    ParentId?: string | null /* 父级编号 */
+    Code?: string | null /* 编码 */
+    Name?: string | null /* 名称 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<AreaListOutputPageListIResultModel>
+  
   /**
    * @tag Area
    * @summary 添加区域
    */
-  post(url: "/api/Area/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: AreaDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Area/Add", options: {body: AreaDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Area
    * @summary 编辑区域
    */
-  post(url: "/api/Area/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: AreaDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Area/Edit", options: {body: AreaDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Area
    * @summary 删除区域
    */
-  post(url: "/api/Area/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: RemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Area/Remove", options: {body: RemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Area
    * @summary 级联下拉选项
    */
-  get(url: "/api/Area/TreeOptions", options: {path?: MapString, query: {Level?: number | null /* 层级(>=) 从1开始 */, LevelFull?: number | null /* 层级(全等) 从1开始 */, ParentCode?: string | null /* 父级编号 */, AreaCode?: string | null /* 区域编码(startWith) */, AreaCodeFull?: string | null /* 区域编码(全等) */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Area/TreeOptions", options: {path?: {}, query: {
+    Level?: number | null /* 层级(>=) 从1开始 */
+    LevelFull?: number | null /* 层级(全等) 从1开始 */
+    ParentCode?: string | null /* 父级编号 */
+    AreaCode?: string | null /* 区域编码(startWith) */
+    AreaCodeFull?: string | null /* 区域编码(全等) */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+  
   /**
    * @tag Area
    * @summary 特定级别的下拉选项
    */
-  get(url: "/api/Area/OptionsBySpecificLevel", options: {path?: MapString, query: {Level?: number | null /* 层级(>=) 从1开始 */, LevelFull?: number | null /* 层级(全等) 从1开始 */, ParentCode?: string | null /* 父级编号 */, AreaCode?: string | null /* 区域编码(startWith) */, AreaCodeFull?: string | null /* 区域编码(全等) */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Area/OptionsBySpecificLevel", options: {path?: {}, query: {
+    Level?: number | null /* 层级(>=) 从1开始 */
+    LevelFull?: number | null /* 层级(全等) 从1开始 */
+    ParentCode?: string | null /* 父级编号 */
+    AreaCode?: string | null /* 区域编码(startWith) */
+    AreaCodeFull?: string | null /* 区域编码(全等) */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Area
    * @summary 格式化区域数据
    */
-  post(url: "/api/Area/DataFormat", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Area/DataFormat", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Audit
    * @summary 列表查询
    */
-  get(url: "/api/Audit/Page", options: {path?: MapString, query: {FilterNoUserLog?: boolean, Route?: string | null, RouteSummary?: string | null, Url?: string | null, Method?: string | null, StatusCode?: number | null, RemoteIP?: string | null, UserId?: string | null, UserName?: string | null, CreationTimeStart?: string | null, CreationTimeEnd?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AuditListOutputPageListIResultModel>
+  get(url: "/api/Audit/Page", options: {path?: {}, query: {
+    FilterNoUserLog?: boolean
+    Route?: string | null
+    RouteSummary?: string | null
+    Url?: string | null
+    Method?: string | null
+    StatusCode?: number | null
+    RemoteIP?: string | null
+    UserId?: string | null
+    UserName?: string | null
+    CreationTimeStart?: string | null
+    CreationTimeEnd?: string | null
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<AuditListOutputPageListIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 新增
    */
-  post(url: "/api/Dictionary/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: DictionaryDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Dictionary/Add", options: {body: DictionaryDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 详情
    */
-  get(url: "/api/Dictionary/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryIResultModel>
+  get(url: "/api/Dictionary/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<DictionaryIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 修改
    */
-  post(url: "/api/Dictionary/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: DictionaryDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Dictionary/Edit", options: {body: DictionaryDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 分页查询
    */
-  get(url: "/api/Dictionary/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryDtoPageListIResultModel>
+  get(url: "/api/Dictionary/Page", options: {path?: {}, query: {
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<DictionaryDtoPageListIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 移除
    */
-  post(url: "/api/Dictionary/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Dictionary/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 根据类型树形获取
    */
-  get(url: "/api/Dictionary/ListByType", options: {path?: MapString, query: {typeId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryListIResultModel>
+  get(url: "/api/Dictionary/ListByType", options: {path?: {}, query: {
+    typeId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<DictionaryListIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项
    */
-  get(url: "/api/Dictionary/OptionsByCode", options: {path?: MapString, query: {code?: string | null, isLoadAll?: boolean /* false只加载启用的，true加载所有 */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Dictionary/OptionsByCode", options: {path?: {}, query: {
+    code?: string | null
+    isLoadAll?: boolean /* false只加载启用的，true加载所有 */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项（多个）
    */
-  get(url: "/api/Dictionary/OptionsListByCodes", options: {path?: MapString, query: {codes?: string | null, isLoadAll?: boolean /* false只加载启用的，true加载所有 */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Dictionary/OptionsListByCodes", options: {path?: {}, query: {
+    codes?: string | null
+    isLoadAll?: boolean /* false只加载启用的，true加载所有 */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Dictionary
    * @summary 根据类型树形获取(树形)
    */
-  get(url: "/api/Dictionary/TreeOptionsByCode", options: {path?: MapString, query: {code?: string | null, isLoadAll?: boolean /* false只加载启用的，true加载所有 */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringTreeOptionResultModelDtoListIResultModel>
+  get(url: "/api/Dictionary/TreeOptionsByCode", options: {path?: {}, query: {
+    code?: string | null
+    isLoadAll?: boolean /* false只加载启用的，true加载所有 */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<StringTreeOptionResultModelDtoListIResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 新增
    */
-  post(url: "/api/DictionaryType/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: DictionaryTypeDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/DictionaryType/Add", options: {body: DictionaryTypeDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 详情
    */
-  get(url: "/api/DictionaryType/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeIResultModel>
+  get(url: "/api/DictionaryType/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<DictionaryTypeIResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 修改
    */
-  post(url: "/api/DictionaryType/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: DictionaryTypeDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/DictionaryType/Edit", options: {body: DictionaryTypeDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 分页查询
    */
-  get(url: "/api/DictionaryType/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeDtoPageListIResultModel>
+  get(url: "/api/DictionaryType/Page", options: {path?: {}, query: {
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<DictionaryTypeDtoPageListIResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 移除
    */
-  post(url: "/api/DictionaryType/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/DictionaryType/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag DictionaryType
    * @summary 下拉选择
    */
-  get(url: "/api/DictionaryType/Options", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/DictionaryType/Options", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 分页列表
    */
-  get(url: "/api/Enterprise/Page", options: {path?: MapString, query: {Id?: string | null /* 机构标识 */, Code?: string | null /* 机构编码 */, Level?: number | null /* 级数 */, Name?: string | null /* 机构名称 */, Path?: string | null /* 路径 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseListOutputPageListIResultModel>
+  get(url: "/api/Enterprise/Page", options: {path?: {}, query: {
+    Id?: string | null /* 机构标识 */
+    Code?: string | null /* 机构编码 */
+    Level?: number | null /* 级数 */
+    Name?: string | null /* 机构名称 */
+    Path?: string | null /* 路径 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<EnterpriseListOutputPageListIResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 详情
    */
-  get(url: "/api/Enterprise/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseOutputIResultModel>
+  get(url: "/api/Enterprise/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<EnterpriseOutputIResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 添加
    */
-  post(url: "/api/Enterprise/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: EnterpriseInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Enterprise/Add", options: {body: EnterpriseInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 编辑
    */
-  post(url: "/api/Enterprise/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: EnterpriseInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Enterprise/Edit", options: {body: EnterpriseInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 删除
    */
-  post(url: "/api/Enterprise/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Enterprise/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Enterprise
    * @summary 级联下拉选项
    */
-  get(url: "/api/Enterprise/TreeOptions", options: {path?: MapString, query: {Path?: string | null /* 路径 */}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Enterprise/TreeOptions", options: {path?: {}, query: {
+    Path?: string | null /* 路径 */
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类
    */
-  get(url: "/api/FaqCategory/Tree", options: {path?: MapString, query: {ParentId?: string | null /* 父编号 */, Name?: string | null /* 名称 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryTreeOutputListIResultModel>
+  get(url: "/api/FaqCategory/Tree", options: {path?: {}, query: {
+    ParentId?: string | null /* 父编号 */
+    Name?: string | null /* 名称 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类并附带内容
    */
-  get(url: "/api/FaqCategory/TreeAdnContnet", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryTreeOutputListIResultModel>
+  get(url: "/api/FaqCategory/TreeAdnContnet", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 详情
    */
-  get(url: "/api/FaqCategory/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryOutputIResultModel>
+  get(url: "/api/FaqCategory/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<FaqCategoryOutputIResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 添加
    */
-  post(url: "/api/FaqCategory/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: FaqCategoryInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqCategory/Add", options: {body: FaqCategoryInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 编辑
    */
-  post(url: "/api/FaqCategory/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: FaqCategoryInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqCategory/Edit", options: {body: FaqCategoryInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag FaqCategory
    * @summary 删除
    */
-  post(url: "/api/FaqCategory/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqCategory/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag FaqContent
    * @summary 分页列表
    */
-  get(url: "/api/FaqContent/Page", options: {path?: MapString, query: {CategoryId?: string | null /* 所属分类 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentListOutputPageListIResultModel>
+  get(url: "/api/FaqContent/Page", options: {path?: {}, query: {
+    CategoryId?: string | null /* 所属分类 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<FaqContentListOutputPageListIResultModel>
+  
   /**
    * @tag FaqContent
    * @summary 详情
    */
-  get(url: "/api/FaqContent/Detail", options: {path?: MapString, query: {id?: string | null, isView?: boolean}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentOutputIResultModel>
+  get(url: "/api/FaqContent/Detail", options: {path?: {}, query: {
+    id?: string | null
+    isView?: boolean
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<FaqContentOutputIResultModel>
+  
   /**
    * @tag FaqContent
    * @summary 添加
    */
-  post(url: "/api/FaqContent/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: FaqContentInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqContent/Add", options: {body: FaqContentInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag FaqContent
    * @summary 编辑
    */
-  post(url: "/api/FaqContent/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: FaqContentInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqContent/Edit", options: {body: FaqContentInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag FaqContent
    * @summary 删除
    */
-  post(url: "/api/FaqContent/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/FaqContent/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag File
    * @summary 文件上传
    */
-  post(url: "/api/File/Upload", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{module?: string | null}>, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Upload", options: {body: RuntimeForm<{
+    module?: string | null
+  }>, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag File
    * @summary 图片上传
    */
-  post(url: "/api/File/UploadPic", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{module?: string | null, width?: number | null, height?: number | null}>, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/UploadPic", options: {body: RuntimeForm<{
+    module?: string | null
+    width?: number | null
+    height?: number | null
+  }>, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag File
    * @summary 获取文件(返回byte[])
    */
-  get(url: "/api/File/Get", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/Get", options: {path?: {}, query: {
+    code?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  
   /**
    * @tag File
    * @summary 下载文件(返回Stream)
    */
-  get(url: "/api/File/Download", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/Download", options: {path?: {}, query: {
+    code?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  
   /**
    * @tag File
    */
-  get(url: "/api/File/DownloadByStream", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/DownloadByStream", options: {path?: {}, query: {
+    code?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  
   /**
    * @tag File
    * @summary 删除文件
    */
-  post(url: "/api/File/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{code?: string | null}>, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Remove", options: {body: RuntimeForm<{
+    code?: string | null
+  }>, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag LoginLog
    * @summary 列表
    */
-  get(url: "/api/LoginLog/Page", options: {path?: MapString, query: {UserName?: string | null /* 用户名 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<LoginLogListOutputPageListIResultModel>
+  get(url: "/api/LoginLog/Page", options: {path?: {}, query: {
+    UserName?: string | null /* 用户名 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<LoginLogListOutputPageListIResultModel>
+  
   /**
    * @tag Menu
    * @summary 新增
    */
-  post(url: "/api/Menu/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: MenuInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Menu/Add", options: {body: MenuInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Menu
    * @summary 修改
    */
-  post(url: "/api/Menu/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: MenuInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Menu/Edit", options: {body: MenuInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Menu
    * @summary 详情
    */
-  get(url: "/api/Menu/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuIResultModel>
+  get(url: "/api/Menu/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<MenuIResultModel>
+  
   /**
    * @tag Menu
    * @summary 分页
    */
-  get(url: "/api/Menu/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuPageListIResultModel>
+  get(url: "/api/Menu/Page", options: {path?: {}, query: {
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<MenuPageListIResultModel>
+  
   /**
    * @tag Menu
    * @summary 获取所有树形菜单
    */
-  get(url: "/api/Menu/Tree", options: {path?: MapString, query: {client?: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
+  get(url: "/api/Menu/Tree", options: {path?: {}, query: {
+    client?: ClientEnums
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<MenuOutputListIResultModel>
+  
   /**
    * @tag Menu
    * @summary 获取角色树形菜单
    */
-  get(url: "/api/Menu/LoadTreeByRole", options: {path?: MapString, query: {roleId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
+  get(url: "/api/Menu/LoadTreeByRole", options: {path?: {}, query: {
+    roleId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<MenuOutputListIResultModel>
+  
   /**
    * @tag Menu
    * @summary 获取菜单按钮
    */
-  get(url: "/api/Menu/Buttons", options: {path?: MapString, query: {menuId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ButtonDtoIResultModel>
+  get(url: "/api/Menu/Buttons", options: {path?: {}, query: {
+    menuId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<ButtonDtoIResultModel>
+  
   /**
    * @tag Menu
    * @summary 配置菜单按钮
    */
-  post(url: "/api/Menu/SetButton", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Menu/SetButton", options: {body: ButtonDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Menu
    * @summary 级联下拉选项
    */
-  get(url: "/api/Menu/TreeOptions", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Menu/TreeOptions", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+  
   /**
    * @tag Menu
    * @summary 删除
    */
-  post(url: "/api/Menu/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Menu/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Notify
    * @summary 获取消息类型
    */
-  get(url: "/api/Notify/Options", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Notify/Options", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Notify
    * @summary 获取通知列表
    */
-  get(url: "/api/Notify/Page", options: {path?: MapString, query: {Type?: string | null /* 请求参数类型 */, Readed?: boolean | null /* 是否已读 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
+  get(url: "/api/Notify/Page", options: {path?: {}, query: {
+    Type?: string | null /* 请求参数类型 */
+    Readed?: boolean | null /* 是否已读 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
+  
   /**
    * @tag Notify
    * @summary 获取通知列表(信息预览框使用)
    */
-  get(url: "/api/Notify/PageLite", options: {path?: MapString, query: {Type?: string | null /* 请求参数类型 */, Readed?: boolean | null /* 是否已读 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
+  get(url: "/api/Notify/PageLite", options: {path?: {}, query: {
+    Type?: string | null /* 请求参数类型 */
+    Readed?: boolean | null /* 是否已读 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
+  
   /**
    * @tag Notify
    * @summary 获取未读消息数量
    */
-  get(url: "/api/Notify/UnReadedCount", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyCountOutputIResultModel>
+  get(url: "/api/Notify/UnReadedCount", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<NotifyCountOutputIResultModel>
+  
   /**
    * @tag Notify
    * @summary 通知已读
    */
-  post(url: "/api/Notify/Readed", options: {path?: MapString, query?: MapString, header?: MapString, body: NotifyReadedInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Notify/Readed", options: {body: NotifyReadedInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Notify
    * @summary 全部已读
    */
-  post(url: "/api/Notify/ReadAll", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Notify/ReadAll", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Notify
    * @summary 删除消息(参数传到Ids属性,多个用,分开)
    */
-  post(url: "/api/Notify/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Notify/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Notify
    * @summary 删除所有消息
    */
-  post(url: "/api/Notify/RemoveAll", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Notify/RemoveAll", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Notify
    * @summary 添加消息，外部调用（泛型参数报404）
    */
-  post(url: "/api/Notify/Addmsg", options: {path?: MapString, query?: MapString, header?: MapString, body: StringNotifyInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Notify/Addmsg", options: {body: StringNotifyInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag OpenApi
    * @summary 同步本系统API信息到数据库
    */
-  post(url: "/api/OpenApi/SyncCurrent", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/OpenApi/SyncCurrent", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag OpenApi
    * @summary 同步所有系统API信息(未实现)
    */
-  post(url: "/api/OpenApi/SyncAll", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/OpenApi/SyncAll", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag OpenApi
    * @summary 同步API信息到数据库
    */
-  post(url: "/api/OpenApi/AddOrUpdate", options: {path?: MapString, query: {data?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/OpenApi/AddOrUpdate", options: {path?: {}, query: {
+    data?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag OpenApi
    * @summary 树形下拉选项
    */
-  get(url: "/api/OpenApi/TreeOptions", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OpenApiTreeOutputListIResultModel>
+  get(url: "/api/OpenApi/TreeOptions", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<OpenApiTreeOutputListIResultModel>
+  
   /**
    * @tag Organizations
    * @summary 分页列表
    */
-  get(url: "/api/Organizations/Page", options: {path?: MapString, query: {EnterpriseId?: string | null /* 所属企业id */, Name?: string | null /* 名称 */, Path?: string | null /* 路径 */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsListOutputPageListIResultModel>
+  get(url: "/api/Organizations/Page", options: {path?: {}, query: {
+    EnterpriseId?: string | null /* 所属企业id */
+    Name?: string | null /* 名称 */
+    Path?: string | null /* 路径 */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<OrganizationsListOutputPageListIResultModel>
+  
   /**
    * @tag Organizations
    * @summary 详情
    */
-  get(url: "/api/Organizations/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsOutputIResultModel>
+  get(url: "/api/Organizations/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<OrganizationsOutputIResultModel>
+  
   /**
    * @tag Organizations
    * @summary 添加
    */
-  post(url: "/api/Organizations/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: OrganizationsInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Organizations/Add", options: {body: OrganizationsInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Organizations
    * @summary 编辑
    */
-  post(url: "/api/Organizations/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: OrganizationsInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Organizations/Edit", options: {body: OrganizationsInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Organizations
    * @summary 删除
    */
-  post(url: "/api/Organizations/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Organizations/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Organizations
    * @summary 级联下拉选项
    */
-  get(url: "/api/Organizations/TreeOptions", options: {path?: MapString, query?: MapString, header?: MapString, body: OrganizationTreeOptionsQuery, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Organizations/TreeOptions", options: {body: OrganizationTreeOptionsQuery, timeout?: number} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+  
   /**
    * @tag Roles
    * @summary 分页查询
    */
-  get(url: "/api/Roles/Page", options: {path?: MapString, query: {RoleName?: string | null /* 角色名称 */, Code?: string | null /* 角色Code(编码) */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesListOutputPageListIResultModel>
+  get(url: "/api/Roles/Page", options: {path?: {}, query: {
+    RoleName?: string | null /* 角色名称 */
+    Code?: string | null /* 角色Code(编码) */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<RolesListOutputPageListIResultModel>
+  
   /**
    * @tag Roles
    * @summary 获取单个信息
    */
-  get(url: "/api/Roles/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesDtoIResultModel>
+  get(url: "/api/Roles/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<RolesDtoIResultModel>
+  
   /**
    * @tag Roles
    * @summary 新增
    */
-  post(url: "/api/Roles/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: RolesDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Roles/Add", options: {body: RolesDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Roles
    * @summary 修改
    */
-  post(url: "/api/Roles/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: RolesDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Roles/Edit", options: {body: RolesDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Roles
    * @summary 移除
    */
-  post(url: "/api/Roles/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: StringRemoveModel, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Roles/Remove", options: {body: StringRemoveModel, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Roles
    * @summary 下拉选择
    */
-  get(url: "/api/Roles/Options", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Roles/Options", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  
   /**
    * @tag Roles
    * @summary 设置菜单按钮
    */
-  post(url: "/api/Roles/SetMenus", options: {path?: MapString, query?: MapString, header?: MapString, body: SetMenusDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Roles/SetMenus", options: {body: SetMenusDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Roles
    * @summary 获取菜单按钮
    */
-  get(url: "/api/Roles/GetMenus", options: {path?: MapString, query: {roleId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RoleMenuTreeOutputListIResultModel>
+  get(url: "/api/Roles/GetMenus", options: {path?: {}, query: {
+    roleId?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<RoleMenuTreeOutputListIResultModel>
+  
   /**
    * @tag Sample
    * @summary 测试
    */
-  get(url: "/api/Sample/Test", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/Test", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Sample
    * @summary 输出日志
    */
-  get(url: "/api/Sample/LogInfo", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/Sample/LogInfo", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/ResolveApis", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/ResolveApis", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Sample
    * @summary 更新
    */
-  post(url: "/api/Sample/Update", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/Sample/Update", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Sample
    * @summary Page New
    */
-  get(url: "/api/Sample/PageNew", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<SampleOutputPageListIResultModel>
+  get(url: "/api/Sample/PageNew", options: {path?: {}, query: {
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<SampleOutputPageListIResultModel>
+  
   /**
    * @tag Sample
    * @summary Page
    */
-  get(url: "/api/Sample/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/Page", options: {path?: {}, query: {
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/TestGlobalExceptionFilter", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/TestGlobalExceptionFilter", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Sample
    * @summary 获取登录信息
    */
-  get(url: "/api/Sample/LoginInfo", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/LoginInfo", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary 缓存测试
    */
-  get(url: "/api/Test/TestCache", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/TestCache", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary 随便测试
    */
-  get(url: "/api/Test/Test2", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/Test2", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary Aes测试
    */
-  get(url: "/api/Test/TestAes", options: {path?: MapString, query: {text?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/TestAes", options: {path?: {}, query: {
+    text?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary 时间返回格式测试
    */
-  get(url: "/api/Test/TestDateTime", options: {path?: MapString, query: {time?: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/TestDateTime", options: {path?: {}, query: {
+    time?: string
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary 测试获取用户EID
    */
-  get(url: "/api/Test/GetLoginEid", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/GetLoginEid", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary 测试异常抛出
    */
-  get(url: "/api/Test/ThrowEx", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/ThrowEx", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Test
    * @summary OpenApiPolicy
    */
-  get(url: "/api/Test/OpenApiPolicy", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/OpenApiPolicy", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 列表
    */
-  get(url: "/api/UserInfo/Page", options: {path?: MapString, query: {UserName?: string | null /* 账户 */, RealName?: string | null /* 姓名 */, PhoneNumber?: string | null /* 手机号 */, EnterpriseId?: string | null /* 机构Id */, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoListOutputPageListIResultModel>
+  get(url: "/api/UserInfo/Page", options: {path?: {}, query: {
+    UserName?: string | null /* 账户 */
+    RealName?: string | null /* 姓名 */
+    PhoneNumber?: string | null /* 手机号 */
+    EnterpriseId?: string | null /* 机构Id */
+    Keyword?: string | null
+    Page?: number
+    PageSize?: number
+    TotalCount?: number
+    Order?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<UserInfoListOutputPageListIResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 获取单个信息
    */
-  get(url: "/api/UserInfo/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoOutputIResultModel>
+  get(url: "/api/UserInfo/Detail", options: {path?: {}, query: {
+    id?: string | null
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<UserInfoOutputIResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 添加
    */
-  post(url: "/api/UserInfo/Add", options: {path?: MapString, query?: MapString, header?: MapString, body: UserInfoInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/UserInfo/Add", options: {body: UserInfoInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 编辑
    */
-  post(url: "/api/UserInfo/Edit", options: {path?: MapString, query?: MapString, header?: MapString, body: UserInfoInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/UserInfo/Edit", options: {body: UserInfoInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 修改密码
    */
-  post(url: "/api/UserInfo/UpdatePwd", options: {path?: MapString, query?: MapString, header?: MapString, body: UsersPwdDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/UserInfo/UpdatePwd", options: {body: UsersPwdDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 重置密码
    */
-  post(url: "/api/UserInfo/ResetPwd", options: {path?: MapString, query?: MapString, header?: MapString, body: ResetPwdDto, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/UserInfo/ResetPwd", options: {body: ResetPwdDto, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag UserInfo
    * @summary 基本信息修改
    */
-  post(url: "/api/UserInfo/UpdateUserBasicInfo", options: {path?: MapString, query?: MapString, header?: MapString, body: UpdateUserBasicInfoInput, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/UserInfo/UpdateUserBasicInfo", options: {body: UpdateUserBasicInfoInput, timeout?: number} & IDefaultOptions): Promise<IResultModel>
+  
   /**
    * @tag Websocket
    * @summary Socket预连接
    */
-  get(url: "/api/Websocket/PreConnect", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Websocket/PreConnect", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<IResultModel>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -861,7 +2109,7 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface IRuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -871,14 +2119,13 @@ interface IRuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any; // the request body
-  signal?: AbortSignal; // abort signal to cancel request
-  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
+  body?: any;
+  timeout?: number;
 }
 
 interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
-  method: string;
+  method: Uppercase<string>;
 }
 
 interface IRequestInterceptor {
@@ -974,8 +2221,6 @@ export class RuntimeForm<T extends IRuntimeForm> {
     return form;
   }
 }
-
-const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
 export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
@@ -1093,7 +2338,18 @@ export class Runtime {
           method: config.method,
           body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
+
+          // common options
+          cache: config.cache,
+          credentials: config.credentials,
+          integrity: config.integrity,
+          keepalive: config.keepalive,
+          mode: config.mode,
+          redirect: config.redirect,
+          referrer: config.referrer,
+          referrerPolicy: config.referrerPolicy,
           signal: config.signal,
+          window: config.window,
         });
 
       return (timeout ? this._timeout<Response>(timeout, exec()) : exec())

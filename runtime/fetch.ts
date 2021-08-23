@@ -3,7 +3,7 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface IRuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -13,14 +13,13 @@ interface IRuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any; // the request body
-  signal?: AbortSignal; // abort signal to cancel request
-  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
+  body?: any;
+  timeout?: number;
 }
 
 interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
-  method: string;
+  method: Uppercase<string>;
 }
 
 interface IRequestInterceptor {
@@ -116,8 +115,6 @@ export class RuntimeForm<T extends IRuntimeForm> {
     return form;
   }
 }
-
-const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
 export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
@@ -235,7 +232,18 @@ export class Runtime {
           method: config.method,
           body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
+
+          // common options
+          cache: config.cache,
+          credentials: config.credentials,
+          integrity: config.integrity,
+          keepalive: config.keepalive,
+          mode: config.mode,
+          redirect: config.redirect,
+          referrer: config.referrer,
+          referrerPolicy: config.referrerPolicy,
           signal: config.signal,
+          window: config.window,
         });
 
       return (timeout ? this._timeout<Response>(timeout, exec()) : exec())

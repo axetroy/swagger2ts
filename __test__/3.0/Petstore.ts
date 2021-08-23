@@ -6,16 +6,67 @@ interface MapAny {
 interface MapString {
   [key: string]: string | undefined
 }
+
+type IDefaultOptions = Omit<RequestInit, "body" | "method">
 /* default type by generation end */
 
-export interface Order {id?: number, petId?: number, quantity?: number, shipDate?: string, status?: "placed" | "approved" | "delivered" /* Order Status */, complete?: boolean}
-export interface Customer {id?: number, username?: string, address?: Array<Address>}
-export interface Address {street?: string, city?: string, state?: string, zip?: string}
-export interface Category {id?: number, name?: string}
-export interface User {id?: number, username?: string, firstName?: string, lastName?: string, email?: string, password?: string, phone?: string, userStatus?: number /* User Status */}
-export interface Tag {id?: number, name?: string}
-export interface Pet {id?: number, name?: string, category?: Category, photoUrls?: Array<string | undefined>, tags?: Array<Tag>, status?: "available" | "pending" | "sold" /* pet status in the store */}
-export interface ApiResponse {code?: number, type?: string, message?: string}
+export interface Order {
+  id?: number
+  petId?: number
+  quantity?: number
+  shipDate?: string
+  status?: "placed" | "approved" | "delivered" /* Order Status */
+  complete?: boolean
+}
+
+export interface Customer {
+  id?: number
+  username?: string
+  address?: Array<Address>
+}
+
+export interface Address {
+  street?: string
+  city?: string
+  state?: string
+  zip?: string
+}
+
+export interface Category {
+  id?: number
+  name?: string
+}
+
+export interface User {
+  id?: number
+  username?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  password?: string
+  phone?: string
+  userStatus?: number /* User Status */
+}
+
+export interface Tag {
+  id?: number
+  name?: string
+}
+
+export interface Pet {
+  id?: number
+  name?: string
+  category?: Category
+  photoUrls?: Array<string | undefined>
+  tags?: Array<Tag>
+  status?: "available" | "pending" | "sold" /* pet status in the store */
+}
+
+export interface ApiResponse {
+  code?: number
+  type?: string
+  message?: string
+}
 
 export interface SwaggerApi{
   /**
@@ -23,109 +74,159 @@ export interface SwaggerApi{
    * @summary Add a new pet to the store
    * @description Add a new pet to the store
    */
-  post(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
+  post(url: "/pet", options: {body: Pet, timeout?: number} & IDefaultOptions): Promise<Pet>
+  
   /**
    * @tag pet
    * @summary Update an existing pet
    * @description Update an existing pet by Id
    */
-  put(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
+  put(url: "/pet", options: {body: Pet, timeout?: number} & IDefaultOptions): Promise<Pet>
+  
   /**
    * @tag pet
    * @summary Finds Pets by status
    * @description Multiple status values can be provided with comma separated strings
    */
-  get(url: "/pet/findByStatus", options: {path?: MapString, query: {status?: "available" | "pending" | "sold"}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
+  get(url: "/pet/findByStatus", options: {path?: {}, query: {
+    status?: "available" | "pending" | "sold"
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<Pet>>
+  
   /**
    * @tag pet
    * @summary Finds Pets by tags
    * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    */
-  get(url: "/pet/findByTags", options: {path?: MapString, query: {tags?: Array<string | undefined>}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
+  get(url: "/pet/findByTags", options: {path?: {}, query: {
+    tags?: Array<string | undefined>
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Array<Pet>>
+  
   /**
    * @tag pet
    * @summary Find pet by ID
    * @description Returns a single pet
    */
-  get(url: "/pet/{petId}", options: {path: {petId: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Pet>
+  get(url: "/pet/{petId}", options: {path: {
+    petId: number
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Pet>
+  
   /**
    * @tag pet
    * @summary Updates a pet in the store with form data
    */
-  post(url: "/pet/{petId}", options: {path: {petId: number}, query: {name?: string, status?: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  post(url: "/pet/{petId}", options: {path: {
+    petId: number
+  }, query: {
+    name?: string
+    status?: string
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  
   /**
    * @tag pet
    * @summary Deletes a pet
    */
-  delete(url: "/pet/{petId}", options: {path: {petId: number}, query?: MapString, header: {api_key?: string}, body?: any, signal?: AbortSignal}): Promise<unknown>
+  delete(url: "/pet/{petId}", options: {path: {
+    petId: number
+  }, query?: {}, header: {
+    api_key?: string
+  }, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  
   /**
    * @tag pet
    * @summary uploads an image
    */
-  post(url: "/pet/{petId}/uploadImage", options: {path: {petId: number}, query: {additionalMetadata?: string}, header?: MapString, body: File | Blob | undefined, signal?: AbortSignal}): Promise<ApiResponse>
+  post(url: "/pet/{petId}/uploadImage", options: {path: {
+    petId: number
+  }, query: {
+    additionalMetadata?: string
+  }, header?: {}, body: File | Blob | undefined, timeout?: number} & IDefaultOptions): Promise<ApiResponse>
+  
   /**
    * @tag store
    * @summary Returns pet inventories by status
    * @description Returns a map of status codes to quantities
    */
-  get(url: "/store/inventory", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<{}>
+  get(url: "/store/inventory", options: {body?: any, timeout?: number} & IDefaultOptions): Promise<{}>
+  
   /**
    * @tag store
    * @summary Place an order for a pet
    * @description Place a new order in the store
    */
-  post(url: "/store/order", options: {path?: MapString, query?: MapString, header?: MapString, body: Order, signal?: AbortSignal}): Promise<Order>
+  post(url: "/store/order", options: {body: Order, timeout?: number} & IDefaultOptions): Promise<Order>
+  
   /**
    * @tag store
    * @summary Find purchase order by ID
    * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
    */
-  get(url: "/store/order/{orderId}", options: {path: {orderId: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Order>
+  get(url: "/store/order/{orderId}", options: {path: {
+    orderId: number
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<Order>
+  
   /**
    * @tag store
    * @summary Delete purchase order by ID
    * @description For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
    */
-  delete(url: "/store/order/{orderId}", options: {path: {orderId: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  delete(url: "/store/order/{orderId}", options: {path: {
+    orderId: number
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  
   /**
    * @tag user
    * @summary Create user
    * @description This can only be done by the logged in user.
    */
-  post(url: "/user", options: {path?: MapString, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<User>
+  post(url: "/user", options: {body: User, timeout?: number} & IDefaultOptions): Promise<User>
+  
   /**
    * @tag user
    * @summary Creates list of users with given input array
    * @description Creates list of users with given input array
    */
-  post(url: "/user/createWithList", options: {path?: MapString, query?: MapString, header?: MapString, body: Array<User>, signal?: AbortSignal}): Promise<User>
+  post(url: "/user/createWithList", options: {body: Array<User>, timeout?: number} & IDefaultOptions): Promise<User>
+  
   /**
    * @tag user
    * @summary Logs user into the system
    */
-  get(url: "/user/login", options: {path?: MapString, query: {username?: string, password?: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<string | undefined>
+  get(url: "/user/login", options: {path?: {}, query: {
+    username?: string
+    password?: string
+  }, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<string | undefined>
+  
   /**
    * @tag user
    * @summary Logs out current logged in user session
    */
-  get(url: "/user/logout", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/user/logout", options: {path?: {}, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<null>
+  
   /**
    * @tag user
    * @summary Get user by user name
    */
-  get(url: "/user/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<User>
+  get(url: "/user/{username}", options: {path: {
+    username: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<User>
+  
   /**
    * @tag user
    * @summary Delete user
    * @description This can only be done by the logged in user.
    */
-  delete(url: "/user/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  delete(url: "/user/{username}", options: {path: {
+    username: string
+  }, query?: {}, header?: {}, body?: any, timeout?: number} & IDefaultOptions): Promise<unknown>
+  
   /**
    * @tag user
    * @summary Update user
    * @description This can only be done by the logged in user.
    */
-  put(url: "/user/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<null>
+  put(url: "/user/{username}", options: {path: {
+    username: string
+  }, query?: {}, header?: {}, body: User, timeout?: number} & IDefaultOptions): Promise<null>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -133,7 +234,7 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface IRuntimeRequestCommonOptions {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -143,14 +244,13 @@ interface IRuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any; // the request body
-  signal?: AbortSignal; // abort signal to cancel request
-  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
+  body?: any;
+  timeout?: number;
 }
 
 interface IRuntimeRequestOptions extends IRuntimeRequestCommonOptions {
   url: string;
-  method: string;
+  method: Uppercase<string>;
 }
 
 interface IRequestInterceptor {
@@ -246,8 +346,6 @@ export class RuntimeForm<T extends IRuntimeForm> {
     return form;
   }
 }
-
-const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
 
 export class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
@@ -365,7 +463,18 @@ export class Runtime {
           method: config.method,
           body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
+
+          // common options
+          cache: config.cache,
+          credentials: config.credentials,
+          integrity: config.integrity,
+          keepalive: config.keepalive,
+          mode: config.mode,
+          redirect: config.redirect,
+          referrer: config.referrer,
+          referrerPolicy: config.referrerPolicy,
           signal: config.signal,
+          window: config.window,
         });
 
       return (timeout ? this._timeout<Response>(timeout, exec()) : exec())
