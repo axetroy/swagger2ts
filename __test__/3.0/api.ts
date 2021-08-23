@@ -21,22 +21,22 @@ export interface SwaggerApi{
    * @tag 公共接口
    * @summary 按钮
    */
-  get(url: "/button", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/button", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<MenuTreeVO>>
   /**
    * @tag 公共接口
    * @summary 导航条
    */
-  get(url: "/navbar", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/navbar", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<MenuTreeVO>>
   /**
    * @tag 角色管理
    * @summary 查询
    */
-  get(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<角色树查询>>
   /**
    * @tag 角色管理
    * @summary 新增
    */
-  post(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<null>
+  post(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 角色管理
    * @summary 删除
@@ -53,7 +53,7 @@ export interface SwaggerApi{
    * @tag 角色管理
    * @summary 权限查询
    */
-  get(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
    * @tag 角色管理
    * @summary 权限设置
@@ -64,7 +64,7 @@ export interface SwaggerApi{
    * @summary 菜单查询
    * @description 根据角色id查询菜单信息
    */
-  get(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
    * @tag 角色管理
    * @summary 菜单设置
@@ -76,35 +76,35 @@ export interface SwaggerApi{
    * @summary 查询
    * @description 系统管理，菜单树结构
    */
-  get(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<菜单树>>
   /**
    * @tag 菜单管理
    * @summary 新增
    * @description 添加菜单
    */
-  post(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
+  post(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 菜单管理
    * @summary 添加按钮
    */
-  post(url: "/sitemap/button", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
+  post(url: "/sitemap/button", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 菜单管理
    * @summary 修改按钮
    */
-  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
+  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 菜单管理
    * @summary 删除
    * @description 删除菜单， 级联删除子项
    */
-  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 菜单管理
    * @summary 更新
    * @description 编辑菜单
    */
-  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
+  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /* default methods */
   get<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
   post<T = unknown>(url: string, options: { path?: MapAny, query?: MapAny, header?: MapString, body?: any, signal?: AbortSignal }): Promise<T>
@@ -156,6 +156,10 @@ class Http {
 
   public set domain(domain: string) {
     this._domain = domain;
+  }
+
+  public set prefix(prefix: string) {
+    this._prefix = prefix;
   }
 
   public request<T>(config: RequestConfig): Promise<T> {

@@ -104,8 +104,9 @@ function generateBody(body: IRequestBodyObject | IResponseObject, indent: number
   const jsonBody = body.content["application/json"];
   const streamBody = body.content["application/octet-stream"];
   const formBody = body.content["application/x-www-form-urlencoded"];
+  const anyBody = body.content["*/*"];
 
-  const mediaSchema = jsonBody || streamBody || formBody;
+  const mediaSchema = jsonBody || streamBody || formBody || anyBody;
 
   if (!mediaSchema || !mediaSchema.schema) return "null";
 

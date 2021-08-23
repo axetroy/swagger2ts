@@ -72,6 +72,10 @@ class Http {
     this._domain = domain;
   }
 
+  public set prefix(prefix: string) {
+    this._prefix = prefix;
+  }
+
   public request<T>(config: RequestConfig): Promise<T> {
     const url = new URL(this.baseURL + config.url);
     const headers = new Headers();
