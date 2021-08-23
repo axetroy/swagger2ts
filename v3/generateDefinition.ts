@@ -26,8 +26,8 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
     const isRequired = schema.required;
     const isNullable = schema.nullable;
 
-    function generateLiteral(type: string) {
-      let stringResult = `${name ? `type ${name} = ` : ""}${type}`;
+    function generateLiteral(...types: string[]) {
+      let stringResult = `${name ? `type ${name} = ` : ""}${types.join(" | ")}`;
       if (!isRequired) {
         if (!optionalThenUndefined) {
           stringResult += " | undefined";
@@ -43,7 +43,7 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
 
     switch (schema.type) {
       case "string":
-        if (schema.format === "binary") return generateLiteral("File");
+        if (schema.format === "binary") return generateLiteral("File", "Blob");
         if (schema.enum) {
           return generateLiteral(schema.enum.map((v) => `"${v}"`).join(" | "));
         }

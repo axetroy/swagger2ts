@@ -31,9 +31,9 @@ interface RuntimeRequestCommonOptions {
   header?: {
     [key: string]: string;
   };
-  body?: any;
-  signal?: AbortSignal;
-  timeout?: number;
+  body?: any; // the request body
+  signal?: AbortSignal; // abort signal to cancel request
+  timeout?: number; // defaults to 60 * 1000 ms. if zero. then there is no timeout
 }
 
 interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
@@ -136,7 +136,7 @@ class Runtime {
 
   public get defaults() {
     return {
-      timeout: 60 * 1000, // 60s
+      timeout: 60 * 1000, // 60s,
       headers: {
         common: {
           "Content-Type": "application/json",
@@ -224,16 +224,18 @@ class Runtime {
       }
     }
 
+    const timeout = config.timeout || defaults.timeout;
+
     try {
-      return this._timeout<Response>(
-        config.timeout || defaults.timeout,
+      const exec = () =>
         fetch(url.toString(), {
           method: config.method,
           body: config.body,
           headers: headers,
           signal: config.signal,
-        })
-      )
+        });
+
+      return (timeout ? this._timeout<Response>(timeout, exec()) : exec())
         .then(async (resp) => {
           const contentType = resp.headers.get("content-type");
           switch (contentType) {
@@ -248,11 +250,11 @@ class Runtime {
           }
         })
         .then(({ data, resp }) => {
-          return this._responseInterceptor.runSuccess(config, resp, data);
+          return this._responseInterceptor.runSuccess<T>(config, resp, data);
         });
     } catch (err) {
       if (err instanceof Error) {
-        return await this._responseInterceptor.runError(config, err);
+        return await this._responseInterceptor.runError<T>(config, err);
       } else {
         return Promise.reject(err);
       }

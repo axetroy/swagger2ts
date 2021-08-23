@@ -231,11 +231,11 @@ class Runtime {
           }
         })
         .then(({ data, resp }) => {
-          return this._responseInterceptor.runSuccess(config, resp, data);
+          return this._responseInterceptor.runSuccess<T>(config, resp, data);
         });
     } catch (err) {
       if (err instanceof Error) {
-        return await this._responseInterceptor.runError(config, err);
+        return await this._responseInterceptor.runError<T>(config, err);
       } else {
         return Promise.reject(err);
       }
