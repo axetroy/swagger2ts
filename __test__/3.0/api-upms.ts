@@ -10,7 +10,6 @@ interface MapString {
 
 export interface ButtonDTO {name?: string, permission?: string, pid?: number, show?: boolean}
 export interface MenuTreeVO {category?: "BUTTON" | "MENU", children?: Array<MenuTreeVO>, icon?: string, id?: number, module?: string, name?: string, params?: string, permission?: string, route?: string, target?: string}
-export interface ResponseEntity {body?: {}, statusCode?: "ACCEPTED" | "ALREADY_REPORTED" | "BAD_GATEWAY" | "BAD_REQUEST" | "BANDWIDTH_LIMIT_EXCEEDED" | "CHECKPOINT" | "CONFLICT" | "CONTINUE" | "CREATED" | "DESTINATION_LOCKED" | "EXPECTATION_FAILED" | "FAILED_DEPENDENCY" | "FORBIDDEN" | "FOUND" | "GATEWAY_TIMEOUT" | "GONE" | "HTTP_VERSION_NOT_SUPPORTED" | "IM_USED" | "INSUFFICIENT_SPACE_ON_RESOURCE" | "INSUFFICIENT_STORAGE" | "INTERNAL_SERVER_ERROR" | "I_AM_A_TEAPOT" | "LENGTH_REQUIRED" | "LOCKED" | "LOOP_DETECTED" | "METHOD_FAILURE" | "METHOD_NOT_ALLOWED" | "MOVED_PERMANENTLY" | "MOVED_TEMPORARILY" | "MULTIPLE_CHOICES" | "MULTI_STATUS" | "NETWORK_AUTHENTICATION_REQUIRED" | "NON_AUTHORITATIVE_INFORMATION" | "NOT_ACCEPTABLE" | "NOT_EXTENDED" | "NOT_FOUND" | "NOT_IMPLEMENTED" | "NOT_MODIFIED" | "NO_CONTENT" | "OK" | "PARTIAL_CONTENT" | "PAYLOAD_TOO_LARGE" | "PAYMENT_REQUIRED" | "PERMANENT_REDIRECT" | "PRECONDITION_FAILED" | "PRECONDITION_REQUIRED" | "PROCESSING" | "PROXY_AUTHENTICATION_REQUIRED" | "REQUESTED_RANGE_NOT_SATISFIABLE" | "REQUEST_ENTITY_TOO_LARGE" | "REQUEST_HEADER_FIELDS_TOO_LARGE" | "REQUEST_TIMEOUT" | "REQUEST_URI_TOO_LONG" | "RESET_CONTENT" | "SEE_OTHER" | "SERVICE_UNAVAILABLE" | "SWITCHING_PROTOCOLS" | "TEMPORARY_REDIRECT" | "TOO_EARLY" | "TOO_MANY_REQUESTS" | "UNAUTHORIZED" | "UNAVAILABLE_FOR_LEGAL_REASONS" | "UNPROCESSABLE_ENTITY" | "UNSUPPORTED_MEDIA_TYPE" | "UPGRADE_REQUIRED" | "URI_TOO_LONG" | "USE_PROXY" | "VARIANT_ALSO_NEGOTIATES", statusCodeValue?: number}
 export interface RoleDTO {description?: string, name?: string, pid?: number}
 export interface SitemapDTO {icon?: string, module?: string, name?: string, params?: string, pid?: number, route?: string, target?: string}
 export interface 菜单树 {category?: "BUTTON" | "MENU", children?: Array<菜单树>, deleted?: boolean, gmtModified?: string, icon?: string, id?: number, locked?: boolean, module?: string, name?: string, params?: string, permission?: string, pid?: number, route?: string, show?: boolean, target?: string}
@@ -36,7 +35,7 @@ export interface SwaggerApi{
    * @tag 角色管理
    * @summary 新增
    */
-  post(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 角色管理
    * @summary 删除
@@ -82,29 +81,29 @@ export interface SwaggerApi{
    * @summary 新增
    * @description 添加菜单
    */
-  post(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 添加按钮
    */
-  post(url: "/sitemap/button", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/sitemap/button", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 修改按钮
    */
-  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
+  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 删除
    * @description 删除菜单， 级联删除子项
    */
-  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
+  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 更新
    * @description 编辑菜单
    */
-  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
+  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
 }
 
 interface RuntimeHeaderMapString {
