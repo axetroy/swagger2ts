@@ -701,7 +701,6 @@ export interface SwaggerApi{
    * @summary Socket预连接
    */
   get(url: "/api/Websocket/PreConnect", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
-  /* default methods */
 }
 
 interface RuntimeHeaderMapString {

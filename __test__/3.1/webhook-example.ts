@@ -11,7 +11,7 @@ interface MapString {
 export type Pet = any
 
 export interface SwaggerApi{
-  /* default methods */
+  
 }
 
 interface RuntimeHeaderMapString {

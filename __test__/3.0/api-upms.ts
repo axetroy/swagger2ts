@@ -8,124 +8,103 @@ interface MapString {
 }
 /* default type by generation end */
 
-export interface Order {id?: number, petId?: number, quantity?: number, shipDate?: string, status?: "placed" | "approved" | "delivered", complete?: boolean}
-export interface Customer {id?: number, username?: string, address?: Array<Address>}
-export interface Address {street?: string, city?: string, state?: string, zip?: string}
-export interface Category {id?: number, name?: string}
-export interface User {id?: number, username?: string, firstName?: string, lastName?: string, email?: string, password?: string, phone?: string, userStatus?: number}
-export interface Tag {id?: number, name?: string}
-export interface Pet {id?: number, name?: string, category?: Category, photoUrls?: Array<string | undefined>, tags?: Array<Tag>, status?: "available" | "pending" | "sold"}
-export interface ApiResponse {code?: number, type?: string, message?: string}
+export interface ButtonDTO {name?: string, permission?: string, pid?: number, show?: boolean}
+export interface MenuTreeVO {category?: "BUTTON" | "MENU", children?: Array<MenuTreeVO>, icon?: string, id?: number, module?: string, name?: string, params?: string, permission?: string, route?: string, target?: string}
+export interface ResponseEntity {body?: {}, statusCode?: "ACCEPTED" | "ALREADY_REPORTED" | "BAD_GATEWAY" | "BAD_REQUEST" | "BANDWIDTH_LIMIT_EXCEEDED" | "CHECKPOINT" | "CONFLICT" | "CONTINUE" | "CREATED" | "DESTINATION_LOCKED" | "EXPECTATION_FAILED" | "FAILED_DEPENDENCY" | "FORBIDDEN" | "FOUND" | "GATEWAY_TIMEOUT" | "GONE" | "HTTP_VERSION_NOT_SUPPORTED" | "IM_USED" | "INSUFFICIENT_SPACE_ON_RESOURCE" | "INSUFFICIENT_STORAGE" | "INTERNAL_SERVER_ERROR" | "I_AM_A_TEAPOT" | "LENGTH_REQUIRED" | "LOCKED" | "LOOP_DETECTED" | "METHOD_FAILURE" | "METHOD_NOT_ALLOWED" | "MOVED_PERMANENTLY" | "MOVED_TEMPORARILY" | "MULTIPLE_CHOICES" | "MULTI_STATUS" | "NETWORK_AUTHENTICATION_REQUIRED" | "NON_AUTHORITATIVE_INFORMATION" | "NOT_ACCEPTABLE" | "NOT_EXTENDED" | "NOT_FOUND" | "NOT_IMPLEMENTED" | "NOT_MODIFIED" | "NO_CONTENT" | "OK" | "PARTIAL_CONTENT" | "PAYLOAD_TOO_LARGE" | "PAYMENT_REQUIRED" | "PERMANENT_REDIRECT" | "PRECONDITION_FAILED" | "PRECONDITION_REQUIRED" | "PROCESSING" | "PROXY_AUTHENTICATION_REQUIRED" | "REQUESTED_RANGE_NOT_SATISFIABLE" | "REQUEST_ENTITY_TOO_LARGE" | "REQUEST_HEADER_FIELDS_TOO_LARGE" | "REQUEST_TIMEOUT" | "REQUEST_URI_TOO_LONG" | "RESET_CONTENT" | "SEE_OTHER" | "SERVICE_UNAVAILABLE" | "SWITCHING_PROTOCOLS" | "TEMPORARY_REDIRECT" | "TOO_EARLY" | "TOO_MANY_REQUESTS" | "UNAUTHORIZED" | "UNAVAILABLE_FOR_LEGAL_REASONS" | "UNPROCESSABLE_ENTITY" | "UNSUPPORTED_MEDIA_TYPE" | "UPGRADE_REQUIRED" | "URI_TOO_LONG" | "USE_PROXY" | "VARIANT_ALSO_NEGOTIATES", statusCodeValue?: number}
+export interface RoleDTO {description?: string, name?: string, pid?: number}
+export interface SitemapDTO {icon?: string, module?: string, name?: string, params?: string, pid?: number, route?: string, target?: string}
+export interface 菜单树 {category?: "BUTTON" | "MENU", children?: Array<菜单树>, deleted?: boolean, gmtModified?: string, icon?: string, id?: number, locked?: boolean, module?: string, name?: string, params?: string, permission?: string, pid?: number, route?: string, show?: boolean, target?: string}
+export interface 角色树查询 {children?: Array<角色树查询>, description?: string, gmtModified?: string, id?: number, locked?: boolean, name?: string, pid?: number}
 
 export interface SwaggerApi{
   /**
-   * @tag pet
-   * @summary Add a new pet to the store
-   * @description Add a new pet to the store
+   * @tag 公共接口
+   * @summary 按钮
    */
-  post(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
+  get(url: "/button", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<MenuTreeVO>>
   /**
-   * @tag pet
-   * @summary Update an existing pet
-   * @description Update an existing pet by Id
+   * @tag 公共接口
+   * @summary 导航条
    */
-  put(url: "/pet", options: {path?: MapString, query?: MapString, header?: MapString, body: Pet, signal?: AbortSignal}): Promise<Pet>
+  get(url: "/navbar", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<MenuTreeVO>>
   /**
-   * @tag pet
-   * @summary Finds Pets by status
-   * @description Multiple status values can be provided with comma separated strings
+   * @tag 角色管理
+   * @summary 查询
    */
-  get(url: "/pet/findByStatus", options: {path?: MapString, query: {status: "available" | "pending" | "sold" | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
+  get(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<角色树查询>>
   /**
-   * @tag pet
-   * @summary Finds Pets by tags
-   * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+   * @tag 角色管理
+   * @summary 新增
    */
-  get(url: "/pet/findByTags", options: {path?: MapString, query: {tags: Array<string | undefined>}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<Pet>>
+  post(url: "/role", options: {path?: MapString, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
-   * @tag pet
-   * @summary Find pet by ID
-   * @description Returns a single pet
+   * @tag 角色管理
+   * @summary 删除
+   * @description 角色删除是一个危险的操作，不提供批量服务
    */
-  get(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Pet>
+  delete(url: "/role/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
-   * @tag pet
-   * @summary Updates a pet in the store with form data
+   * @tag 角色管理
+   * @summary 修改
+   * @description 角色编辑不能修改从属关系,仅提供名称修改
    */
-  post(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query: {name: string | undefined, status: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  put(url: "/role/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<null>
   /**
-   * @tag pet
-   * @summary Deletes a pet
+   * @tag 角色管理
+   * @summary 权限查询
    */
-  delete(url: "/pet/{petId}", options: {path: {petId: number | undefined}, query?: MapString, header: {api_key: string | undefined}, body?: any, signal?: AbortSignal}): Promise<unknown>
+  get(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
-   * @tag pet
-   * @summary uploads an image
+   * @tag 角色管理
+   * @summary 权限设置
    */
-  post(url: "/pet/{petId}/uploadImage", options: {path: {petId: number | undefined}, query: {additionalMetadata: string | undefined}, header?: MapString, body: File | undefined, signal?: AbortSignal}): Promise<ApiResponse>
+  post(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
   /**
-   * @tag store
-   * @summary Returns pet inventories by status
-   * @description Returns a map of status codes to quantities
+   * @tag 角色管理
+   * @summary 菜单查询
+   * @description 根据角色id查询菜单信息
    */
-  get(url: "/store/inventory", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<{}>
+  get(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
-   * @tag store
-   * @summary Place an order for a pet
-   * @description Place a new order in the store
+   * @tag 角色管理
+   * @summary 菜单设置
+   * @description 设置角色的菜单信息
    */
-  post(url: "/store/order", options: {path?: MapString, query?: MapString, header?: MapString, body: Order, signal?: AbortSignal}): Promise<Order>
+  post(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
   /**
-   * @tag store
-   * @summary Find purchase order by ID
-   * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+   * @tag 菜单管理
+   * @summary 查询
+   * @description 系统管理，菜单树结构
    */
-  get(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Order>
+  get(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<菜单树>>
   /**
-   * @tag store
-   * @summary Delete purchase order by ID
-   * @description For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+   * @tag 菜单管理
+   * @summary 新增
+   * @description 添加菜单
    */
-  delete(url: "/store/order/{orderId}", options: {path: {orderId: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  post(url: "/sitemap", options: {path?: MapString, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
-   * @tag user
-   * @summary Create user
-   * @description This can only be done by the logged in user.
+   * @tag 菜单管理
+   * @summary 添加按钮
    */
-  post(url: "/user", options: {path?: MapString, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<User>
+  post(url: "/sitemap/button", options: {path?: MapString, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
-   * @tag user
-   * @summary Creates list of users with given input array
-   * @description Creates list of users with given input array
+   * @tag 菜单管理
+   * @summary 修改按钮
    */
-  post(url: "/user/createWithList", options: {path?: MapString, query?: MapString, header?: MapString, body: Array<User>, signal?: AbortSignal}): Promise<User>
+  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
-   * @tag user
-   * @summary Logs user into the system
+   * @tag 菜单管理
+   * @summary 删除
+   * @description 删除菜单， 级联删除子项
    */
-  get(url: "/user/login", options: {path?: MapString, query: {username: string | undefined, password: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<string | undefined>
+  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
-   * @tag user
-   * @summary Logs out current logged in user session
+   * @tag 菜单管理
+   * @summary 更新
+   * @description 编辑菜单
    */
-  get(url: "/user/logout", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
-  /**
-   * @tag user
-   * @summary Get user by user name
-   */
-  get(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<User>
-  /**
-   * @tag user
-   * @summary Delete user
-   * @description This can only be done by the logged in user.
-   */
-  delete(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
-  /**
-   * @tag user
-   * @summary Update user
-   * @description This can only be done by the logged in user.
-   */
-  put(url: "/user/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body: User, signal?: AbortSignal}): Promise<null>
+  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<ResponseEntity>
 }
 
 interface RuntimeHeaderMapString {
@@ -378,4 +357,4 @@ class Runtime {
   }
 }
 
-export const apiV3 = new Runtime("http://localhost", "/api/v3") as unknown as (SwaggerApi & Runtime)
+export const unknownApi = new Runtime("http://localhost", "/") as unknown as (SwaggerApi & Runtime)

@@ -223,8 +223,6 @@ function generateApi(swagger: ISwagger, indent: number): string {
     }
   }
 
-  urlBlock.push("/* default methods */");
-
   return `export interface SwaggerApi{
 ${indentTxt(urlBlock.join("\n"), indent)}
 }`;

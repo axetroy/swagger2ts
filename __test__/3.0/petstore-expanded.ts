@@ -31,7 +31,6 @@ export interface SwaggerApi{
    * @description deletes a single pet based on the ID supplied
    */
   delete(url: "/pets/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Error>
-  /* default methods */
 }
 
 interface RuntimeHeaderMapString {

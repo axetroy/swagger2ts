@@ -19,7 +19,6 @@ export interface SwaggerApi{
    * @summary Show API version details
    */
   get(url: "/v2", options: {path?: MapString, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
-  /* default methods */
 }
 
 interface RuntimeHeaderMapString {

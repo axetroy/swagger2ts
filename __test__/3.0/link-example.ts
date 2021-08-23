@@ -19,7 +19,6 @@ export interface SwaggerApi{
   get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string | undefined, slug: string | undefined}, query: {state: "open" | "merged" | "declined" | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<pullrequest>>
   get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<pullrequest>
   post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
-  /* default methods */
 }
 
 interface RuntimeHeaderMapString {

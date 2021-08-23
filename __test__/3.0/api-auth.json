@@ -1,0 +1,230 @@
+{
+  "openapi": "3.0.3",
+  "info": { "termsOfService": "http://192.168.0.21/auth", "contact": {}, "license": {} },
+  "servers": [{ "url": "http://192.168.0.21:80", "description": "Inferred Url" }],
+  "tags": [{ "name": "应用接入管理", "description": "Register Client Controller" }],
+  "paths": {
+    "/register/client": {
+      "get": {
+        "tags": ["应用接入管理"],
+        "summary": "查询",
+        "description": "oauth2.0 应用接入信息查询",
+        "operationId": "queryUsingGET",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "maximum": 9223372036854775807,
+              "exclusiveMaximum": false,
+              "minimum": 0,
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页显示数量",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "maximum": 9223372036854775807,
+              "exclusiveMaximum": false,
+              "minimum": 0,
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/PageResultVOOfClientVO" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "post": {
+        "tags": ["应用接入管理"],
+        "summary": "新增",
+        "description": "oauth2.0 应用接入提交信息",
+        "operationId": "addUsingPOST",
+        "parameters": [
+          { "name": "clientSecret", "in": "query", "description": "client_secret", "required": true, "style": "form", "schema": { "type": "string" } },
+          { "name": "name", "in": "query", "description": "名称", "required": true, "style": "form", "schema": { "type": "string" } },
+          { "name": "redirectUri", "in": "query", "description": "回调地址", "required": true, "style": "form", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/register/client/{id}": {
+      "post": {
+        "tags": ["应用接入管理"],
+        "summary": "修改",
+        "description": "oauth2.0 应用接入信息变更",
+        "operationId": "updateUsingPOST",
+        "parameters": [
+          { "name": "clientSecret", "in": "query", "description": "client_secret", "required": true, "style": "form", "schema": { "type": "string" } },
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "string" } },
+          { "name": "name", "in": "query", "description": "名称", "required": true, "style": "form", "schema": { "type": "string" } },
+          { "name": "redirectUri", "in": "query", "description": "回调地址", "required": true, "style": "form", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "delete": {
+        "tags": ["应用接入管理"],
+        "summary": "删除",
+        "description": "oauth2.0 应用接入信息删除",
+        "operationId": "deleteUsingDELETE",
+        "parameters": [{ "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClientVO": {
+        "title": "ClientVO",
+        "type": "object",
+        "properties": {
+          "authorizationGrantTypes": { "type": "string", "description": "授权方式" },
+          "clientId": { "type": "string", "description": "client_id" },
+          "clientSecretExpiresAt": { "type": "string", "description": "到期时间", "format": "date-time" },
+          "gmtCreate": { "type": "string", "description": "录入时间", "format": "date-time" },
+          "id": { "type": "string", "description": "主键" },
+          "name": { "type": "string", "description": "应用名称" },
+          "redirectUris": { "type": "string", "description": "回调地址" }
+        }
+      },
+      "PageResultVOOfClientVO": {
+        "title": "PageResultVOOfClientVO",
+        "type": "object",
+        "properties": {
+          "data": { "type": "array", "description": "信息", "items": { "$ref": "#/components/schemas/ClientVO" } },
+          "total": { "type": "integer", "description": "总数", "format": "int64" }
+        }
+      },
+      "ResponseEntity": {
+        "title": "ResponseEntity",
+        "type": "object",
+        "properties": {
+          "body": { "type": "object" },
+          "statusCode": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "ALREADY_REPORTED",
+              "BAD_GATEWAY",
+              "BAD_REQUEST",
+              "BANDWIDTH_LIMIT_EXCEEDED",
+              "CHECKPOINT",
+              "CONFLICT",
+              "CONTINUE",
+              "CREATED",
+              "DESTINATION_LOCKED",
+              "EXPECTATION_FAILED",
+              "FAILED_DEPENDENCY",
+              "FORBIDDEN",
+              "FOUND",
+              "GATEWAY_TIMEOUT",
+              "GONE",
+              "HTTP_VERSION_NOT_SUPPORTED",
+              "IM_USED",
+              "INSUFFICIENT_SPACE_ON_RESOURCE",
+              "INSUFFICIENT_STORAGE",
+              "INTERNAL_SERVER_ERROR",
+              "I_AM_A_TEAPOT",
+              "LENGTH_REQUIRED",
+              "LOCKED",
+              "LOOP_DETECTED",
+              "METHOD_FAILURE",
+              "METHOD_NOT_ALLOWED",
+              "MOVED_PERMANENTLY",
+              "MOVED_TEMPORARILY",
+              "MULTIPLE_CHOICES",
+              "MULTI_STATUS",
+              "NETWORK_AUTHENTICATION_REQUIRED",
+              "NON_AUTHORITATIVE_INFORMATION",
+              "NOT_ACCEPTABLE",
+              "NOT_EXTENDED",
+              "NOT_FOUND",
+              "NOT_IMPLEMENTED",
+              "NOT_MODIFIED",
+              "NO_CONTENT",
+              "OK",
+              "PARTIAL_CONTENT",
+              "PAYLOAD_TOO_LARGE",
+              "PAYMENT_REQUIRED",
+              "PERMANENT_REDIRECT",
+              "PRECONDITION_FAILED",
+              "PRECONDITION_REQUIRED",
+              "PROCESSING",
+              "PROXY_AUTHENTICATION_REQUIRED",
+              "REQUESTED_RANGE_NOT_SATISFIABLE",
+              "REQUEST_ENTITY_TOO_LARGE",
+              "REQUEST_HEADER_FIELDS_TOO_LARGE",
+              "REQUEST_TIMEOUT",
+              "REQUEST_URI_TOO_LONG",
+              "RESET_CONTENT",
+              "SEE_OTHER",
+              "SERVICE_UNAVAILABLE",
+              "SWITCHING_PROTOCOLS",
+              "TEMPORARY_REDIRECT",
+              "TOO_EARLY",
+              "TOO_MANY_REQUESTS",
+              "UNAUTHORIZED",
+              "UNAVAILABLE_FOR_LEGAL_REASONS",
+              "UNPROCESSABLE_ENTITY",
+              "UNSUPPORTED_MEDIA_TYPE",
+              "UPGRADE_REQUIRED",
+              "URI_TOO_LONG",
+              "USE_PROXY",
+              "VARIANT_ALSO_NEGOTIATES"
+            ]
+          },
+          "statusCodeValue": { "type": "integer", "format": "int32" }
+        }
+      }
+    }
+  }
+}
