@@ -1,0 +1,501 @@
+{
+  "openapi": "3.0.3",
+  "info": { "contact": {}, "license": {} },
+  "servers": [{ "url": "http://192.168.0.21:80", "description": "Inferred Url" }],
+  "tags": [
+    { "name": "公共接口", "description": "Common Controller" },
+    { "name": "菜单管理", "description": "Sitemap Controller" },
+    { "name": "角色管理", "description": "Role Controller" }
+  ],
+  "paths": {
+    "/button": {
+      "get": {
+        "tags": ["公共接口"],
+        "summary": "按钮",
+        "operationId": "buttonUsingGET",
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/MenuTreeVO" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/navbar": {
+      "get": {
+        "tags": ["公共接口"],
+        "summary": "导航条",
+        "operationId": "navbarUsingGET",
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/MenuTreeVO" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/role": {
+      "get": {
+        "tags": ["角色管理"],
+        "summary": "查询",
+        "operationId": "queryUsingGET",
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/角色树查询" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "post": {
+        "tags": ["角色管理"],
+        "summary": "新增",
+        "operationId": "addUsingPOST",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RoleDTO" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/role/{id}": {
+      "put": {
+        "tags": ["角色管理"],
+        "summary": "修改",
+        "description": "角色编辑不能修改从属关系,仅提供名称修改",
+        "operationId": "updateUsingPUT",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RoleDTO" } } } },
+        "responses": {
+          "200": { "description": "OK" },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "delete": {
+        "tags": ["角色管理"],
+        "summary": "删除",
+        "description": "角色删除是一个危险的操作，不提供批量服务",
+        "operationId": "deleteUsingDELETE",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/role/{id}/authority": {
+      "get": {
+        "tags": ["角色管理"],
+        "summary": "权限查询",
+        "operationId": "authorityUsingGET",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "type": "integer", "format": "int64" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "post": {
+        "tags": ["角色管理"],
+        "summary": "权限设置",
+        "operationId": "authorityUsingPOST",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "array", "items": { "type": "integer", "format": "int64" } } } } },
+        "responses": {
+          "200": { "description": "OK" },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/role/{id}/menu": {
+      "get": {
+        "tags": ["角色管理"],
+        "summary": "菜单查询",
+        "description": "根据角色id查询菜单信息",
+        "operationId": "menuUsingGET",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "type": "integer", "format": "int64" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "post": {
+        "tags": ["角色管理"],
+        "summary": "菜单设置",
+        "description": "设置角色的菜单信息",
+        "operationId": "scopeUsingPOST",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "array", "items": { "type": "integer", "format": "int64" } } } } },
+        "responses": {
+          "200": { "description": "OK" },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/sitemap": {
+      "get": {
+        "tags": ["菜单管理"],
+        "summary": "查询",
+        "description": "系统管理，菜单树结构",
+        "operationId": "queryUsingGET_1",
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/菜单树" } } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "post": {
+        "tags": ["菜单管理"],
+        "summary": "新增",
+        "description": "添加菜单",
+        "operationId": "addUsingPOST_1",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SitemapDTO" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/sitemap/button": {
+      "post": {
+        "tags": ["菜单管理"],
+        "summary": "添加按钮",
+        "operationId": "buttonUsingPOST",
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ButtonDTO" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/sitemap/button/{id}": {
+      "put": {
+        "tags": ["菜单管理"],
+        "summary": "修改按钮",
+        "operationId": "updateButtonUsingPUT",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ButtonDTO" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    },
+    "/sitemap/{id}": {
+      "put": {
+        "tags": ["菜单管理"],
+        "summary": "更新",
+        "description": "编辑菜单",
+        "operationId": "updateUsingPUT_1",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SitemapDTO" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      },
+      "delete": {
+        "tags": ["菜单管理"],
+        "summary": "删除",
+        "description": "删除菜单， 级联删除子项",
+        "operationId": "deleteUsingDELETE_1",
+        "parameters": [
+          { "name": "id", "in": "path", "description": "id", "required": true, "style": "simple", "schema": { "type": "integer", "format": "int64" } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ResponseEntity" } } } },
+          "302": { "description": "重定向" },
+          "400": { "description": "请求出现语法错误" },
+          "401": { "description": "请求失败,未经过身份认证" },
+          "403": { "description": "请求失败,拒绝执行此请求" },
+          "404": { "description": "请求失败,信息不存在" },
+          "405": { "description": "请求方法不支持" },
+          "500": { "description": "服务器内部错误" },
+          "503": { "description": "服务不可用" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ButtonDTO": {
+        "title": "ButtonDTO",
+        "required": ["name", "permission", "pid"],
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "名称(50字符以内)" },
+          "permission": { "type": "string", "description": "权限(255字符以内)" },
+          "pid": { "type": "integer", "description": "上级节点ID", "format": "int64" },
+          "show": { "type": "boolean", "description": "显示", "example": false }
+        }
+      },
+      "MenuTreeVO": {
+        "title": "MenuTreeVO",
+        "type": "object",
+        "properties": {
+          "category": { "type": "string", "description": "类型", "enum": ["BUTTON", "MENU"] },
+          "children": { "type": "array", "description": "子菜单", "items": { "$ref": "#/components/schemas/MenuTreeVO" } },
+          "icon": { "type": "string", "description": "图标" },
+          "id": { "type": "integer", "description": "id", "format": "int64" },
+          "module": { "type": "string", "description": "组件" },
+          "name": { "type": "string", "description": "名称" },
+          "params": { "type": "string", "description": "路由参数" },
+          "permission": { "type": "string", "description": "权限" },
+          "route": { "type": "string", "description": "路由地址" },
+          "target": { "type": "string", "description": "打开方式(50字符以内)" }
+        }
+      },
+      "ResponseEntity": {
+        "title": "ResponseEntity",
+        "type": "object",
+        "properties": {
+          "body": { "type": "object" },
+          "statusCode": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "ALREADY_REPORTED",
+              "BAD_GATEWAY",
+              "BAD_REQUEST",
+              "BANDWIDTH_LIMIT_EXCEEDED",
+              "CHECKPOINT",
+              "CONFLICT",
+              "CONTINUE",
+              "CREATED",
+              "DESTINATION_LOCKED",
+              "EXPECTATION_FAILED",
+              "FAILED_DEPENDENCY",
+              "FORBIDDEN",
+              "FOUND",
+              "GATEWAY_TIMEOUT",
+              "GONE",
+              "HTTP_VERSION_NOT_SUPPORTED",
+              "IM_USED",
+              "INSUFFICIENT_SPACE_ON_RESOURCE",
+              "INSUFFICIENT_STORAGE",
+              "INTERNAL_SERVER_ERROR",
+              "I_AM_A_TEAPOT",
+              "LENGTH_REQUIRED",
+              "LOCKED",
+              "LOOP_DETECTED",
+              "METHOD_FAILURE",
+              "METHOD_NOT_ALLOWED",
+              "MOVED_PERMANENTLY",
+              "MOVED_TEMPORARILY",
+              "MULTIPLE_CHOICES",
+              "MULTI_STATUS",
+              "NETWORK_AUTHENTICATION_REQUIRED",
+              "NON_AUTHORITATIVE_INFORMATION",
+              "NOT_ACCEPTABLE",
+              "NOT_EXTENDED",
+              "NOT_FOUND",
+              "NOT_IMPLEMENTED",
+              "NOT_MODIFIED",
+              "NO_CONTENT",
+              "OK",
+              "PARTIAL_CONTENT",
+              "PAYLOAD_TOO_LARGE",
+              "PAYMENT_REQUIRED",
+              "PERMANENT_REDIRECT",
+              "PRECONDITION_FAILED",
+              "PRECONDITION_REQUIRED",
+              "PROCESSING",
+              "PROXY_AUTHENTICATION_REQUIRED",
+              "REQUESTED_RANGE_NOT_SATISFIABLE",
+              "REQUEST_ENTITY_TOO_LARGE",
+              "REQUEST_HEADER_FIELDS_TOO_LARGE",
+              "REQUEST_TIMEOUT",
+              "REQUEST_URI_TOO_LONG",
+              "RESET_CONTENT",
+              "SEE_OTHER",
+              "SERVICE_UNAVAILABLE",
+              "SWITCHING_PROTOCOLS",
+              "TEMPORARY_REDIRECT",
+              "TOO_EARLY",
+              "TOO_MANY_REQUESTS",
+              "UNAUTHORIZED",
+              "UNAVAILABLE_FOR_LEGAL_REASONS",
+              "UNPROCESSABLE_ENTITY",
+              "UNSUPPORTED_MEDIA_TYPE",
+              "UPGRADE_REQUIRED",
+              "URI_TOO_LONG",
+              "USE_PROXY",
+              "VARIANT_ALSO_NEGOTIATES"
+            ]
+          },
+          "statusCodeValue": { "type": "integer", "format": "int32" }
+        }
+      },
+      "RoleDTO": {
+        "title": "RoleDTO",
+        "required": ["name", "pid"],
+        "type": "object",
+        "properties": {
+          "description": { "type": "string", "description": "描述(255字符以内)" },
+          "name": { "type": "string", "description": "角色(100字符以内)" },
+          "pid": { "type": "integer", "description": "归属", "format": "int64" }
+        }
+      },
+      "SitemapDTO": {
+        "title": "SitemapDTO",
+        "required": ["name", "target"],
+        "type": "object",
+        "properties": {
+          "icon": { "type": "string", "description": "图标(255字符以内)" },
+          "module": { "type": "string", "description": "组件(255字符以内)" },
+          "name": { "type": "string", "description": "名称(50字符以内)" },
+          "params": { "type": "string", "description": "路由参数(255字符以内)" },
+          "pid": { "type": "integer", "description": "上级节点ID", "format": "int64" },
+          "route": { "type": "string", "description": "路由地址(255字符以内)" },
+          "target": { "type": "string", "description": "打开方式(50字符以内)" }
+        }
+      },
+      "菜单树": {
+        "title": "菜单树",
+        "type": "object",
+        "properties": {
+          "category": { "type": "string", "description": "分类", "enum": ["BUTTON", "MENU"] },
+          "children": { "type": "array", "description": "子菜单", "items": { "$ref": "#/components/schemas/菜单树" } },
+          "deleted": { "type": "boolean", "description": "删除", "example": false },
+          "gmtModified": { "type": "string", "description": "更新时间", "format": "date-time" },
+          "icon": { "type": "string", "description": "图标" },
+          "id": { "type": "integer", "description": "id", "format": "int64" },
+          "locked": { "type": "boolean", "description": "锁", "example": false },
+          "module": { "type": "string", "description": "组件" },
+          "name": { "type": "string", "description": "名称" },
+          "params": { "type": "string", "description": "路由参数" },
+          "permission": { "type": "string", "description": "权限" },
+          "pid": { "type": "integer", "description": "上级节点ID", "format": "int64" },
+          "route": { "type": "string", "description": "路由地址" },
+          "show": { "type": "boolean", "description": "显示", "example": false },
+          "target": { "type": "string", "description": "打开方式" }
+        }
+      },
+      "角色树查询": {
+        "title": "角色树查询",
+        "type": "object",
+        "properties": {
+          "children": { "type": "array", "description": "子菜单", "items": { "$ref": "#/components/schemas/角色树查询" } },
+          "description": { "type": "string", "description": "描述" },
+          "gmtModified": { "type": "string", "description": "更新时间", "format": "date-time" },
+          "id": { "type": "integer", "description": "id", "format": "int64" },
+          "locked": { "type": "boolean", "description": "锁", "example": false },
+          "name": { "type": "string", "description": "名称" },
+          "pid": { "type": "integer", "description": "上级节点ID", "format": "int64" }
+        }
+      }
+    }
+  }
+}
