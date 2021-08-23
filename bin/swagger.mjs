@@ -22,7 +22,7 @@ if (/^https?:\/\//.test(process.argv[2])) {
   domain = 'http://localhost'
 }
 
-const sdkFilepath = new URL("../sdk.ts", import.meta.url);
+const sdkFilepath = new URL("../runtime/fetch.ts", import.meta.url);
 
 const definition = v3.generateDefinition(swaggerJSONContent);
 const implement = v3.generateImplement(swaggerJSONContent, new TextDecoder().decode(readFileSync(sdkFilepath)), domain);

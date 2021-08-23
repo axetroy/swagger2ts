@@ -1,6 +1,6 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
 import { generateDefinition, generateImplement } from "./v3/index.ts";
-import "./sdk.ts"; // import to check type and download deps
+import "./runtime/fetch.ts"; // import to check type and download deps
 
 async function getDeps(url: string): Promise<string | undefined> {
   const ps = Deno.run({
@@ -49,7 +49,7 @@ export async function generate(target: string): Promise<string> {
     domain = "http://localhost";
   }
 
-  const sdkURL = new URL("./sdk.ts", import.meta.url);
+  const sdkURL = new URL("./runtime/fetch.ts", import.meta.url);
 
   const sdkFilepath = await getDeps(sdkURL.toString());
 

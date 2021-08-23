@@ -13,7 +13,7 @@
   "files": [
     "README.md",
     "LICENSE",
-    "sdk.ts",
+    "runtime/fetch.ts",
     "index.mjs",
     "dist/v3.mjs",
     "bin/swagger.mjs"
