@@ -1,4 +1,4 @@
-import { generateMultipleLineComments, indentTxt } from "./helper.ts";
+import { generateMultipleLineComments, indentTxt, linesOfText } from "./helper.ts";
 import {
   IOperationObject,
   IParameterObject,
@@ -178,7 +178,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
         generateParamsStr("query", paramsQuery) === "query?: {}" ? "query?: MapString" : generateParamsStr("query", paramsQuery),
         generateParamsStr("header", paramsHeader) === "header?: {}" ? "header?: MapString" : generateParamsStr("header", paramsHeader),
         paramsBody ? `body: ${paramsBody}` : "body?: any",
-        "signal?: AbortSignal"
+        "signal?: AbortSignal",
       ].filter((v) => v);
 
       const docs: string[] = [];
@@ -190,15 +190,19 @@ function generateApi(swagger: ISwagger, indent: number): string {
       }
 
       if (operation.summary) {
-        operation.summary.split("\n").filter(v => v.trim()).forEach((line) => {
-          docs.push(`@summary ${line}`);
-        });
+        linesOfText(operation.summary)
+          .filter((v) => v.trim())
+          .forEach((line) => {
+            docs.push(`@summary ${line}`);
+          });
       }
 
       if (operation.description) {
-        operation.description.split("\n").filter(v => v.trim()).forEach((line) => {
-          docs.push(`@description ${line}`);
-        });
+        linesOfText(operation.description)
+          .filter((v) => v.trim())
+          .forEach((line) => {
+            docs.push(`@description ${line}`);
+          });
       }
 
       const rows = [
