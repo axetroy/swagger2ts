@@ -11,27 +11,27 @@ interface MapString {
 /**
  * ButtonDTO
  */
-export interface ButtonDTO {name?: string, permission?: string, pid?: number, show?: boolean}
+export interface ButtonDTO {name?: string /* 名称(50字符以内) */, permission?: string /* 权限(255字符以内) */, pid?: number /* 上级节点ID */, show?: boolean /* 显示 */}
 /**
  * MenuTreeVO
  */
-export interface MenuTreeVO {category?: "BUTTON" | "MENU", children?: Array<MenuTreeVO>, icon?: string, id?: number, module?: string, name?: string, params?: string, permission?: string, route?: string, target?: string}
+export interface MenuTreeVO {category?: "BUTTON" | "MENU" /* 类型 */, children?: Array<MenuTreeVO> /* 子菜单 */, icon?: string /* 图标 */, id?: number /* id */, module?: string /* 组件 */, name?: string /* 名称 */, params?: string /* 路由参数 */, permission?: string /* 权限 */, route?: string /* 路由地址 */, target?: string /* 打开方式(50字符以内) */}
 /**
  * RoleDTO
  */
-export interface RoleDTO {description?: string, name?: string, pid?: number}
+export interface RoleDTO {description?: string /* 描述(255字符以内) */, name?: string /* 角色(100字符以内) */, pid?: number /* 归属 */}
 /**
  * SitemapDTO
  */
-export interface SitemapDTO {icon?: string, module?: string, name?: string, params?: string, pid?: number, route?: string, target?: string}
+export interface SitemapDTO {icon?: string /* 图标(255字符以内) */, module?: string /* 组件(255字符以内) */, name?: string /* 名称(50字符以内) */, params?: string /* 路由参数(255字符以内) */, pid?: number /* 上级节点ID */, route?: string /* 路由地址(255字符以内) */, target?: string /* 打开方式(50字符以内) */}
 /**
  * 菜单树
  */
-export interface 菜单树 {category?: "BUTTON" | "MENU", children?: Array<菜单树>, deleted?: boolean, gmtModified?: string, icon?: string, id?: number, locked?: boolean, module?: string, name?: string, params?: string, permission?: string, pid?: number, route?: string, show?: boolean, target?: string}
+export interface 菜单树 {category?: "BUTTON" | "MENU" /* 分类 */, children?: Array<菜单树> /* 子菜单 */, deleted?: boolean /* 删除 */, gmtModified?: string /* 更新时间 */, icon?: string /* 图标 */, id?: number /* id */, locked?: boolean /* 锁 */, module?: string /* 组件 */, name?: string /* 名称 */, params?: string /* 路由参数 */, permission?: string /* 权限 */, pid?: number /* 上级节点ID */, route?: string /* 路由地址 */, show?: boolean /* 显示 */, target?: string /* 打开方式 */}
 /**
  * 角色树查询
  */
-export interface 角色树查询 {children?: Array<角色树查询>, description?: string, gmtModified?: string, id?: number, locked?: boolean, name?: string, pid?: number}
+export interface 角色树查询 {children?: Array<角色树查询> /* 子菜单 */, description?: string /* 描述 */, gmtModified?: string /* 更新时间 */, id?: number /* id */, locked?: boolean /* 锁 */, name?: string /* 名称 */, pid?: number /* 上级节点ID */}
 
 export interface SwaggerApi{
   /**

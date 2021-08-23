@@ -8,7 +8,7 @@ interface MapString {
 }
 /* default type by generation end */
 
-export interface dataSetList {total?: number, apis?: Array<{apiKey?: string, apiVersionNumber?: string, apiUrl?: string, apiDocumentationUrl?: string}>}
+export interface dataSetList {total?: number, apis?: Array<{apiKey?: string /* To be used as a dataset parameter value */, apiVersionNumber?: string /* To be used as a version parameter value */, apiUrl?: string /* The URL describing the dataset's fields */, apiDocumentationUrl?: string /* A URL to the API console for each API */}>}
 
 export interface SwaggerApi{
   /**

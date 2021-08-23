@@ -11,11 +11,11 @@ interface MapString {
 /**
  * ClientVO
  */
-export interface ClientVO {authorizationGrantTypes?: string, clientId?: string, clientSecretExpiresAt?: string, gmtCreate?: string, id?: string, name?: string, redirectUris?: string}
+export interface ClientVO {authorizationGrantTypes?: string /* 授权方式 */, clientId?: string /* client_id */, clientSecretExpiresAt?: string /* 到期时间 */, gmtCreate?: string /* 录入时间 */, id?: string /* 主键 */, name?: string /* 应用名称 */, redirectUris?: string /* 回调地址 */}
 /**
  * PageResultVOOfClientVO
  */
-export interface PageResultVOOfClientVO {data?: Array<ClientVO>, total?: number}
+export interface PageResultVOOfClientVO {data?: Array<ClientVO> /* 信息 */, total?: number /* 总数 */}
 /**
  * ResponseEntity
  */

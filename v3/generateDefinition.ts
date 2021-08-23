@@ -11,6 +11,10 @@ import {
   ISwagger,
 } from "./types.ts";
 
+function generateParamsComment(schema: ISchemaObject) {
+  return schema.description ? ` /* ${schema.description} */` : "";
+}
+
 /**
  * generate document for rate
  */
@@ -38,6 +42,8 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
         stringResult += " | null";
       }
 
+      stringResult += generateParamsComment(schema as ISchemaObject);
+
       return stringResult;
     }
 
@@ -61,16 +67,16 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
         return generateLiteral("number");
       case "array":
         if (!schema.items) return "any[]";
-        return `Array<${generateSchema("", schema.items, indent)}>`;
+        return `Array<${generateSchema("", schema.items, indent)}>${generateParamsComment(schema)}`;
       case "object":
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
           outputObject.push(`${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, true)}`);
         }
-        return `${name ? `interface ${name} ` : ""}{${outputObject.join(", ")}}`;
+        return `${name ? `interface ${name} ` : generateParamsComment(schema)}{${outputObject.join(", ")}}`;
       default:
-        return `${name ? `type ${name} = ` : ""}any`;
+        return `${name ? `type ${name} = ` : ""}any${generateParamsComment(schema)}`;
     }
   }
 }
@@ -104,12 +110,11 @@ function generateComponent(swagger: ISwagger, indent: number): string {
             comments.push(`@description ${schema.description}`);
           }
 
-          const jsdocComments = generateMultipleLineComments(comments).trim()
+          const jsdocComments = generateMultipleLineComments(comments).trim();
 
           if (jsdocComments) {
             componentOutput += jsdocComments + "\n";
           }
-
         }
 
         componentOutput += `export ${generateSchema(componentName, schema, indent)}`;
