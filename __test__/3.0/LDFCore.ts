@@ -373,12 +373,12 @@ export interface SwaggerApi{
    * @tag File
    * @summary 文件上传
    */
-  post(url: "/api/File/Upload", options: {path?: MapString, query?: MapString, header?: MapString, body: null, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Upload", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {module?: string | null} */, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag File
    * @summary 图片上传
    */
-  post(url: "/api/File/UploadPic", options: {path?: MapString, query?: MapString, header?: MapString, body: null, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/UploadPic", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {module?: string | null, width?: number | null, height?: number | null} */, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag File
    * @summary 获取文件(返回byte[])
@@ -397,7 +397,7 @@ export interface SwaggerApi{
    * @tag File
    * @summary 删除文件
    */
-  post(url: "/api/File/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: null, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {code?: string | null} */, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag LoginLog
    * @summary 列表

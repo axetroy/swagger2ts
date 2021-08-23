@@ -17,7 +17,7 @@ export interface SwaggerApi{
    * @tag auth-server-endpoint
    * @summary 文件上传测试
    */
-  post(url: "/other", options: {path?: MapString, query: {name?: string}, header?: MapString, body: File | Blob | undefined, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/other", options: {path?: MapString, query: {name?: string}, header?: MapString, body: FormData /* File | Blob | undefined */, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 应用接入管理
    * @summary 查询

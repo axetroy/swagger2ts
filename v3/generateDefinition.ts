@@ -103,12 +103,14 @@ function generateBody(body: IRequestBodyObject | IResponseObject, indent: number
   if (!body.content) return "null";
   const jsonBody = body.content["application/json"];
   const streamBody = body.content["application/octet-stream"];
-  const formBody = body.content["application/x-www-form-urlencoded"];
+  const formBody = body.content["multipart/form-data"];
   const anyBody = body.content["*/*"];
 
   const mediaSchema = jsonBody || streamBody || formBody || anyBody;
 
   if (!mediaSchema || !mediaSchema.schema) return "null";
+
+  if (formBody) return `FormData /* ${generateSchema("", mediaSchema.schema, 0)} */`;
 
   return generateSchema("", mediaSchema.schema, 0);
 }
