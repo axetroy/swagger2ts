@@ -1,13 +1,8 @@
-interface RequestConfig extends Config {
-  url: string;
-  method: string;
-}
-
-interface HeaderMapString {
+interface RuntimeHeaderMapString {
   [key: string]: string;
 }
 
-interface Config {
+interface RuntimeRequestCommonOptions {
   path?: {
     [key: string]: string;
   };
@@ -21,8 +16,13 @@ interface Config {
   signal?: AbortSignal;
 }
 
-class Http {
-  public readonly defaultHeaders: { default: HeaderMapString; [method: string]: HeaderMapString } = {
+interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
+  url: string;
+  method: string;
+}
+
+class Runtime {
+  public readonly defaultHeaders: { default: RuntimeHeaderMapString; [method: string]: RuntimeHeaderMapString } = {
     default: {
       "Content-Type": "application/json",
     },
@@ -44,7 +44,7 @@ class Http {
     this._prefix = prefix;
   }
 
-  public request<T>(config: RequestConfig): Promise<T> {
+  public request<T>(config: RuntimeRequestOptions): Promise<T> {
     const url = new URL(this.baseURL + config.url);
     const headers = new Headers();
 
@@ -100,7 +100,7 @@ class Http {
     });
   }
 
-  public get<T>(url: string, config: Config): Promise<T> {
+  public get<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "GET",
       url,
@@ -108,7 +108,7 @@ class Http {
     });
   }
 
-  public post<T>(url: string, config: Config): Promise<T> {
+  public post<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "POST",
       url,
@@ -116,7 +116,7 @@ class Http {
     });
   }
 
-  public put<T>(url: string, config: Config): Promise<T> {
+  public put<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PUT",
       url,
@@ -124,7 +124,7 @@ class Http {
     });
   }
 
-  public delete<T>(url: string, config: Config): Promise<T> {
+  public delete<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "DELETE",
       url,
@@ -132,7 +132,7 @@ class Http {
     });
   }
 
-  public head<T>(url: string, config: Config): Promise<T> {
+  public head<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "HEAD",
       url,
@@ -140,7 +140,7 @@ class Http {
     });
   }
 
-  public options<T>(url: string, config: Config): Promise<T> {
+  public options<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "OPTIONS",
       url,
@@ -148,7 +148,7 @@ class Http {
     });
   }
 
-  public patch<T>(url: string, config: Config): Promise<T> {
+  public patch<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "PATCH",
       url,
@@ -156,7 +156,7 @@ class Http {
     });
   }
 
-  public trace<T>(url: string, config: Config): Promise<T> {
+  public trace<T>(url: string, config: RuntimeRequestCommonOptions): Promise<T> {
     return this.request<T>({
       method: "TRACE",
       url,
