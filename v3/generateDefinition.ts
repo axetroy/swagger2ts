@@ -91,7 +91,30 @@ function generateComponent(swagger: ISwagger, indent: number): string {
       for (const componentName in swagger.components.schemas) {
         const schema = swagger.components.schemas[componentName];
 
-        output.push("export " + generateSchema(componentName, schema, indent));
+        let componentOutput = "";
+
+        if (!isReferenceObject(schema)) {
+          const comments: string[] = [];
+
+          if (schema.title) {
+            comments.push(`${schema.title}`);
+          }
+
+          if (schema.description) {
+            comments.push(`@description ${schema.description}`);
+          }
+
+          const jsdocComments = generateMultipleLineComments(comments).trim()
+
+          if (jsdocComments) {
+            componentOutput += jsdocComments + "\n";
+          }
+
+        }
+
+        componentOutput += `export ${generateSchema(componentName, schema, indent)}`;
+
+        output.push(componentOutput);
       }
     }
   }
@@ -102,11 +125,12 @@ function generateComponent(swagger: ISwagger, indent: number): string {
 function generateBody(body: IRequestBodyObject | IResponseObject, indent: number) {
   if (!body.content) return "null";
   const jsonBody = body.content["application/json"];
+  const xmlBody = body.content["application/xml"];
   const streamBody = body.content["application/octet-stream"];
   const formBody = body.content["multipart/form-data"];
   const anyBody = body.content["*/*"];
 
-  const mediaSchema = jsonBody || streamBody || formBody || anyBody;
+  const mediaSchema = jsonBody || xmlBody || streamBody || formBody || anyBody;
 
   if (!mediaSchema || !mediaSchema.schema) return "null";
 

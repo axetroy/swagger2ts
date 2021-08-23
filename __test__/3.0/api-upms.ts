@@ -8,11 +8,29 @@ interface MapString {
 }
 /* default type by generation end */
 
+/**
+ * ButtonDTO
+ */
 export interface ButtonDTO {name?: string, permission?: string, pid?: number, show?: boolean}
+/**
+ * MenuTreeVO
+ */
 export interface MenuTreeVO {category?: "BUTTON" | "MENU", children?: Array<MenuTreeVO>, icon?: string, id?: number, module?: string, name?: string, params?: string, permission?: string, route?: string, target?: string}
+/**
+ * RoleDTO
+ */
 export interface RoleDTO {description?: string, name?: string, pid?: number}
+/**
+ * SitemapDTO
+ */
 export interface SitemapDTO {icon?: string, module?: string, name?: string, params?: string, pid?: number, route?: string, target?: string}
+/**
+ * 菜单树
+ */
 export interface 菜单树 {category?: "BUTTON" | "MENU", children?: Array<菜单树>, deleted?: boolean, gmtModified?: string, icon?: string, id?: number, locked?: boolean, module?: string, name?: string, params?: string, permission?: string, pid?: number, route?: string, show?: boolean, target?: string}
+/**
+ * 角色树查询
+ */
 export interface 角色树查询 {children?: Array<角色树查询>, description?: string, gmtModified?: string, id?: number, locked?: boolean, name?: string, pid?: number}
 
 export interface SwaggerApi{
