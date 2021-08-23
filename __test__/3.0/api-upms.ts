@@ -122,6 +122,7 @@ interface RuntimeRequestCommonOptions {
   };
   body?: any;
   signal?: AbortSignal;
+  timeout?: number;
 }
 
 interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
@@ -183,12 +184,6 @@ class ResponseInterceptor implements IResponseInterceptor {
 }
 
 class Runtime {
-  public readonly defaultHeaders: { default: RuntimeHeaderMapString; [method: string]: RuntimeHeaderMapString } = {
-    default: {
-      "Content-Type": "application/json",
-    },
-  };
-
   constructor(private _domain: string, private _prefix: string) {}
 
   #requestInterceptor = new RequestInterceptor();
@@ -204,6 +199,35 @@ class Runtime {
         return self.#responseInterceptor as IResponseInterceptor;
       },
     };
+  }
+
+  public get defaults() {
+    return {
+      timeout: 60 * 1000, // 60s
+      headers: {
+        common: {
+          "Content-Type": "application/json",
+        },
+      } as { common: RuntimeHeaderMapString; [method: string]: RuntimeHeaderMapString },
+    };
+  }
+
+  #timeout<T>(ms: number, promise: Promise<T>) {
+    return new Promise<T>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error("TIMEOUT"));
+      }, ms);
+
+      promise
+        .then((value) => {
+          clearTimeout(timer);
+          resolve(value);
+        })
+        .catch((reason) => {
+          clearTimeout(timer);
+          reject(reason);
+        });
+    });
   }
 
   get #baseURL(): string {
@@ -224,19 +248,24 @@ class Runtime {
     const url = new URL(this.#baseURL + config.url);
     config.header = config.header || {};
 
+    const defaults = this.defaults;
+
     // set default header
-    for (const key in this.defaultHeaders.default) {
-      config.header[key] = this.defaultHeaders.default[key];
+    for (const key in defaults.headers.common) {
+      config.header[key] = defaults.headers.common[key];
     }
 
     // set header for this method
-    for (const key in this.defaultHeaders[config.method] || {}) {
-      config.header[key] = this.defaultHeaders[config.method][key];
+    for (const key in defaults.headers[config.method] || {}) {
+      config.header[key] = defaults.headers[config.method][key];
     }
 
     if (config.query) {
       for (const key in config.query) {
-        url.searchParams.append(key, config.query[key]);
+        const value = config.query[key];
+        if (value !== undefined) {
+          url.searchParams.append(key, value);
+        }
       }
     }
 
@@ -255,17 +284,23 @@ class Runtime {
 
     if (config.header) {
       for (const key in config.header) {
-        headers.set(key, config.header[key]);
+        const value = config.header[key];
+        if (value !== undefined) {
+          headers.set(key, config.header[key]);
+        }
       }
     }
 
     try {
-      return await fetch(url.toString(), {
-        method: config.method,
-        body: config.body,
-        headers: headers,
-        signal: config.signal,
-      })
+      return await this.#timeout<Response>(
+        config.timeout || defaults.timeout,
+        fetch(url.toString(), {
+          method: config.method,
+          body: config.body,
+          headers: headers,
+          signal: config.signal,
+        })
+      )
         .then((resp) => {
           const contentType = resp.headers.get("content-type");
           switch (contentType) {
