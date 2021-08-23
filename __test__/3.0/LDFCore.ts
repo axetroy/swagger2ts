@@ -373,12 +373,12 @@ export interface SwaggerApi{
    * @tag File
    * @summary 文件上传
    */
-  post(url: "/api/File/Upload", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {module?: string | null} */, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Upload", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{module?: string | null}>, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag File
    * @summary 图片上传
    */
-  post(url: "/api/File/UploadPic", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {module?: string | null, width?: number | null, height?: number | null} */, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/UploadPic", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{module?: string | null, width?: number | null, height?: number | null}>, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag File
    * @summary 获取文件(返回byte[])
@@ -397,7 +397,7 @@ export interface SwaggerApi{
    * @tag File
    * @summary 删除文件
    */
-  post(url: "/api/File/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: FormData /* {code?: string | null} */, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/File/Remove", options: {path?: MapString, query?: MapString, header?: MapString, body: RuntimeForm<{code?: string | null}>, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag LoginLog
    * @summary 列表
@@ -802,6 +802,27 @@ class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
+interface IRuntimeForm {
+  [key: string]: any;
+}
+
+export class RuntimeForm<T extends IRuntimeForm> {
+  constructor(private _form: T) {}
+  public formData(): FormData {
+    const form = new FormData();
+
+    for (const key in this._form) {
+      if (this._form[key] !== undefined) {
+        form.append(key, this._form[key]);
+      }
+    }
+
+    return form;
+  }
+}
+
+const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
+
 class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
 
@@ -916,7 +937,7 @@ class Runtime {
       const exec = () =>
         fetch(url.toString(), {
           method: config.method,
-          body: config.body,
+          body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
           signal: config.signal,
         });

@@ -132,6 +132,27 @@ class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
+interface IRuntimeForm {
+  [key: string]: any;
+}
+
+export class RuntimeForm<T extends IRuntimeForm> {
+  constructor(private _form: T) {}
+  public formData(): FormData {
+    const form = new FormData();
+
+    for (const key in this._form) {
+      if (this._form[key] !== undefined) {
+        form.append(key, this._form[key]);
+      }
+    }
+
+    return form;
+  }
+}
+
+const data: RuntimeForm<{ name?: string }> = new RuntimeForm({ name: undefined });
+
 class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
 
@@ -246,7 +267,7 @@ class Runtime {
       const exec = () =>
         fetch(url.toString(), {
           method: config.method,
-          body: config.body,
+          body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
           headers: headers,
           signal: config.signal,
         });

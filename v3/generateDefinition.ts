@@ -110,7 +110,10 @@ function generateBody(body: IRequestBodyObject | IResponseObject, indent: number
 
   if (!mediaSchema || !mediaSchema.schema) return "null";
 
-  if (formBody) return `FormData /* ${generateSchema("", mediaSchema.schema, 0)} */`;
+  if (formBody && mediaSchema === formBody) {
+    if (!formBody.schema) return "RuntimeForm";
+    return `RuntimeForm<${generateSchema("", formBody.schema, 0)}>`;
+  }
 
   return generateSchema("", mediaSchema.schema, 0);
 }
