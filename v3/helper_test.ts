@@ -1,5 +1,16 @@
 import { assertEquals } from "https://deno.land/std@0.105.0/testing/asserts.ts";
-import { indentTxt, generateMultipleLineComments } from "./helper.ts";
+import { linesOfText, indentTxt, generateMultipleLineComments } from "./helper.ts";
+
+Deno.test({
+  name: "linesOfText()",
+  fn: () => {
+    assertEquals(linesOfText("hello world"), ["hello world"]);
+    assertEquals(linesOfText("line 1\nline 2"), ["line 1", "line 2"]);
+    assertEquals(linesOfText("line 1\r\nline 2"), ["line 1", "line 2"]);
+    assertEquals(linesOfText("line 1\n\rline 2"), ["line 1", "line 2"]);
+    assertEquals(linesOfText("line 1\rline 2"), ["line 1", "line 2"]);
+  },
+});
 
 Deno.test({
   name: "indentText()",

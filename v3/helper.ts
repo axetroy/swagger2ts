@@ -18,10 +18,15 @@ export function generateMultipleLineComments(comments: string[]): string {
   return raw.join("\n");
 }
 
-export function indentTxt(txt: string, indent: number): string {
-  const arrayOfLines = txt.match(/[^\r\n]+/g);
+/**
+ * @description get lines of a text
+ */
+export function linesOfText(txt: string): string[] {
+  return txt.replace(/\r\n|\n\r|\n|\r/g, "\n").split(/\n/g);
+}
 
-  if (!arrayOfLines) return txt
+export function indentTxt(txt: string, indent: number): string {
+  const arrayOfLines = linesOfText(txt);
 
   return arrayOfLines.map((line) => " ".repeat(indent) + line).join("\n");
 }
