@@ -163,6 +163,8 @@ function generateApi(swagger: ISwagger, indent: number): string {
       if (operation.requestBody) {
         if (isRequestBodyObject(operation.requestBody)) {
           paramsBody = generateBody(operation.requestBody, 0);
+        } else {
+          paramsBody = generateSchema("", operation.requestBody, 0);
         }
       }
 

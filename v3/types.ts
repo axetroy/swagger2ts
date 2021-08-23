@@ -259,7 +259,7 @@ export interface IReferenceObject {
 }
 
 export function isReferenceObject(x: any): x is IReferenceObject {
-  return x && !!x.$ref;
+  return x && typeof x.$ref === "string";
 }
 
 export function isSchemaObject(x: any): x is ISchemaObject {
