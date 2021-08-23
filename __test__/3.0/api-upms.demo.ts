@@ -1,4 +1,4 @@
-import { unknownApi } from "./api-auth.ts";
+import { unknownApi } from "./api-upms.ts";
 
 unknownApi.domain = "http://192.168.0.21";
 unknownApi.prefix = "/upms";
