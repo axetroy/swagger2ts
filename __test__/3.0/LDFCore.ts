@@ -143,22 +143,22 @@ export interface SwaggerApi{
    * @tag Account
    * @summary 退出登录
    */
-  get(url: "/api/Account/Logout", options: {path?: MapString, query: {logoutId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Account/Logout", options: {path?: MapString, query: {logoutId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag Account
    * @summary Ids登录错误信息
    */
-  get(url: "/api/Account/Error", options: {path?: MapString, query: {errorId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Account/Error", options: {path?: MapString, query: {errorId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag App
    * @summary 获取初始化数据
    */
-  get(url: "/api/App/Init", options: {path?: MapString, query: {client: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<InitAppOutputIResultModel>
+  get(url: "/api/App/Init", options: {path?: MapString, query: {client?: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<InitAppOutputIResultModel>
   /**
    * @tag AppVersion
    * @summary 获取最新版本信息
    */
-  get(url: "/api/AppVersion/GetVersion", options: {path?: MapString, query: {type: number | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/AppVersion/GetVersion", options: {path?: MapString, query: {type?: number}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag AppVersion
    * @summary 增加版本信息
@@ -168,12 +168,12 @@ export interface SwaggerApi{
    * @tag AppVersion
    * @summary 获取版本记录
    */
-  get(url: "/api/AppVersion/GetVersionRecords", options: {path?: MapString, query: {Type: number | undefined, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AppVersionDtoPageListIResultModel>
+  get(url: "/api/AppVersion/GetVersionRecords", options: {path?: MapString, query: {Type?: number, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AppVersionDtoPageListIResultModel>
   /**
    * @tag Area
    * @summary 分页查询
    */
-  get(url: "/api/Area/Page", options: {path?: MapString, query: {Level: number | undefined | null, ParentCode: string | undefined | null, ParentId: string | undefined | null, Code: string | undefined | null, Name: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AreaListOutputPageListIResultModel>
+  get(url: "/api/Area/Page", options: {path?: MapString, query: {Level?: number | null, ParentCode?: string | null, ParentId?: string | null, Code?: string | null, Name?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AreaListOutputPageListIResultModel>
   /**
    * @tag Area
    * @summary 添加区域
@@ -193,12 +193,12 @@ export interface SwaggerApi{
    * @tag Area
    * @summary 级联下拉选项
    */
-  get(url: "/api/Area/TreeOptions", options: {path?: MapString, query: {Level: number | undefined | null, LevelFull: number | undefined | null, ParentCode: string | undefined | null, AreaCode: string | undefined | null, AreaCodeFull: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Area/TreeOptions", options: {path?: MapString, query: {Level?: number | null, LevelFull?: number | null, ParentCode?: string | null, AreaCode?: string | null, AreaCodeFull?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
   /**
    * @tag Area
    * @summary 特定级别的下拉选项
    */
-  get(url: "/api/Area/OptionsBySpecificLevel", options: {path?: MapString, query: {Level: number | undefined | null, LevelFull: number | undefined | null, ParentCode: string | undefined | null, AreaCode: string | undefined | null, AreaCodeFull: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Area/OptionsBySpecificLevel", options: {path?: MapString, query: {Level?: number | null, LevelFull?: number | null, ParentCode?: string | null, AreaCode?: string | null, AreaCodeFull?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
   /**
    * @tag Area
    * @summary 格式化区域数据
@@ -208,7 +208,7 @@ export interface SwaggerApi{
    * @tag Audit
    * @summary 列表查询
    */
-  get(url: "/api/Audit/Page", options: {path?: MapString, query: {FilterNoUserLog: boolean | undefined, Route: string | undefined | null, RouteSummary: string | undefined | null, Url: string | undefined | null, Method: string | undefined | null, StatusCode: number | undefined | null, RemoteIP: string | undefined | null, UserId: string | undefined | null, UserName: string | undefined | null, CreationTimeStart: string | undefined | null, CreationTimeEnd: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AuditListOutputPageListIResultModel>
+  get(url: "/api/Audit/Page", options: {path?: MapString, query: {FilterNoUserLog?: boolean, Route?: string | null, RouteSummary?: string | null, Url?: string | null, Method?: string | null, StatusCode?: number | null, RemoteIP?: string | null, UserId?: string | null, UserName?: string | null, CreationTimeStart?: string | null, CreationTimeEnd?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<AuditListOutputPageListIResultModel>
   /**
    * @tag Dictionary
    * @summary 新增
@@ -218,7 +218,7 @@ export interface SwaggerApi{
    * @tag Dictionary
    * @summary 详情
    */
-  get(url: "/api/Dictionary/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryIResultModel>
+  get(url: "/api/Dictionary/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryIResultModel>
   /**
    * @tag Dictionary
    * @summary 修改
@@ -228,7 +228,7 @@ export interface SwaggerApi{
    * @tag Dictionary
    * @summary 分页查询
    */
-  get(url: "/api/Dictionary/Page", options: {path?: MapString, query: {Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryDtoPageListIResultModel>
+  get(url: "/api/Dictionary/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryDtoPageListIResultModel>
   /**
    * @tag Dictionary
    * @summary 移除
@@ -238,22 +238,22 @@ export interface SwaggerApi{
    * @tag Dictionary
    * @summary 根据类型树形获取
    */
-  get(url: "/api/Dictionary/ListByType", options: {path?: MapString, query: {typeId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryListIResultModel>
+  get(url: "/api/Dictionary/ListByType", options: {path?: MapString, query: {typeId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryListIResultModel>
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项
    */
-  get(url: "/api/Dictionary/OptionsByCode", options: {path?: MapString, query: {code: string | undefined | null, isLoadAll: boolean | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Dictionary/OptionsByCode", options: {path?: MapString, query: {code?: string | null, isLoadAll?: boolean}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项（多个）
    */
-  get(url: "/api/Dictionary/OptionsListByCodes", options: {path?: MapString, query: {codes: string | undefined | null, isLoadAll: boolean | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Dictionary/OptionsListByCodes", options: {path?: MapString, query: {codes?: string | null, isLoadAll?: boolean}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringOptionResultModelListIResultModel>
   /**
    * @tag Dictionary
    * @summary 根据类型树形获取(树形)
    */
-  get(url: "/api/Dictionary/TreeOptionsByCode", options: {path?: MapString, query: {code: string | undefined | null, isLoadAll: boolean | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringTreeOptionResultModelDtoListIResultModel>
+  get(url: "/api/Dictionary/TreeOptionsByCode", options: {path?: MapString, query: {code?: string | null, isLoadAll?: boolean}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<StringTreeOptionResultModelDtoListIResultModel>
   /**
    * @tag DictionaryType
    * @summary 新增
@@ -263,7 +263,7 @@ export interface SwaggerApi{
    * @tag DictionaryType
    * @summary 详情
    */
-  get(url: "/api/DictionaryType/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeIResultModel>
+  get(url: "/api/DictionaryType/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeIResultModel>
   /**
    * @tag DictionaryType
    * @summary 修改
@@ -273,7 +273,7 @@ export interface SwaggerApi{
    * @tag DictionaryType
    * @summary 分页查询
    */
-  get(url: "/api/DictionaryType/Page", options: {path?: MapString, query: {Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeDtoPageListIResultModel>
+  get(url: "/api/DictionaryType/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<DictionaryTypeDtoPageListIResultModel>
   /**
    * @tag DictionaryType
    * @summary 移除
@@ -288,12 +288,12 @@ export interface SwaggerApi{
    * @tag Enterprise
    * @summary 分页列表
    */
-  get(url: "/api/Enterprise/Page", options: {path?: MapString, query: {Id: string | undefined | null, Code: string | undefined | null, Level: number | undefined | null, Name: string | undefined | null, Path: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseListOutputPageListIResultModel>
+  get(url: "/api/Enterprise/Page", options: {path?: MapString, query: {Id?: string | null, Code?: string | null, Level?: number | null, Name?: string | null, Path?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseListOutputPageListIResultModel>
   /**
    * @tag Enterprise
    * @summary 详情
    */
-  get(url: "/api/Enterprise/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseOutputIResultModel>
+  get(url: "/api/Enterprise/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<EnterpriseOutputIResultModel>
   /**
    * @tag Enterprise
    * @summary 添加
@@ -313,12 +313,12 @@ export interface SwaggerApi{
    * @tag Enterprise
    * @summary 级联下拉选项
    */
-  get(url: "/api/Enterprise/TreeOptions", options: {path?: MapString, query: {Path: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Enterprise/TreeOptions", options: {path?: MapString, query: {Path?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<TreeOptionResultModelListIResultModel>
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类
    */
-  get(url: "/api/FaqCategory/Tree", options: {path?: MapString, query: {ParentId: string | undefined | null, Name: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryTreeOutputListIResultModel>
+  get(url: "/api/FaqCategory/Tree", options: {path?: MapString, query: {ParentId?: string | null, Name?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryTreeOutputListIResultModel>
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类并附带内容
@@ -328,7 +328,7 @@ export interface SwaggerApi{
    * @tag FaqCategory
    * @summary 详情
    */
-  get(url: "/api/FaqCategory/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryOutputIResultModel>
+  get(url: "/api/FaqCategory/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqCategoryOutputIResultModel>
   /**
    * @tag FaqCategory
    * @summary 添加
@@ -348,12 +348,12 @@ export interface SwaggerApi{
    * @tag FaqContent
    * @summary 分页列表
    */
-  get(url: "/api/FaqContent/Page", options: {path?: MapString, query: {CategoryId: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentListOutputPageListIResultModel>
+  get(url: "/api/FaqContent/Page", options: {path?: MapString, query: {CategoryId?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentListOutputPageListIResultModel>
   /**
    * @tag FaqContent
    * @summary 详情
    */
-  get(url: "/api/FaqContent/Detail", options: {path?: MapString, query: {id: string | undefined | null, isView: boolean | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentOutputIResultModel>
+  get(url: "/api/FaqContent/Detail", options: {path?: MapString, query: {id?: string | null, isView?: boolean}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<FaqContentOutputIResultModel>
   /**
    * @tag FaqContent
    * @summary 添加
@@ -383,16 +383,16 @@ export interface SwaggerApi{
    * @tag File
    * @summary 获取文件(返回byte[])
    */
-  get(url: "/api/File/Get", options: {path?: MapString, query: {code: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/Get", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag File
    * @summary 下载文件(返回Stream)
    */
-  get(url: "/api/File/Download", options: {path?: MapString, query: {code: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/Download", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag File
    */
-  get(url: "/api/File/DownloadByStream", options: {path?: MapString, query: {code: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  get(url: "/api/File/DownloadByStream", options: {path?: MapString, query: {code?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag File
    * @summary 删除文件
@@ -402,7 +402,7 @@ export interface SwaggerApi{
    * @tag LoginLog
    * @summary 列表
    */
-  get(url: "/api/LoginLog/Page", options: {path?: MapString, query: {UserName: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<LoginLogListOutputPageListIResultModel>
+  get(url: "/api/LoginLog/Page", options: {path?: MapString, query: {UserName?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<LoginLogListOutputPageListIResultModel>
   /**
    * @tag Menu
    * @summary 新增
@@ -417,27 +417,27 @@ export interface SwaggerApi{
    * @tag Menu
    * @summary 详情
    */
-  get(url: "/api/Menu/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuIResultModel>
+  get(url: "/api/Menu/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuIResultModel>
   /**
    * @tag Menu
    * @summary 分页
    */
-  get(url: "/api/Menu/Page", options: {path?: MapString, query: {Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuPageListIResultModel>
+  get(url: "/api/Menu/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuPageListIResultModel>
   /**
    * @tag Menu
    * @summary 获取所有树形菜单
    */
-  get(url: "/api/Menu/Tree", options: {path?: MapString, query: {client: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
+  get(url: "/api/Menu/Tree", options: {path?: MapString, query: {client?: ClientEnums}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
   /**
    * @tag Menu
    * @summary 获取角色树形菜单
    */
-  get(url: "/api/Menu/LoadTreeByRole", options: {path?: MapString, query: {roleId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
+  get(url: "/api/Menu/LoadTreeByRole", options: {path?: MapString, query: {roleId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<MenuOutputListIResultModel>
   /**
    * @tag Menu
    * @summary 获取菜单按钮
    */
-  get(url: "/api/Menu/Buttons", options: {path?: MapString, query: {menuId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ButtonDtoIResultModel>
+  get(url: "/api/Menu/Buttons", options: {path?: MapString, query: {menuId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ButtonDtoIResultModel>
   /**
    * @tag Menu
    * @summary 配置菜单按钮
@@ -462,12 +462,12 @@ export interface SwaggerApi{
    * @tag Notify
    * @summary 获取通知列表
    */
-  get(url: "/api/Notify/Page", options: {path?: MapString, query: {Type: string | undefined | null, Readed: boolean | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
+  get(url: "/api/Notify/Page", options: {path?: MapString, query: {Type?: string | null, Readed?: boolean | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
   /**
    * @tag Notify
    * @summary 获取通知列表(信息预览框使用)
    */
-  get(url: "/api/Notify/PageLite", options: {path?: MapString, query: {Type: string | undefined | null, Readed: boolean | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
+  get(url: "/api/Notify/PageLite", options: {path?: MapString, query: {Type?: string | null, Readed?: boolean | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<NotifyListOutputPageListIResultModel>
   /**
    * @tag Notify
    * @summary 获取未读消息数量
@@ -512,7 +512,7 @@ export interface SwaggerApi{
    * @tag OpenApi
    * @summary 同步API信息到数据库
    */
-  post(url: "/api/OpenApi/AddOrUpdate", options: {path?: MapString, query: {data: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  post(url: "/api/OpenApi/AddOrUpdate", options: {path?: MapString, query: {data?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag OpenApi
    * @summary 树形下拉选项
@@ -522,12 +522,12 @@ export interface SwaggerApi{
    * @tag Organizations
    * @summary 分页列表
    */
-  get(url: "/api/Organizations/Page", options: {path?: MapString, query: {EnterpriseId: string | undefined | null, Name: string | undefined | null, Path: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsListOutputPageListIResultModel>
+  get(url: "/api/Organizations/Page", options: {path?: MapString, query: {EnterpriseId?: string | null, Name?: string | null, Path?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsListOutputPageListIResultModel>
   /**
    * @tag Organizations
    * @summary 详情
    */
-  get(url: "/api/Organizations/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsOutputIResultModel>
+  get(url: "/api/Organizations/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<OrganizationsOutputIResultModel>
   /**
    * @tag Organizations
    * @summary 添加
@@ -552,12 +552,12 @@ export interface SwaggerApi{
    * @tag Roles
    * @summary 分页查询
    */
-  get(url: "/api/Roles/Page", options: {path?: MapString, query: {RoleName: string | undefined | null, Code: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesListOutputPageListIResultModel>
+  get(url: "/api/Roles/Page", options: {path?: MapString, query: {RoleName?: string | null, Code?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesListOutputPageListIResultModel>
   /**
    * @tag Roles
    * @summary 获取单个信息
    */
-  get(url: "/api/Roles/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesDtoIResultModel>
+  get(url: "/api/Roles/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RolesDtoIResultModel>
   /**
    * @tag Roles
    * @summary 新增
@@ -587,7 +587,7 @@ export interface SwaggerApi{
    * @tag Roles
    * @summary 获取菜单按钮
    */
-  get(url: "/api/Roles/GetMenus", options: {path?: MapString, query: {roleId: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RoleMenuTreeOutputListIResultModel>
+  get(url: "/api/Roles/GetMenus", options: {path?: MapString, query: {roleId?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<RoleMenuTreeOutputListIResultModel>
   /**
    * @tag Sample
    * @summary 测试
@@ -611,12 +611,12 @@ export interface SwaggerApi{
    * @tag Sample
    * @summary Page New
    */
-  get(url: "/api/Sample/PageNew", options: {path?: MapString, query: {Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<SampleOutputPageListIResultModel>
+  get(url: "/api/Sample/PageNew", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<SampleOutputPageListIResultModel>
   /**
    * @tag Sample
    * @summary Page
    */
-  get(url: "/api/Sample/Page", options: {path?: MapString, query: {Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Sample/Page", options: {path?: MapString, query: {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag Sample
    */
@@ -640,12 +640,12 @@ export interface SwaggerApi{
    * @tag Test
    * @summary Aes测试
    */
-  get(url: "/api/Test/TestAes", options: {path?: MapString, query: {text: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/TestAes", options: {path?: MapString, query: {text?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag Test
    * @summary 时间返回格式测试
    */
-  get(url: "/api/Test/TestDateTime", options: {path?: MapString, query: {time: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
+  get(url: "/api/Test/TestDateTime", options: {path?: MapString, query: {time?: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<IResultModel>
   /**
    * @tag Test
    * @summary 测试获取用户EID
@@ -665,12 +665,12 @@ export interface SwaggerApi{
    * @tag UserInfo
    * @summary 列表
    */
-  get(url: "/api/UserInfo/Page", options: {path?: MapString, query: {UserName: string | undefined | null, RealName: string | undefined | null, PhoneNumber: string | undefined | null, EnterpriseId: string | undefined | null, Keyword: string | undefined | null, Page: number | undefined, PageSize: number | undefined, TotalCount: number | undefined, Order: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoListOutputPageListIResultModel>
+  get(url: "/api/UserInfo/Page", options: {path?: MapString, query: {UserName?: string | null, RealName?: string | null, PhoneNumber?: string | null, EnterpriseId?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoListOutputPageListIResultModel>
   /**
    * @tag UserInfo
    * @summary 获取单个信息
    */
-  get(url: "/api/UserInfo/Detail", options: {path?: MapString, query: {id: string | undefined | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoOutputIResultModel>
+  get(url: "/api/UserInfo/Detail", options: {path?: MapString, query: {id?: string | null}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<UserInfoOutputIResultModel>
   /**
    * @tag UserInfo
    * @summary 添加

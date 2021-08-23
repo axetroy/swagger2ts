@@ -18,25 +18,25 @@ export interface SwaggerApi{
    * @summary 查询
    * @description oauth2.0 应用接入信息查询
    */
-  get(url: "/register/client", options: {path?: MapString, query: {page: number | undefined, size: number | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<PageResultVOOfClientVO>
+  get(url: "/register/client", options: {path?: MapString, query: {page: number, size: number}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<PageResultVOOfClientVO>
   /**
    * @tag 应用接入管理
    * @summary 新增
    * @description oauth2.0 应用接入提交信息
    */
-  post(url: "/register/client", options: {path?: MapString, query: {clientSecret: string | undefined, name: string | undefined, redirectUri: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/register/client", options: {path?: MapString, query: {clientSecret: string, name: string, redirectUri: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 应用接入管理
    * @summary 修改
    * @description oauth2.0 应用接入信息变更
    */
-  post(url: "/register/client/{id}", options: {path: {id: string | undefined}, query: {clientSecret: string | undefined, name: string | undefined, redirectUri: string | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
+  post(url: "/register/client/{id}", options: {path: {id: string}, query: {clientSecret: string, name: string, redirectUri: string}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
   /**
    * @tag 应用接入管理
    * @summary 删除
    * @description oauth2.0 应用接入信息删除
    */
-  delete(url: "/register/client/{id}", options: {path: {id: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
+  delete(url: "/register/client/{id}", options: {path: {id: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<ResponseEntity>
 }
 
 interface RuntimeHeaderMapString {

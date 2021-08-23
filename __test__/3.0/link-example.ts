@@ -13,12 +13,12 @@ export interface repository {slug?: string, owner?: user}
 export interface pullrequest {id?: number, title?: string, repository?: repository, author?: user}
 
 export interface SwaggerApi{
-  get(url: "/2.0/users/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<user>
-  get(url: "/2.0/repositories/{username}", options: {path: {username: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<repository>>
-  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {username: string | undefined, slug: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<repository>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string | undefined, slug: string | undefined}, query: {state: "open" | "merged" | "declined" | undefined}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<pullrequest>>
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<pullrequest>
-  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string | undefined, slug: string | undefined, pid: string | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
+  get(url: "/2.0/users/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<user>
+  get(url: "/2.0/repositories/{username}", options: {path: {username: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<repository>>
+  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {username: string, slug: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<repository>
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {username: string, slug: string}, query: {state?: "open" | "merged" | "declined"}, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<pullrequest>>
+  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {username: string, slug: string, pid: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<pullrequest>
+  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {username: string, slug: string, pid: string}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<unknown>
 }
 
 interface RuntimeHeaderMapString {

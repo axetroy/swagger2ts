@@ -41,35 +41,35 @@ export interface SwaggerApi{
    * @summary 删除
    * @description 角色删除是一个危险的操作，不提供批量服务
    */
-  delete(url: "/role/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  delete(url: "/role/{id}", options: {path: {id: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 角色管理
    * @summary 修改
    * @description 角色编辑不能修改从属关系,仅提供名称修改
    */
-  put(url: "/role/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<null>
+  put(url: "/role/{id}", options: {path: {id: number}, query?: MapString, header?: MapString, body: RoleDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 角色管理
    * @summary 权限查询
    */
-  get(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
+  get(url: "/role/{id}/authority", options: {path: {id: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
    * @tag 角色管理
    * @summary 权限设置
    */
-  post(url: "/role/{id}/authority", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
+  post(url: "/role/{id}/authority", options: {path: {id: number}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 角色管理
    * @summary 菜单查询
    * @description 根据角色id查询菜单信息
    */
-  get(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
+  get(url: "/role/{id}/menu", options: {path: {id: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<Array<number | undefined>>
   /**
    * @tag 角色管理
    * @summary 菜单设置
    * @description 设置角色的菜单信息
    */
-  post(url: "/role/{id}/menu", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
+  post(url: "/role/{id}/menu", options: {path: {id: number}, query?: MapString, header?: MapString, body: Array<number | undefined>, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 查询
@@ -91,19 +91,19 @@ export interface SwaggerApi{
    * @tag 菜单管理
    * @summary 修改按钮
    */
-  put(url: "/sitemap/button/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
+  put(url: "/sitemap/button/{id}", options: {path: {id: number}, query?: MapString, header?: MapString, body: ButtonDTO, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 删除
    * @description 删除菜单， 级联删除子项
    */
-  delete(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
+  delete(url: "/sitemap/{id}", options: {path: {id: number}, query?: MapString, header?: MapString, body?: any, signal?: AbortSignal}): Promise<null>
   /**
    * @tag 菜单管理
    * @summary 更新
    * @description 编辑菜单
    */
-  put(url: "/sitemap/{id}", options: {path: {id: number | undefined}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
+  put(url: "/sitemap/{id}", options: {path: {id: number}, query?: MapString, header?: MapString, body: SitemapDTO, signal?: AbortSignal}): Promise<null>
 }
 
 interface RuntimeHeaderMapString {

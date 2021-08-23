@@ -14,7 +14,7 @@ import {
 /**
  * generate document for rate
  */
-function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number, parent?: ISchemaObject | IReferenceObject): string {
+function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, indent: number, optionalThenUndefined?: boolean): string {
   // "#/components/schemas/Address"
   if (isReferenceObject(schema)) {
     const schemaPropertyPaths = schema.$ref.replace(/^#\/components/, "").split("/");
@@ -29,7 +29,7 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
     function generateLiteral(type: string) {
       let stringResult = `${name ? `type ${name} = ` : ""}${type}`;
       if (!isRequired) {
-        if (!parent) {
+        if (!optionalThenUndefined) {
           stringResult += " | undefined";
         }
       }
@@ -66,7 +66,7 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject, 
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
-          outputObject.push(`${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, schema)}`);
+          outputObject.push(`${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, true)}`);
         }
         return `${name ? `interface ${name} ` : ""}{${outputObject.join(", ")}}`;
       default:
@@ -80,7 +80,7 @@ function generateParams(param: IParameterObject | IReferenceObject, indent: numb
     // TODO
     return "";
   }
-  return generateSchema("", param.schema!, indent);
+  return generateSchema("", param.schema!, indent, true);
 }
 
 function generateComponent(swagger: ISwagger, indent: number): string {
@@ -134,15 +134,17 @@ function generateApi(swagger: ISwagger, indent: number): string {
       if (operation.parameters) {
         for (const param of operation.parameters) {
           if (!isReferenceObject(param)) {
+            const isRequired = param.required === true;
+            const suffix = !isRequired ? "?" : "";
             switch (param.in) {
               case "path":
-                paramsPath[param.name] = generateParams(param, indent);
+                paramsPath[param.name + suffix] = generateParams(param, indent);
                 break;
               case "header":
-                paramsHeader[param.name] = generateParams(param, indent);
+                paramsHeader[param.name + suffix] = generateParams(param, indent);
                 break;
               case "query":
-                paramsQuery[param.name] = generateParams(param, indent);
+                paramsQuery[param.name + suffix] = generateParams(param, indent);
                 break;
             }
           } else {
@@ -164,7 +166,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
         if (isRequestBodyObject(operation.requestBody)) {
           paramsBody = generateBody(operation.requestBody, 0);
         } else {
-          paramsBody = generateSchema("", operation.requestBody, 0);
+          paramsBody = generateSchema("", operation.requestBody, 0, true);
         }
       }
 
