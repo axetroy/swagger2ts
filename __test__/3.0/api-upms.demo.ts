@@ -3,6 +3,8 @@ import { unknownApi } from "./api-upms.ts";
 unknownApi.domain = "http://192.168.0.21";
 unknownApi.prefix = "/upms";
 
+console.log(unknownApi)
+
 unknownApi.interceptors.request.use(async (config) => {
   return config;
 });

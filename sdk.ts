@@ -23,24 +23,33 @@ interface RuntimeRequestOptions extends RuntimeRequestCommonOptions {
 }
 
 interface IRequestInterceptor {
-  use(fn: RequestInterceptorFn): void;
+  use(fn: RequestInterceptorFn): InterceptorCancelFn;
 }
 
 interface IResponseInterceptor {
-  use(success: ResponseInterceptorSuccessFn<any>, error: ResponseInterceptorErrorFn<any>): void;
+  use(success: ResponseInterceptorSuccessFn<any>, error: ResponseInterceptorErrorFn<any>): InterceptorCancelFn;
 }
 
+type InterceptorCancelFn = () => void;
 type RequestInterceptorFn = (config: RuntimeRequestOptions) => Promise<RuntimeRequestOptions>;
 type ResponseInterceptorSuccessFn<T> = (config: RuntimeRequestOptions, response: T) => Promise<T>;
 type ResponseInterceptorErrorFn<T> = (config: RuntimeRequestOptions, Error: Error) => Promise<T>;
 class RequestInterceptor implements IRequestInterceptor {
-  #fns: RequestInterceptorFn[] = [];
+  private _fns: RequestInterceptorFn[] = [];
   public use(fn: RequestInterceptorFn) {
-    this.#fns.push(fn);
+    this._fns.push(fn);
+
+    return () => {
+      const index = this._fns.findIndex((v) => v === fn);
+
+      if (index > -1) {
+        this._fns.splice(index, 1);
+      }
+    };
   }
 
   async run(config: RuntimeRequestOptions): Promise<RuntimeRequestOptions> {
-    for (const fn of this.#fns) {
+    for (const fn of this._fns) {
       config = await fn(config);
     }
 
@@ -49,15 +58,28 @@ class RequestInterceptor implements IRequestInterceptor {
 }
 
 class ResponseInterceptor implements IResponseInterceptor {
-  #fnsSuccess: ResponseInterceptorSuccessFn<any>[] = [];
-  #fnsError: ResponseInterceptorErrorFn<any>[] = [];
+  private _fnsSuccess: ResponseInterceptorSuccessFn<any>[] = [];
+  private _fnsError: ResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: ResponseInterceptorSuccessFn<any>, errorFn: ResponseInterceptorErrorFn<any>) {
-    this.#fnsSuccess.push(successFn);
-    this.#fnsError.push(errorFn);
+    this._fnsSuccess.push(successFn);
+    this._fnsError.push(errorFn);
+
+    return () => {
+      const successIndex = this._fnsSuccess.findIndex((v) => v === successFn);
+      const errorIndex = this._fnsError.findIndex((v) => v === errorFn);
+
+      if (successIndex > -1) {
+        this._fnsSuccess.splice(successIndex, 1);
+      }
+
+      if (errorIndex > -1) {
+        this._fnsError.splice(errorIndex, 1);
+      }
+    };
   }
 
   async runSuccess<T>(config: RuntimeRequestOptions, res: T): Promise<T> {
-    for (const fn of this.#fnsSuccess) {
+    for (const fn of this._fnsSuccess) {
       res = await fn(config, res);
     }
 
@@ -67,7 +89,7 @@ class ResponseInterceptor implements IResponseInterceptor {
   async runError<T>(config: RuntimeRequestOptions, err: Error): Promise<T> {
     let res = null;
 
-    for (const fn of this.#fnsError) {
+    for (const fn of this._fnsError) {
       res = await fn(config, err);
     }
 
@@ -78,17 +100,17 @@ class ResponseInterceptor implements IResponseInterceptor {
 class Runtime {
   constructor(private _domain: string, private _prefix: string) {}
 
-  #requestInterceptor = new RequestInterceptor();
-  #responseInterceptor = new ResponseInterceptor();
+  private _requestInterceptor = new RequestInterceptor();
+  private _responseInterceptor = new ResponseInterceptor();
 
   public get interceptors() {
     const self = this;
     return {
       get request() {
-        return self.#requestInterceptor as IRequestInterceptor;
+        return self._requestInterceptor as IRequestInterceptor;
       },
       get response() {
-        return self.#responseInterceptor as IResponseInterceptor;
+        return self._responseInterceptor as IResponseInterceptor;
       },
     };
   }
@@ -104,7 +126,7 @@ class Runtime {
     };
   }
 
-  #timeout<T>(ms: number, promise: Promise<T>) {
+  private _timeout<T>(ms: number, promise: Promise<T>) {
     return new Promise<T>((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new Error("TIMEOUT"));
@@ -122,7 +144,7 @@ class Runtime {
     });
   }
 
-  get #baseURL(): string {
+  public get baseURL(): string {
     const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
 
     return baseUrl.replace(/\/$/, "");
@@ -137,7 +159,7 @@ class Runtime {
   }
 
   public async request<T>(config: RuntimeRequestOptions): Promise<T> {
-    const url = new URL(this.#baseURL + config.url);
+    const url = new URL(this.baseURL + config.url);
     config.header = config.header || {};
 
     const defaults = this.defaults;
@@ -170,7 +192,7 @@ class Runtime {
       }
     }
 
-    config = await this.#requestInterceptor.run(config);
+    config = await this._requestInterceptor.run(config);
 
     const headers = new Headers();
 
@@ -184,7 +206,7 @@ class Runtime {
     }
 
     try {
-      return await this.#timeout<Response>(
+      return this._timeout<Response>(
         config.timeout || defaults.timeout,
         fetch(url.toString(), {
           method: config.method,
@@ -207,11 +229,11 @@ class Runtime {
           }
         })
         .then((data) => {
-          return this.#responseInterceptor.runSuccess(config, data);
+          return this._responseInterceptor.runSuccess(config, data);
         });
     } catch (err) {
       if (err instanceof Error) {
-        return await this.#responseInterceptor.runError(config, err);
+        return await this._responseInterceptor.runError(config, err);
       } else {
         return Promise.reject(err);
       }
