@@ -4,14 +4,15 @@ unknownApi.domain = "http://192.168.0.21";
 unknownApi.prefix = "/upms";
 
 console.log(unknownApi)
+unknownApi.baseURL
 
 unknownApi.interceptors.request.use(async (config) => {
   return config;
 });
 
 unknownApi.interceptors.response.use(
-  async (config, resp) => {
-    return resp;
+  async (config, resp, data) => {
+    return data;
   },
   async (config, err) => {
     return Promise.reject(err);

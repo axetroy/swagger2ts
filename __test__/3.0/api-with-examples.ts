@@ -55,7 +55,7 @@ interface IResponseInterceptor {
 
 type InterceptorCancelFn = () => void;
 type RequestInterceptorFn = (config: RuntimeRequestOptions) => Promise<RuntimeRequestOptions>;
-type ResponseInterceptorSuccessFn<T> = (config: RuntimeRequestOptions, response: T) => Promise<T>;
+type ResponseInterceptorSuccessFn<T> = (config: RuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type ResponseInterceptorErrorFn<T> = (config: RuntimeRequestOptions, Error: Error) => Promise<T>;
 class RequestInterceptor implements IRequestInterceptor {
   private _fns: RequestInterceptorFn[] = [];
@@ -101,12 +101,12 @@ class ResponseInterceptor implements IResponseInterceptor {
     };
   }
 
-  async runSuccess<T>(config: RuntimeRequestOptions, res: T): Promise<T> {
+  async runSuccess<T>(config: RuntimeRequestOptions, response: Response, data: T): Promise<T> {
     for (const fn of this._fnsSuccess) {
-      res = await fn(config, res);
+      data = await fn(config, response, data);
     }
 
-    return res;
+    return data;
   }
 
   async runError<T>(config: RuntimeRequestOptions, err: Error): Promise<T> {
@@ -238,21 +238,21 @@ class Runtime {
           signal: config.signal,
         })
       )
-        .then((resp) => {
+        .then(async (resp) => {
           const contentType = resp.headers.get("content-type");
           switch (contentType) {
             case "application/json":
-              return resp.json();
+              return { data: await resp.json(), resp };
             case "application/x-www-form-urlencoded":
-              return resp.formData();
+              return { data: await resp.formData(), resp };
             case "application/octet-stream":
-              return resp.blob();
+              return { data: await resp.blob(), resp };
             default:
-              return resp.text();
+              return { data: await resp.text(), resp };
           }
         })
-        .then((data) => {
-          return this._responseInterceptor.runSuccess(config, data);
+        .then(({ data, resp }) => {
+          return this._responseInterceptor.runSuccess(config, resp, data);
         });
     } catch (err) {
       if (err instanceof Error) {

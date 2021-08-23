@@ -20,7 +20,7 @@ deno install \
   --no-check \
   --reload \
   -f \
-  https://github.com/axetroy/swagger2ts/raw/v0.2.5/swagger2ts.ts
+  https://github.com/axetroy/swagger2ts/raw/v0.2.6/swagger2ts.ts
 ```
 
 or install via [npm](https://npmjs.com)
