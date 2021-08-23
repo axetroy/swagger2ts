@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.105.0/testing/asserts.ts";
-import { indentTxt } from "./helper.ts";
+import { indentTxt, generateMultipleLineComments } from "./helper.ts";
 
 Deno.test({
   name: "indentText()",
@@ -17,6 +17,29 @@ Deno.test({
       `  @tag user
   @param name
   @param age`
+    );
+  },
+});
+
+Deno.test({
+  name: "generateMultipleLineComments()",
+  fn: () => {
+    assertEquals(
+      generateMultipleLineComments(["@tag user"]),
+      `
+/**
+ * @tag user
+ */`.trimStart()
+    );
+
+    assertEquals(
+      generateMultipleLineComments(["@tag user", "@param comments", "@param indent"]),
+      `
+/**
+ * @tag user
+ * @param comments
+ * @param indent
+ */`.trimStart()
     );
   },
 });
