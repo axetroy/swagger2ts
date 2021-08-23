@@ -4,3 +4,4 @@ swagger.json
 .DS_Store
 swagger
 swagger.exe
+dist/*.js
