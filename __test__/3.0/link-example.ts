@@ -320,7 +320,7 @@ export class Runtime implements IRuntime {
       const exec = () =>
         fetch(url.toString(), {
           method: config.method,
-          body: config.body instanceof RuntimeForm ? config.body.formData() : config.body,
+          body: config.body instanceof RuntimeForm ? config.body.formData() : JSON.stringify(config.body),
           headers: headers,
 
           // common options
