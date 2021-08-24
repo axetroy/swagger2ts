@@ -5,6 +5,7 @@ import {
   IReferenceObject,
   IRequestBodyObject,
   IResponseObject,
+  IResponsesObject,
   ISchemaObject,
   isReferenceObject,
   isRequestBodyObject,
@@ -171,6 +172,25 @@ function generateBody(body: IRequestBodyObject | IResponseObject, indent: number
   return generateSchema("", mediaSchema.schema, 0);
 }
 
+function generateResponseBody(response: IResponsesObject): string {
+  if (!response) return "Promise<unknown>";
+
+  let responseType = "null";
+
+  if (response["200"] || response.default) {
+    const successResponse = response["200"] || response.default;
+    if (isReferenceObject(successResponse)) {
+      responseType = generateSchema("", successResponse, 0);
+    } else {
+      responseType = generateBody(successResponse, 0);
+    }
+  } else {
+    responseType = "unknown";
+  }
+
+  return `Promise<${responseType}>`;
+}
+
 function generateApi(swagger: ISwagger, indent: number): string {
   const urlBlock: string[] = [];
   const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -183,12 +203,10 @@ function generateApi(swagger: ISwagger, indent: number): string {
       const operation = pathItemObject[method] as IOperationObject;
       if (!operation) continue;
 
-      const paramsArray: string[] = [];
-
-      let paramsBody: string = "";
-      let responseBody: string = "";
+      const options: string[] = [];
 
       if (operation.parameters) {
+        const paramsArray: string[] = [];
         const inTypes = ["path", "query", "header"];
         const parameters = operation.parameters;
 
@@ -197,40 +215,27 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
           const pathsType = generateParamsArray(paths, 0);
 
-          const isEmpty = pathsType === "{}"
+          const isEmpty = pathsType === "{}";
 
           if (!isEmpty) {
             paramsArray.push(`${action}: ${pathsType}`);
           }
         });
+
+        options.push(...paramsArray);
       }
 
       if (operation.requestBody) {
+        let paramsBody: string = "";
         if (isRequestBodyObject(operation.requestBody)) {
           paramsBody = generateBody(operation.requestBody, 0);
         } else {
           paramsBody = generateSchema("", operation.requestBody, 0, true);
         }
-      }
-
-      if (operation.responses) {
-        if (operation.responses["200"] || operation.responses.default) {
-          const successResponse = operation.responses["200"] || operation.responses.default;
-          if (isReferenceObject(successResponse)) {
-            responseBody = generateSchema("", successResponse, 0);
-          } else {
-            responseBody = generateBody(successResponse, 0);
-          }
-        } else {
-          responseBody = "unknown";
+        if (paramsBody) {
+          options.push(`body: ${paramsBody}`);
         }
       }
-
-      const options: string[] = [
-        ...paramsArray,
-        paramsBody ? `body: ${paramsBody}` : "body?: any"
-        //
-      ].filter((v) => v);
 
       const docs: string[] = [];
 
@@ -258,7 +263,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       const rows = [
         generateMultipleLineComments(docs),
-        `${method}(url: "${url}", options: {${options.join(", ")}} & IDefaultOptions): Promise<${responseBody}>`,
+        `${method}(url: "${url}", options: {${options.join(", ")}} & IDefaultOptions): ${generateResponseBody(operation.responses)}`,
         //
       ]
         .filter((v) => v)
@@ -269,7 +274,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
   }
 
   return `export interface SwaggerApi{
-${indentTxt(urlBlock.join("\n\n"), indent)}
+${indentTxt(urlBlock.join("\n\n"), indent, true)}
 }`;
 }
 

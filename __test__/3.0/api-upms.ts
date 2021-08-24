@@ -97,26 +97,26 @@ export interface SwaggerApi{
    * @tag 公共接口
    * @summary 按钮
    */
-  get(url: "/button", options: {body?: any} & IDefaultOptions): Promise<Array<MenuTreeVO>>
-  
+  get(url: "/button", options: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+
   /**
    * @tag 公共接口
    * @summary 导航条
    */
-  get(url: "/navbar", options: {body?: any} & IDefaultOptions): Promise<Array<MenuTreeVO>>
-  
+  get(url: "/navbar", options: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+
   /**
    * @tag 角色管理
    * @summary 查询
    */
-  get(url: "/role", options: {body?: any} & IDefaultOptions): Promise<Array<角色树查询>>
-  
+  get(url: "/role", options: {} & IDefaultOptions): Promise<Array<角色树查询>>
+
   /**
    * @tag 角色管理
    * @summary 新增
    */
   post(url: "/role", options: {body: RoleDTO} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 角色管理
    * @summary 删除
@@ -124,8 +124,8 @@ export interface SwaggerApi{
    */
   delete(url: "/role/{id}", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<null>
-  
+  }} & IDefaultOptions): Promise<null>
+
   /**
    * @tag 角色管理
    * @summary 修改
@@ -134,15 +134,15 @@ export interface SwaggerApi{
   put(url: "/role/{id}", options: {path: {
     id: number
   }, body: RoleDTO} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 角色管理
    * @summary 权限查询
    */
   get(url: "/role/{id}/authority", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<Array<number | undefined>>
-  
+  }} & IDefaultOptions): Promise<Array<number | undefined>>
+
   /**
    * @tag 角色管理
    * @summary 权限设置
@@ -150,7 +150,7 @@ export interface SwaggerApi{
   post(url: "/role/{id}/authority", options: {path: {
     id: number
   }, body: Array<number | undefined>} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 角色管理
    * @summary 菜单查询
@@ -158,8 +158,8 @@ export interface SwaggerApi{
    */
   get(url: "/role/{id}/menu", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<Array<number | undefined>>
-  
+  }} & IDefaultOptions): Promise<Array<number | undefined>>
+
   /**
    * @tag 角色管理
    * @summary 菜单设置
@@ -168,27 +168,27 @@ export interface SwaggerApi{
   post(url: "/role/{id}/menu", options: {path: {
     id: number
   }, body: Array<number | undefined>} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 菜单管理
    * @summary 查询
    * @description 系统管理，菜单树结构
    */
-  get(url: "/sitemap", options: {body?: any} & IDefaultOptions): Promise<Array<菜单树>>
-  
+  get(url: "/sitemap", options: {} & IDefaultOptions): Promise<Array<菜单树>>
+
   /**
    * @tag 菜单管理
    * @summary 新增
    * @description 添加菜单
    */
   post(url: "/sitemap", options: {body: SitemapDTO} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 菜单管理
    * @summary 添加按钮
    */
   post(url: "/sitemap/button", options: {body: ButtonDTO} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 菜单管理
    * @summary 修改按钮
@@ -196,7 +196,7 @@ export interface SwaggerApi{
   put(url: "/sitemap/button/{id}", options: {path: {
     id: number
   }, body: ButtonDTO} & IDefaultOptions): Promise<null>
-  
+
   /**
    * @tag 菜单管理
    * @summary 删除
@@ -204,8 +204,8 @@ export interface SwaggerApi{
    */
   delete(url: "/sitemap/{id}", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<null>
-  
+  }} & IDefaultOptions): Promise<null>
+
   /**
    * @tag 菜单管理
    * @summary 更新

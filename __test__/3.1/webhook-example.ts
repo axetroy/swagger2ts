@@ -13,7 +13,7 @@ type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number
 export type Pet = any
 
 export interface SwaggerApi{
-  
+
 }
 
 // swagger runtime. generate by swagger2ts

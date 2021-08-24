@@ -15,17 +15,33 @@ Deno.test({
 Deno.test({
   name: "indentText()",
   fn: () => {
-    assertEquals(indentTxt("hello world", 0), "hello world");
-    assertEquals(indentTxt("hello world", 2), "  hello world");
-    assertEquals(indentTxt("line 1\nline 2", 2), "  line 1\n  line 2");
+    assertEquals(indentTxt("hello world", 0, true), "hello world");
+    assertEquals(indentTxt("hello world", 2, true), "  hello world");
+    assertEquals(indentTxt("line 1\nline 2", 2, true), "  line 1\n  line 2");
     assertEquals(
       indentTxt(
         `@tag user
 @param name
 @param age`,
-        2
+        2,
+        true
       ),
       `  @tag user
+  @param name
+  @param age`
+    );
+
+    assertEquals(
+      indentTxt(
+        `@tag user
+
+@param name
+@param age`,
+        2,
+        true
+      ),
+      `  @tag user
+
   @param name
   @param age`
     );

@@ -48,7 +48,7 @@ export interface SwaggerApi{
   post(url: "/other", options: {query: {
     name?: string
   }, body: File | Blob | undefined} & IDefaultOptions): Promise<ResponseEntity>
-  
+
   /**
    * @tag 应用接入管理
    * @summary 查询
@@ -57,8 +57,8 @@ export interface SwaggerApi{
   get(url: "/register/client", options: {query: {
     page: number
     size: number
-  }, body?: any} & IDefaultOptions): Promise<PageResultVOOfClientVO>
-  
+  }} & IDefaultOptions): Promise<PageResultVOOfClientVO>
+
   /**
    * @tag 应用接入管理
    * @summary 新增
@@ -68,8 +68,8 @@ export interface SwaggerApi{
     clientSecret: string
     name: string
     redirectUri: string
-  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
-  
+  }} & IDefaultOptions): Promise<ResponseEntity>
+
   /**
    * @tag 应用接入管理
    * @summary 修改
@@ -81,8 +81,8 @@ export interface SwaggerApi{
     clientSecret: string
     name: string
     redirectUri: string
-  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
-  
+  }} & IDefaultOptions): Promise<ResponseEntity>
+
   /**
    * @tag 应用接入管理
    * @summary 删除
@@ -90,7 +90,7 @@ export interface SwaggerApi{
    */
   delete(url: "/register/client/{id}", options: {path: {
     id: string
-  }, body?: any} & IDefaultOptions): Promise<ResponseEntity>
+  }} & IDefaultOptions): Promise<ResponseEntity>
 }
 
 // swagger runtime. generate by swagger2ts

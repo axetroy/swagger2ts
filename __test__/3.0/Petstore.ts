@@ -75,14 +75,14 @@ export interface SwaggerApi{
    * @description Add a new pet to the store
    */
   post(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
-  
+
   /**
    * @tag pet
    * @summary Update an existing pet
    * @description Update an existing pet by Id
    */
   put(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
-  
+
   /**
    * @tag pet
    * @summary Finds Pets by status
@@ -90,8 +90,8 @@ export interface SwaggerApi{
    */
   get(url: "/pet/findByStatus", options: {query: {
     status?: "available" | "pending" | "sold"
-  }, body?: any} & IDefaultOptions): Promise<Array<Pet>>
-  
+  }} & IDefaultOptions): Promise<Array<Pet>>
+
   /**
    * @tag pet
    * @summary Finds Pets by tags
@@ -99,8 +99,8 @@ export interface SwaggerApi{
    */
   get(url: "/pet/findByTags", options: {query: {
     tags?: Array<string | undefined>
-  }, body?: any} & IDefaultOptions): Promise<Array<Pet>>
-  
+  }} & IDefaultOptions): Promise<Array<Pet>>
+
   /**
    * @tag pet
    * @summary Find pet by ID
@@ -108,8 +108,8 @@ export interface SwaggerApi{
    */
   get(url: "/pet/{petId}", options: {path: {
     petId: number
-  }, body?: any} & IDefaultOptions): Promise<Pet>
-  
+  }} & IDefaultOptions): Promise<Pet>
+
   /**
    * @tag pet
    * @summary Updates a pet in the store with form data
@@ -119,8 +119,8 @@ export interface SwaggerApi{
   }, query: {
     name?: string
     status?: string
-  }, body?: any} & IDefaultOptions): Promise<unknown>
-  
+  }} & IDefaultOptions): Promise<unknown>
+
   /**
    * @tag pet
    * @summary Deletes a pet
@@ -129,8 +129,8 @@ export interface SwaggerApi{
     petId: number
   }, header: {
     api_key?: string
-  }, body?: any} & IDefaultOptions): Promise<unknown>
-  
+  }} & IDefaultOptions): Promise<unknown>
+
   /**
    * @tag pet
    * @summary uploads an image
@@ -140,21 +140,21 @@ export interface SwaggerApi{
   }, query: {
     additionalMetadata?: string
   }, body: File | Blob | undefined} & IDefaultOptions): Promise<ApiResponse>
-  
+
   /**
    * @tag store
    * @summary Returns pet inventories by status
    * @description Returns a map of status codes to quantities
    */
-  get(url: "/store/inventory", options: {body?: any} & IDefaultOptions): Promise<{}>
-  
+  get(url: "/store/inventory", options: {} & IDefaultOptions): Promise<{}>
+
   /**
    * @tag store
    * @summary Place an order for a pet
    * @description Place a new order in the store
    */
   post(url: "/store/order", options: {body: Order} & IDefaultOptions): Promise<Order>
-  
+
   /**
    * @tag store
    * @summary Find purchase order by ID
@@ -162,8 +162,8 @@ export interface SwaggerApi{
    */
   get(url: "/store/order/{orderId}", options: {path: {
     orderId: number
-  }, body?: any} & IDefaultOptions): Promise<Order>
-  
+  }} & IDefaultOptions): Promise<Order>
+
   /**
    * @tag store
    * @summary Delete purchase order by ID
@@ -171,22 +171,22 @@ export interface SwaggerApi{
    */
   delete(url: "/store/order/{orderId}", options: {path: {
     orderId: number
-  }, body?: any} & IDefaultOptions): Promise<unknown>
-  
+  }} & IDefaultOptions): Promise<unknown>
+
   /**
    * @tag user
    * @summary Create user
    * @description This can only be done by the logged in user.
    */
   post(url: "/user", options: {body: User} & IDefaultOptions): Promise<User>
-  
+
   /**
    * @tag user
    * @summary Creates list of users with given input array
    * @description Creates list of users with given input array
    */
   post(url: "/user/createWithList", options: {body: Array<User>} & IDefaultOptions): Promise<User>
-  
+
   /**
    * @tag user
    * @summary Logs user into the system
@@ -194,22 +194,22 @@ export interface SwaggerApi{
   get(url: "/user/login", options: {query: {
     username?: string
     password?: string
-  }, body?: any} & IDefaultOptions): Promise<string | undefined>
-  
+  }} & IDefaultOptions): Promise<string | undefined>
+
   /**
    * @tag user
    * @summary Logs out current logged in user session
    */
-  get(url: "/user/logout", options: {body?: any} & IDefaultOptions): Promise<null>
-  
+  get(url: "/user/logout", options: {} & IDefaultOptions): Promise<null>
+
   /**
    * @tag user
    * @summary Get user by user name
    */
   get(url: "/user/{username}", options: {path: {
     username: string
-  }, body?: any} & IDefaultOptions): Promise<User>
-  
+  }} & IDefaultOptions): Promise<User>
+
   /**
    * @tag user
    * @summary Delete user
@@ -217,8 +217,8 @@ export interface SwaggerApi{
    */
   delete(url: "/user/{username}", options: {path: {
     username: string
-  }, body?: any} & IDefaultOptions): Promise<unknown>
-  
+  }} & IDefaultOptions): Promise<unknown>
+
   /**
    * @tag user
    * @summary Update user

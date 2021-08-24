@@ -31,26 +31,26 @@ export interface SwaggerApi{
   get(url: "/pets", options: {query: {
     tags?: Array<string | undefined>
     limit?: number
-  }, body?: any} & IDefaultOptions): Promise<Array<Pet>>
-  
+  }} & IDefaultOptions): Promise<Array<Pet>>
+
   /**
    * @description Creates a new pet in the store. Duplicates are allowed
    */
   post(url: "/pets", options: {body: NewPet} & IDefaultOptions): Promise<Pet>
-  
+
   /**
    * @description Returns a user based on a single ID, if the user does not have access to the pet
    */
   get(url: "/pets/{id}", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<Pet>
-  
+  }} & IDefaultOptions): Promise<Pet>
+
   /**
    * @description deletes a single pet based on the ID supplied
    */
   delete(url: "/pets/{id}", options: {path: {
     id: number
-  }, body?: any} & IDefaultOptions): Promise<Error>
+  }} & IDefaultOptions): Promise<Error>
 }
 
 // swagger runtime. generate by swagger2ts

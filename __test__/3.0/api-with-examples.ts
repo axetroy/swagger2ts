@@ -16,12 +16,12 @@ export interface SwaggerApi{
   /**
    * @summary List API versions
    */
-  get(url: "/", options: {body?: any} & IDefaultOptions): Promise<null>
-  
+  get(url: "/", options: {} & IDefaultOptions): Promise<null>
+
   /**
    * @summary Show API version details
    */
-  get(url: "/v2", options: {body?: any} & IDefaultOptions): Promise<null>
+  get(url: "/v2", options: {} & IDefaultOptions): Promise<null>
 }
 
 // swagger runtime. generate by swagger2ts

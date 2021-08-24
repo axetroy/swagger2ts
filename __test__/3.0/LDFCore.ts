@@ -1200,51 +1200,51 @@ export interface SwaggerApi{
    * @summary 登录(密码模式)
    */
   post(url: "/api/Account/LoginWithPwd", options: {body: LoginModel} & IDefaultOptions): Promise<LoginUserOutputAuthResutIResultModel>
-  
+
   /**
    * @tag Account
    * @summary 登录
    */
   post(url: "/api/Account/Login", options: {body: SpaLoginModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Account
    * @summary 退出登录
    */
   get(url: "/api/Account/Logout", options: {query: {
     logoutId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Account
    * @summary Ids登录错误信息
    */
   get(url: "/api/Account/Error", options: {query: {
     errorId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag App
    * @summary 获取初始化数据
    */
   get(url: "/api/App/Init", options: {query: {
     client?: ClientEnums
-  }, body?: any} & IDefaultOptions): Promise<InitAppOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<InitAppOutputIResultModel>
+
   /**
    * @tag AppVersion
    * @summary 获取最新版本信息
    */
   get(url: "/api/AppVersion/GetVersion", options: {query: {
     type?: number
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag AppVersion
    * @summary 增加版本信息
    */
   post(url: "/api/AppVersion/Add", options: {body: AppVersionDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag AppVersion
    * @summary 获取版本记录
@@ -1256,8 +1256,8 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<AppVersionDtoPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<AppVersionDtoPageListIResultModel>
+
   /**
    * @tag Area
    * @summary 分页查询
@@ -1273,26 +1273,26 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<AreaListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<AreaListOutputPageListIResultModel>
+
   /**
    * @tag Area
    * @summary 添加区域
    */
   post(url: "/api/Area/Add", options: {body: AreaDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Area
    * @summary 编辑区域
    */
   post(url: "/api/Area/Edit", options: {body: AreaDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Area
    * @summary 删除区域
    */
   post(url: "/api/Area/Remove", options: {body: RemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Area
    * @summary 级联下拉选项
@@ -1303,8 +1303,8 @@ export interface SwaggerApi{
     ParentCode?: string | null /* 父级编号 */
     AreaCode?: string | null /* 区域编码(startWith) */
     AreaCodeFull?: string | null /* 区域编码(全等) */
-  }, body?: any} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
-  
+  }} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+
   /**
    * @tag Area
    * @summary 特定级别的下拉选项
@@ -1315,14 +1315,14 @@ export interface SwaggerApi{
     ParentCode?: string | null /* 父级编号 */
     AreaCode?: string | null /* 区域编码(startWith) */
     AreaCodeFull?: string | null /* 区域编码(全等) */
-  }, body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  }} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Area
    * @summary 格式化区域数据
    */
-  post(url: "/api/Area/DataFormat", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/Area/DataFormat", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Audit
    * @summary 列表查询
@@ -1344,28 +1344,28 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<AuditListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<AuditListOutputPageListIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 新增
    */
   post(url: "/api/Dictionary/Add", options: {body: DictionaryDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Dictionary
    * @summary 详情
    */
   get(url: "/api/Dictionary/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<DictionaryIResultModel>
-  
+  }} & IDefaultOptions): Promise<DictionaryIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 修改
    */
   post(url: "/api/Dictionary/Edit", options: {body: DictionaryDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Dictionary
    * @summary 分页查询
@@ -1376,22 +1376,22 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<DictionaryDtoPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<DictionaryDtoPageListIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 移除
    */
   post(url: "/api/Dictionary/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Dictionary
    * @summary 根据类型树形获取
    */
   get(url: "/api/Dictionary/ListByType", options: {query: {
     typeId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<DictionaryListIResultModel>
-  
+  }} & IDefaultOptions): Promise<DictionaryListIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项
@@ -1399,8 +1399,8 @@ export interface SwaggerApi{
   get(url: "/api/Dictionary/OptionsByCode", options: {query: {
     code?: string | null
     isLoadAll?: boolean /* false只加载启用的，true加载所有 */
-  }, body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  }} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 根据数据字典类型code获取对应下拉选项（多个）
@@ -1408,8 +1408,8 @@ export interface SwaggerApi{
   get(url: "/api/Dictionary/OptionsListByCodes", options: {query: {
     codes?: string | null
     isLoadAll?: boolean /* false只加载启用的，true加载所有 */
-  }, body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  }} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Dictionary
    * @summary 根据类型树形获取(树形)
@@ -1417,28 +1417,28 @@ export interface SwaggerApi{
   get(url: "/api/Dictionary/TreeOptionsByCode", options: {query: {
     code?: string | null
     isLoadAll?: boolean /* false只加载启用的，true加载所有 */
-  }, body?: any} & IDefaultOptions): Promise<StringTreeOptionResultModelDtoListIResultModel>
-  
+  }} & IDefaultOptions): Promise<StringTreeOptionResultModelDtoListIResultModel>
+
   /**
    * @tag DictionaryType
    * @summary 新增
    */
   post(url: "/api/DictionaryType/Add", options: {body: DictionaryTypeDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag DictionaryType
    * @summary 详情
    */
   get(url: "/api/DictionaryType/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<DictionaryTypeIResultModel>
-  
+  }} & IDefaultOptions): Promise<DictionaryTypeIResultModel>
+
   /**
    * @tag DictionaryType
    * @summary 修改
    */
   post(url: "/api/DictionaryType/Edit", options: {body: DictionaryTypeDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag DictionaryType
    * @summary 分页查询
@@ -1449,20 +1449,20 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<DictionaryTypeDtoPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<DictionaryTypeDtoPageListIResultModel>
+
   /**
    * @tag DictionaryType
    * @summary 移除
    */
   post(url: "/api/DictionaryType/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag DictionaryType
    * @summary 下拉选择
    */
-  get(url: "/api/DictionaryType/Options", options: {body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  get(url: "/api/DictionaryType/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Enterprise
    * @summary 分页列表
@@ -1478,42 +1478,42 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<EnterpriseListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<EnterpriseListOutputPageListIResultModel>
+
   /**
    * @tag Enterprise
    * @summary 详情
    */
   get(url: "/api/Enterprise/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<EnterpriseOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<EnterpriseOutputIResultModel>
+
   /**
    * @tag Enterprise
    * @summary 添加
    */
   post(url: "/api/Enterprise/Add", options: {body: EnterpriseInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Enterprise
    * @summary 编辑
    */
   post(url: "/api/Enterprise/Edit", options: {body: EnterpriseInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Enterprise
    * @summary 删除
    */
   post(url: "/api/Enterprise/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Enterprise
    * @summary 级联下拉选项
    */
   get(url: "/api/Enterprise/TreeOptions", options: {query: {
     Path?: string | null /* 路径 */
-  }, body?: any} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
-  
+  }} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类
@@ -1526,40 +1526,40 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
-  
+  }} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
+
   /**
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类并附带内容
    */
-  get(url: "/api/FaqCategory/TreeAdnContnet", options: {body?: any} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
-  
+  get(url: "/api/FaqCategory/TreeAdnContnet", options: {} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
+
   /**
    * @tag FaqCategory
    * @summary 详情
    */
   get(url: "/api/FaqCategory/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<FaqCategoryOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<FaqCategoryOutputIResultModel>
+
   /**
    * @tag FaqCategory
    * @summary 添加
    */
   post(url: "/api/FaqCategory/Add", options: {body: FaqCategoryInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag FaqCategory
    * @summary 编辑
    */
   post(url: "/api/FaqCategory/Edit", options: {body: FaqCategoryInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag FaqCategory
    * @summary 删除
    */
   post(url: "/api/FaqCategory/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag FaqContent
    * @summary 分页列表
@@ -1571,8 +1571,8 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<FaqContentListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<FaqContentListOutputPageListIResultModel>
+
   /**
    * @tag FaqContent
    * @summary 详情
@@ -1580,26 +1580,26 @@ export interface SwaggerApi{
   get(url: "/api/FaqContent/Detail", options: {query: {
     id?: string | null
     isView?: boolean
-  }, body?: any} & IDefaultOptions): Promise<FaqContentOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<FaqContentOutputIResultModel>
+
   /**
    * @tag FaqContent
    * @summary 添加
    */
   post(url: "/api/FaqContent/Add", options: {body: FaqContentInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag FaqContent
    * @summary 编辑
    */
   post(url: "/api/FaqContent/Edit", options: {body: FaqContentInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag FaqContent
    * @summary 删除
    */
   post(url: "/api/FaqContent/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag File
    * @summary 文件上传
@@ -1607,7 +1607,7 @@ export interface SwaggerApi{
   post(url: "/api/File/Upload", options: {body: RuntimeForm<{
     module?: string | null
   }>} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag File
    * @summary 图片上传
@@ -1617,30 +1617,30 @@ export interface SwaggerApi{
     width?: number | null
     height?: number | null
   }>} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag File
    * @summary 获取文件(返回byte[])
    */
   get(url: "/api/File/Get", options: {query: {
     code?: string | null
-  }, body?: any} & IDefaultOptions): Promise<null>
-  
+  }} & IDefaultOptions): Promise<null>
+
   /**
    * @tag File
    * @summary 下载文件(返回Stream)
    */
   get(url: "/api/File/Download", options: {query: {
     code?: string | null
-  }, body?: any} & IDefaultOptions): Promise<null>
-  
+  }} & IDefaultOptions): Promise<null>
+
   /**
    * @tag File
    */
   get(url: "/api/File/DownloadByStream", options: {query: {
     code?: string | null
-  }, body?: any} & IDefaultOptions): Promise<null>
-  
+  }} & IDefaultOptions): Promise<null>
+
   /**
    * @tag File
    * @summary 删除文件
@@ -1648,7 +1648,7 @@ export interface SwaggerApi{
   post(url: "/api/File/Remove", options: {body: RuntimeForm<{
     code?: string | null
   }>} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag LoginLog
    * @summary 列表
@@ -1660,28 +1660,28 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<LoginLogListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<LoginLogListOutputPageListIResultModel>
+
   /**
    * @tag Menu
    * @summary 新增
    */
   post(url: "/api/Menu/Add", options: {body: MenuInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Menu
    * @summary 修改
    */
   post(url: "/api/Menu/Edit", options: {body: MenuInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Menu
    * @summary 详情
    */
   get(url: "/api/Menu/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<MenuIResultModel>
-  
+  }} & IDefaultOptions): Promise<MenuIResultModel>
+
   /**
    * @tag Menu
    * @summary 分页
@@ -1692,56 +1692,56 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<MenuPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<MenuPageListIResultModel>
+
   /**
    * @tag Menu
    * @summary 获取所有树形菜单
    */
   get(url: "/api/Menu/Tree", options: {query: {
     client?: ClientEnums
-  }, body?: any} & IDefaultOptions): Promise<MenuOutputListIResultModel>
-  
+  }} & IDefaultOptions): Promise<MenuOutputListIResultModel>
+
   /**
    * @tag Menu
    * @summary 获取角色树形菜单
    */
   get(url: "/api/Menu/LoadTreeByRole", options: {query: {
     roleId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<MenuOutputListIResultModel>
-  
+  }} & IDefaultOptions): Promise<MenuOutputListIResultModel>
+
   /**
    * @tag Menu
    * @summary 获取菜单按钮
    */
   get(url: "/api/Menu/Buttons", options: {query: {
     menuId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<ButtonDtoIResultModel>
-  
+  }} & IDefaultOptions): Promise<ButtonDtoIResultModel>
+
   /**
    * @tag Menu
    * @summary 配置菜单按钮
    */
   post(url: "/api/Menu/SetButton", options: {body: ButtonDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Menu
    * @summary 级联下拉选项
    */
-  get(url: "/api/Menu/TreeOptions", options: {body?: any} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
-  
+  get(url: "/api/Menu/TreeOptions", options: {} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+
   /**
    * @tag Menu
    * @summary 删除
    */
   post(url: "/api/Menu/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Notify
    * @summary 获取消息类型
    */
-  get(url: "/api/Notify/Options", options: {body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  get(url: "/api/Notify/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Notify
    * @summary 获取通知列表
@@ -1754,8 +1754,8 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
+
   /**
    * @tag Notify
    * @summary 获取通知列表(信息预览框使用)
@@ -1768,70 +1768,70 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<NotifyListOutputPageListIResultModel>
+
   /**
    * @tag Notify
    * @summary 获取未读消息数量
    */
-  get(url: "/api/Notify/UnReadedCount", options: {body?: any} & IDefaultOptions): Promise<NotifyCountOutputIResultModel>
-  
+  get(url: "/api/Notify/UnReadedCount", options: {} & IDefaultOptions): Promise<NotifyCountOutputIResultModel>
+
   /**
    * @tag Notify
    * @summary 通知已读
    */
   post(url: "/api/Notify/Readed", options: {body: NotifyReadedInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Notify
    * @summary 全部已读
    */
-  post(url: "/api/Notify/ReadAll", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/Notify/ReadAll", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Notify
    * @summary 删除消息(参数传到Ids属性,多个用,分开)
    */
   post(url: "/api/Notify/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Notify
    * @summary 删除所有消息
    */
-  post(url: "/api/Notify/RemoveAll", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/Notify/RemoveAll", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Notify
    * @summary 添加消息，外部调用（泛型参数报404）
    */
   post(url: "/api/Notify/Addmsg", options: {body: StringNotifyInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag OpenApi
    * @summary 同步本系统API信息到数据库
    */
-  post(url: "/api/OpenApi/SyncCurrent", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/OpenApi/SyncCurrent", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag OpenApi
    * @summary 同步所有系统API信息(未实现)
    */
-  post(url: "/api/OpenApi/SyncAll", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/OpenApi/SyncAll", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag OpenApi
    * @summary 同步API信息到数据库
    */
   post(url: "/api/OpenApi/AddOrUpdate", options: {query: {
     data?: string | null
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag OpenApi
    * @summary 树形下拉选项
    */
-  get(url: "/api/OpenApi/TreeOptions", options: {body?: any} & IDefaultOptions): Promise<OpenApiTreeOutputListIResultModel>
-  
+  get(url: "/api/OpenApi/TreeOptions", options: {} & IDefaultOptions): Promise<OpenApiTreeOutputListIResultModel>
+
   /**
    * @tag Organizations
    * @summary 分页列表
@@ -1845,40 +1845,40 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<OrganizationsListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<OrganizationsListOutputPageListIResultModel>
+
   /**
    * @tag Organizations
    * @summary 详情
    */
   get(url: "/api/Organizations/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<OrganizationsOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<OrganizationsOutputIResultModel>
+
   /**
    * @tag Organizations
    * @summary 添加
    */
   post(url: "/api/Organizations/Add", options: {body: OrganizationsInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Organizations
    * @summary 编辑
    */
   post(url: "/api/Organizations/Edit", options: {body: OrganizationsInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Organizations
    * @summary 删除
    */
   post(url: "/api/Organizations/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Organizations
    * @summary 级联下拉选项
    */
   get(url: "/api/Organizations/TreeOptions", options: {body: OrganizationTreeOptionsQuery} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
-  
+
   /**
    * @tag Roles
    * @summary 分页查询
@@ -1891,77 +1891,77 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<RolesListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<RolesListOutputPageListIResultModel>
+
   /**
    * @tag Roles
    * @summary 获取单个信息
    */
   get(url: "/api/Roles/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<RolesDtoIResultModel>
-  
+  }} & IDefaultOptions): Promise<RolesDtoIResultModel>
+
   /**
    * @tag Roles
    * @summary 新增
    */
   post(url: "/api/Roles/Add", options: {body: RolesDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Roles
    * @summary 修改
    */
   post(url: "/api/Roles/Edit", options: {body: RolesDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Roles
    * @summary 移除
    */
   post(url: "/api/Roles/Remove", options: {body: StringRemoveModel} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Roles
    * @summary 下拉选择
    */
-  get(url: "/api/Roles/Options", options: {body?: any} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
-  
+  get(url: "/api/Roles/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+
   /**
    * @tag Roles
    * @summary 设置菜单按钮
    */
   post(url: "/api/Roles/SetMenus", options: {body: SetMenusDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Roles
    * @summary 获取菜单按钮
    */
   get(url: "/api/Roles/GetMenus", options: {query: {
     roleId?: string | null
-  }, body?: any} & IDefaultOptions): Promise<RoleMenuTreeOutputListIResultModel>
-  
+  }} & IDefaultOptions): Promise<RoleMenuTreeOutputListIResultModel>
+
   /**
    * @tag Sample
    * @summary 测试
    */
-  get(url: "/api/Sample/Test", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Sample/Test", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Sample
    * @summary 输出日志
    */
-  get(url: "/api/Sample/LogInfo", options: {body?: any} & IDefaultOptions): Promise<null>
-  
+  get(url: "/api/Sample/LogInfo", options: {} & IDefaultOptions): Promise<null>
+
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/ResolveApis", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Sample/ResolveApis", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Sample
    * @summary 更新
    */
-  post(url: "/api/Sample/Update", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  post(url: "/api/Sample/Update", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Sample
    * @summary Page New
@@ -1972,8 +1972,8 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<SampleOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<SampleOutputPageListIResultModel>
+
   /**
    * @tag Sample
    * @summary Page
@@ -1984,65 +1984,65 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/TestGlobalExceptionFilter", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Sample/TestGlobalExceptionFilter", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Sample
    * @summary 获取登录信息
    */
-  get(url: "/api/Sample/LoginInfo", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Sample/LoginInfo", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary 缓存测试
    */
-  get(url: "/api/Test/TestCache", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Test/TestCache", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary 随便测试
    */
-  get(url: "/api/Test/Test2", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Test/Test2", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary Aes测试
    */
   get(url: "/api/Test/TestAes", options: {query: {
     text?: string | null
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary 时间返回格式测试
    */
   get(url: "/api/Test/TestDateTime", options: {query: {
     time?: string
-  }, body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  }} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary 测试获取用户EID
    */
-  get(url: "/api/Test/GetLoginEid", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Test/GetLoginEid", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary 测试异常抛出
    */
-  get(url: "/api/Test/ThrowEx", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Test/ThrowEx", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag Test
    * @summary OpenApiPolicy
    */
-  get(url: "/api/Test/OpenApiPolicy", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
-  
+  get(url: "/api/Test/OpenApiPolicy", options: {} & IDefaultOptions): Promise<IResultModel>
+
   /**
    * @tag UserInfo
    * @summary 列表
@@ -2057,51 +2057,51 @@ export interface SwaggerApi{
     PageSize?: number
     TotalCount?: number
     Order?: string | null
-  }, body?: any} & IDefaultOptions): Promise<UserInfoListOutputPageListIResultModel>
-  
+  }} & IDefaultOptions): Promise<UserInfoListOutputPageListIResultModel>
+
   /**
    * @tag UserInfo
    * @summary 获取单个信息
    */
   get(url: "/api/UserInfo/Detail", options: {query: {
     id?: string | null
-  }, body?: any} & IDefaultOptions): Promise<UserInfoOutputIResultModel>
-  
+  }} & IDefaultOptions): Promise<UserInfoOutputIResultModel>
+
   /**
    * @tag UserInfo
    * @summary 添加
    */
   post(url: "/api/UserInfo/Add", options: {body: UserInfoInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag UserInfo
    * @summary 编辑
    */
   post(url: "/api/UserInfo/Edit", options: {body: UserInfoInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag UserInfo
    * @summary 修改密码
    */
   post(url: "/api/UserInfo/UpdatePwd", options: {body: UsersPwdDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag UserInfo
    * @summary 重置密码
    */
   post(url: "/api/UserInfo/ResetPwd", options: {body: ResetPwdDto} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag UserInfo
    * @summary 基本信息修改
    */
   post(url: "/api/UserInfo/UpdateUserBasicInfo", options: {body: UpdateUserBasicInfoInput} & IDefaultOptions): Promise<IResultModel>
-  
+
   /**
    * @tag Websocket
    * @summary Socket预连接
    */
-  get(url: "/api/Websocket/PreConnect", options: {body?: any} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Websocket/PreConnect", options: {} & IDefaultOptions): Promise<IResultModel>
 }
 
 // swagger runtime. generate by swagger2ts

@@ -115,7 +115,7 @@ export interface IRequestBodyObject {
   };
 }
 
-interface IResponsesObject {
+export interface IResponsesObject {
   default: IResponseObject | IReferenceObject;
   [httpCode: string]: IResponseObject | IReferenceObject;
 }

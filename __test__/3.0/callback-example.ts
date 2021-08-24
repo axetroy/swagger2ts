@@ -18,7 +18,7 @@ export interface SwaggerApi{
    */
   post(url: "/streams", options: {query: {
     callbackUrl: string
-  }, body?: any} & IDefaultOptions): Promise<unknown>
+  }} & IDefaultOptions): Promise<unknown>
 }
 
 // swagger runtime. generate by swagger2ts

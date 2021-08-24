@@ -25,8 +25,8 @@ export function linesOfText(txt: string): string[] {
   return txt.replace(/\r\n|\n\r|\n|\r/g, "\n").split(/\n/g);
 }
 
-export function indentTxt(txt: string, indent: number): string {
+export function indentTxt(txt: string, indent: number, ignoreEmptyLine: boolean): string {
   const arrayOfLines = linesOfText(txt);
 
-  return arrayOfLines.map((line) => " ".repeat(indent) + line).join("\n");
+  return arrayOfLines.map((line) => (/^\s*$/.test(line) ? line : " ".repeat(indent) + line)).join("\n");
 }
