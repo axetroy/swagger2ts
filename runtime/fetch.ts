@@ -164,7 +164,7 @@ export class Runtime {
   }
 
   public get baseURL(): string {
-    const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
+    const baseUrl = this._domain.replace(/\/$/, "") + (!/^\//.test(this._prefix) ? "/" : "") + this._prefix;
 
     return baseUrl.replace(/\/$/, "");
   }
