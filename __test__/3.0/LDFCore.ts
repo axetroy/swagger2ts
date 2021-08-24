@@ -2114,7 +2114,7 @@ interface IRuntimeHeaderConfig {
   [method: string]: IRuntimeHeaderMapString;
 }
 
-interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "method"> {
   path?: {
     [key: string]: string;
   };
@@ -2124,7 +2124,6 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
   header?: {
     [key: string]: string;
   };
-  body?: any;
   timeout?: number;
 }
 
@@ -2144,7 +2143,7 @@ interface IResponseInterceptor {
 type IInterceptorCancelFn = () => void;
 type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntimeRequestOptions>;
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
-type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: Error) => Promise<T>;
+type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
 interface IRuntimeForm {
   [key: string]: any;
@@ -2201,7 +2200,7 @@ class ResponseInterceptor implements IResponseInterceptor {
     return data;
   }
 
-  async runError<T>(config: IRuntimeRequestOptions, err: Error): Promise<T> {
+  async runError<T>(config: IRuntimeRequestOptions, err: RuntimeError): Promise<T> {
     let res!: T;
 
     for (const fn of this._fnsError) {
@@ -2227,6 +2226,24 @@ export class RuntimeForm<T extends IRuntimeForm> {
   }
 }
 
+export class RuntimeError extends Error {
+  constructor(message: string, private _resp?: Response) {
+    super(message);
+  }
+
+  public get response(): Response | undefined {
+    return this._resp;
+  }
+
+  static fromResponse(resp: Response) {
+    return new RuntimeError(resp.statusText, resp);
+  }
+
+  static fromError(err: Error) {
+    return new RuntimeError(err.message);
+  }
+}
+
 export interface IRuntime {
   readonly interceptors: { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
   readonly defaults: { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
@@ -2235,7 +2252,6 @@ export interface IRuntime {
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
 }
-
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -2366,54 +2382,54 @@ export class Runtime implements IRuntime {
         ? undefined
         : config.body instanceof RuntimeForm
         ? config.body.formData()
+        : config.body instanceof Blob
+        ? config.body
         : typeof config.body === "object"
         ? JSON.stringify(config.body)
         : config.body.toString();
 
-    try {
-      const exec = () =>
-        fetch(url.toString(), {
-          method: config.method,
-          body: body,
-          headers: headers,
+    const exec = () =>
+      fetch(url.toString(), {
+        method: config.method,
+        body: body,
+        headers: headers,
 
-          // common options
-          cache: config.cache,
-          credentials: config.credentials,
-          integrity: config.integrity,
-          keepalive: config.keepalive,
-          mode: config.mode,
-          redirect: config.redirect,
-          referrer: config.referrer,
-          referrerPolicy: config.referrerPolicy,
-          signal: config.signal,
-          window: config.window,
-        });
+        // common options
+        cache: config.cache,
+        credentials: config.credentials,
+        integrity: config.integrity,
+        keepalive: config.keepalive,
+        mode: config.mode,
+        redirect: config.redirect,
+        referrer: config.referrer,
+        referrerPolicy: config.referrerPolicy,
+        signal: config.signal,
+        window: config.window,
+      });
 
-      return (timeout ? this._timeout<Response>(timeout, exec()) : exec())
-        .then(async (resp) => {
-          const contentType = resp.headers.get("content-type");
-          switch (contentType) {
-            case "application/json":
-              return { data: await resp.json(), resp };
-            case "application/x-www-form-urlencoded":
-              return { data: await resp.formData(), resp };
-            case "application/octet-stream":
-              return { data: await resp.blob(), resp };
-            default:
-              return { data: await resp.text(), resp };
-          }
-        })
-        .then(({ data, resp }) => {
-          return this._responseInterceptor.runSuccess<T>(config, resp, data);
-        });
-    } catch (err) {
-      if (err instanceof Error) {
-        return await this._responseInterceptor.runError<T>(config, err);
-      } else {
-        return Promise.reject(err);
-      }
-    }
+    return (timeout ? this._timeout(timeout, exec()) : exec())
+      .then(async (resp) => {
+        if (!resp.ok) return Promise.reject(RuntimeError.fromResponse(resp));
+        const contentType = resp.headers.get("content-type");
+        switch (contentType) {
+          case "application/json":
+            return { data: await resp.json(), resp };
+          case "application/x-www-form-urlencoded":
+            return { data: await resp.formData(), resp };
+          case "application/octet-stream":
+            return { data: await resp.blob(), resp };
+          default:
+            return { data: await resp.text(), resp };
+        }
+      })
+      .then(({ data, resp }) => {
+        return this._responseInterceptor.runSuccess<T>(config, resp, data);
+      })
+      .catch((err) => {
+        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err) : RuntimeError.fromError(new Error(err));
+
+        return this._responseInterceptor.runError<T>(config, runtimeErr);
+      });
   }
 }
 
