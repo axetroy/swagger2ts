@@ -75,7 +75,7 @@ export function generateImplement(content: string, sdkContent: string, domain: s
 
     sdkContent += "\n" + apis.join("\n");
   } else {
-    sdkContent += `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as (SwaggerApi & Runtime)`;
+    sdkContent += `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as (SwaggerApi & IRuntime)`;
   }
 
   return sdkContent;

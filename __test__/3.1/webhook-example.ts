@@ -21,6 +21,11 @@ interface IRuntimeHeaderMapString {
   [key: string]: string;
 }
 
+interface IRuntimeHeaderConfig {
+  common: IRuntimeHeaderMapString;
+  [method: string]: IRuntimeHeaderMapString;
+}
+
 interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
@@ -134,8 +139,30 @@ export class RuntimeForm<T extends IRuntimeForm> {
   }
 }
 
-export class Runtime {
-  constructor(private _domain: string, private _prefix: string) {}
+export interface IRuntime {
+  get interceptors(): { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
+  get defaults(): { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
+  get baseURL(): string;
+  get domain(): string;
+  get prefix(): string;
+  request<T>(config: IRuntimeRequestOptions): Promise<T>;
+}
+
+export class Runtime implements IRuntime {
+  constructor(private _domain: string, private _prefix: string) {
+    const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
+
+    for (const method of methods) {
+      // @ts-expect-error ignore
+      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+        return this.request({
+          method: method.toUpperCase(),
+          url,
+          ...config,
+        });
+      };
+    }
+  }
 
   private _requestInterceptor = new RequestInterceptor();
   private _responseInterceptor = new ResponseInterceptor();
@@ -159,7 +186,7 @@ export class Runtime {
         common: {
           "Content-Type": "application/json",
         },
-      } as { common: IRuntimeHeaderMapString; [method: string]: IRuntimeHeaderMapString },
+      } as IRuntimeHeaderConfig,
     };
   }
 
@@ -182,7 +209,7 @@ export class Runtime {
   }
 
   public get baseURL(): string {
-    const baseUrl = this._domain.replace(/\/$/, "") + this._prefix;
+    const baseUrl = this._domain.replace(/\/$/, "") + (!/^\//.test(this._prefix) ? "/" : "") + this._prefix;
 
     return baseUrl.replace(/\/$/, "");
   }
@@ -289,70 +316,6 @@ export class Runtime {
       }
     }
   }
-
-  public get<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "GET",
-      url,
-      ...config,
-    });
-  }
-
-  public post<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "POST",
-      url,
-      ...config,
-    });
-  }
-
-  public put<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "PUT",
-      url,
-      ...config,
-    });
-  }
-
-  public delete<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "DELETE",
-      url,
-      ...config,
-    });
-  }
-
-  public head<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "HEAD",
-      url,
-      ...config,
-    });
-  }
-
-  public options<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "OPTIONS",
-      url,
-      ...config,
-    });
-  }
-
-  public patch<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "PATCH",
-      url,
-      ...config,
-    });
-  }
-
-  public trace<T>(url: string, config: IRuntimeRequestCommonOptions): Promise<T> {
-    return this.request<T>({
-      method: "TRACE",
-      url,
-      ...config,
-    });
-  }
 }
 
-export const defaultApi = new Runtime("http://localhost", "") as unknown as (SwaggerApi & Runtime)
+export const defaultApi = new Runtime("http://localhost", "") as unknown as (SwaggerApi & IRuntime)
