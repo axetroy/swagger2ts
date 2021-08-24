@@ -36,7 +36,13 @@ export async function generate(target: string): Promise<string> {
   // remote file
   if (/^https?:\/\//.test(target)) {
     const url = new URL(target);
-    const resp = await fetch(url);
+    const headers = new Headers()
+
+    headers.set("Content-Type", "application/json;charset=UTF-8")
+
+    const resp = await fetch(url, {
+      headers: headers
+    });
 
     swaggerJSONContent = await resp.text();
 

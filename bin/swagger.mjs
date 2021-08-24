@@ -12,7 +12,11 @@ let domain = ''
 if (/^https?:\/\//.test(process.argv[2])) {
   // remote swaggerJSONFilePath
   const url = new URL(process.argv[2])
-  const res = await axios.get(url.toString())
+  const res = await axios.get(url.toString(), {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
 
   swaggerJSONContent = JSON.stringify(res.data)
   domain = url.origin;
