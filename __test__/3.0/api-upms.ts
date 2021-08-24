@@ -367,6 +367,15 @@ export class Runtime implements IRuntime {
   private _requestInterceptor = new RequestInterceptor();
   private _responseInterceptor = new ResponseInterceptor();
 
+  private _defaults = {
+    timeout: 60 * 1000, // 60s,
+    headers: {
+      common: {
+        "Content-Type": "application/json",
+      },
+    } as IRuntimeHeaderConfig,
+  };
+
   public get interceptors() {
     const self = this;
     return {
@@ -380,14 +389,7 @@ export class Runtime implements IRuntime {
   }
 
   public get defaults() {
-    return {
-      timeout: 60 * 1000, // 60s,
-      headers: {
-        common: {
-          "Content-Type": "application/json",
-        },
-      } as IRuntimeHeaderConfig,
-    };
+    return this._defaults;
   }
 
   private _timeout<T>(ms: number, promise: Promise<T>) {
