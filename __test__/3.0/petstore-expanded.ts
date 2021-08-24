@@ -308,17 +308,22 @@ export class Runtime implements IRuntime {
 
     const timeout = config.timeout || defaults.timeout;
 
+    const body =
+      config.body === undefined
+        ? undefined
+        : ["GET", "HEAD"].indexOf(config.method.toUpperCase()) > -1
+        ? undefined
+        : config.body instanceof RuntimeForm
+        ? config.body.formData()
+        : typeof config.body === "object"
+        ? JSON.stringify(config.body)
+        : config.body.toString();
+
     try {
       const exec = () =>
         fetch(url.toString(), {
           method: config.method,
-          body:
-            // disable body for methods
-            config.method === "GET" || config.method === "HEAD"
-              ? undefined
-              : config.body instanceof RuntimeForm
-              ? config.body.formData()
-              : JSON.stringify(config.body),
+          body: body,
           headers: headers,
 
           // common options
