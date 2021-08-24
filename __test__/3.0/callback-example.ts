@@ -119,7 +119,7 @@ class ResponseInterceptor implements IResponseInterceptor {
   }
 
   async runError<T>(config: IRuntimeRequestOptions, err: Error): Promise<T> {
-    let res = null;
+    let res!: T;
 
     for (const fn of this._fnsError) {
       res = await fn(config, err);
@@ -145,11 +145,11 @@ export class RuntimeForm<T extends IRuntimeForm> {
 }
 
 export interface IRuntime {
-  get interceptors(): { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
-  get defaults(): { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
-  get baseURL(): string;
-  get domain(): string;
-  get prefix(): string;
+  readonly interceptors: { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
+  readonly defaults: { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
+  readonly baseURL: string;
+  domain: string;
+  prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
 }
 
@@ -158,7 +158,7 @@ export class Runtime implements IRuntime {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
 
     for (const method of methods) {
-      // @ts-expect-error ignore
+      // @ts-ignore ignore error
       this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
         return this.request({
           method: method.toUpperCase(),
@@ -265,12 +265,10 @@ export class Runtime implements IRuntime {
 
     const headers = new Headers();
 
-    if (config.header) {
-      for (const key in config.header) {
-        const value = config.header[key];
-        if (value !== undefined) {
-          headers.set(key, config.header[key]);
-        }
+    for (const key in config.header) {
+      const value = config.header[key];
+      if (value !== undefined) {
+        headers.set(key, value);
       }
     }
 
