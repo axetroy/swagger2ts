@@ -542,4 +542,5 @@ export class Runtime implements IRuntime {
   }
 }
 
-export const apiV3 = new Runtime("http://localhost", "/api/v3") as unknown as (SwaggerApi & Runtime)
+export type IClient = SwaggerApi & IRuntime
+export const apiV3 = new Runtime("http://localhost", "/api/v3") as unknown as IClient

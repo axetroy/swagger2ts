@@ -61,6 +61,8 @@ export function generateImplement(content: string, sdkContent: string, domain: s
 
   domain = domain.replace(/\/$/, "");
 
+  sdkContent += "\nexport type IClient = SwaggerApi & IRuntime"
+
   if (swagger.servers) {
     const apis: string[] = [];
 
@@ -68,14 +70,14 @@ export function generateImplement(content: string, sdkContent: string, domain: s
       const apiName = path2apiName(server);
       const serverURL = getServerUrl(server);
 
-      const api = `export const ${apiName} = new Runtime("${domain}", "${serverURL.pathname}") as unknown as (SwaggerApi & Runtime)`;
+      const api = `export const ${apiName} = new Runtime("${domain}", "${serverURL.pathname}") as unknown as IClient`;
 
       apis.push(api);
     }
 
     sdkContent += "\n" + apis.join("\n");
   } else {
-    sdkContent += `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as (SwaggerApi & IRuntime)`;
+    sdkContent += `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as IClient`;
   }
 
   return sdkContent;
