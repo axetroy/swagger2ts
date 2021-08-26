@@ -158,7 +158,7 @@ export class RuntimeError extends Error {
   }
 
   static fromError(err: Error) {
-    return new RuntimeError(err.message);
+    return new RuntimeError(err.message || "unknown error: " + err);
   }
 }
 
