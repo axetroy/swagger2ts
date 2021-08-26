@@ -97,19 +97,19 @@ export interface SwaggerApi{
    * @tag 公共接口
    * @summary 按钮
    */
-  get(url: "/button", options: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+  get(url: "/button", options?: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
 
   /**
    * @tag 公共接口
    * @summary 导航条
    */
-  get(url: "/navbar", options: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
+  get(url: "/navbar", options?: {} & IDefaultOptions): Promise<Array<MenuTreeVO>>
 
   /**
    * @tag 角色管理
    * @summary 查询
    */
-  get(url: "/role", options: {} & IDefaultOptions): Promise<Array<角色树查询>>
+  get(url: "/role", options?: {} & IDefaultOptions): Promise<Array<角色树查询>>
 
   /**
    * @tag 角色管理
@@ -174,7 +174,7 @@ export interface SwaggerApi{
    * @summary 查询
    * @description 系统管理，菜单树结构
    */
-  get(url: "/sitemap", options: {} & IDefaultOptions): Promise<Array<菜单树>>
+  get(url: "/sitemap", options?: {} & IDefaultOptions): Promise<Array<菜单树>>
 
   /**
    * @tag 菜单管理
@@ -371,7 +371,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,

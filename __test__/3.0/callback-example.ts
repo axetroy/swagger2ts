@@ -176,7 +176,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,

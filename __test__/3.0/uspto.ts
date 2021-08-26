@@ -25,7 +25,7 @@ export interface SwaggerApi{
    * @tag metadata
    * @summary List available data sets
    */
-  get(url: "/", options: {} & IDefaultOptions): Promise<dataSetList>
+  get(url: "/", options?: {} & IDefaultOptions): Promise<dataSetList>
 
   /**
    * @tag metadata
@@ -203,7 +203,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,

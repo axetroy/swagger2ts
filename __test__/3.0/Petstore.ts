@@ -146,7 +146,7 @@ export interface SwaggerApi{
    * @summary Returns pet inventories by status
    * @description Returns a map of status codes to quantities
    */
-  get(url: "/store/inventory", options: {} & IDefaultOptions): Promise<{}>
+  get(url: "/store/inventory", options?: {} & IDefaultOptions): Promise<{}>
 
   /**
    * @tag store
@@ -200,7 +200,7 @@ export interface SwaggerApi{
    * @tag user
    * @summary Logs out current logged in user session
    */
-  get(url: "/user/logout", options: {} & IDefaultOptions): Promise<null>
+  get(url: "/user/logout", options?: {} & IDefaultOptions): Promise<null>
 
   /**
    * @tag user
@@ -384,7 +384,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,

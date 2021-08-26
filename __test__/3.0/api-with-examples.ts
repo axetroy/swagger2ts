@@ -16,12 +16,12 @@ export interface SwaggerApi{
   /**
    * @summary List API versions
    */
-  get(url: "/", options: {} & IDefaultOptions): Promise<null>
+  get(url: "/", options?: {} & IDefaultOptions): Promise<null>
 
   /**
    * @summary Show API version details
    */
-  get(url: "/v2", options: {} & IDefaultOptions): Promise<null>
+  get(url: "/v2", options?: {} & IDefaultOptions): Promise<null>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -179,7 +179,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,

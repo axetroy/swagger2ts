@@ -263,7 +263,7 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       const rows = [
         generateMultipleLineComments(docs),
-        `${method}(url: "${url}", options: {${options.join(", ")}} & IDefaultOptions): ${generateResponseBody(operation.responses)}`,
+        `${method}(url: "${url}", options${!options.length ? '?' : ''}: {${options.join(", ")}} & IDefaultOptions): ${generateResponseBody(operation.responses)}`,
         //
       ]
         .filter((v) => v)

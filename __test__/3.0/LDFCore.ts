@@ -1321,7 +1321,7 @@ export interface SwaggerApi{
    * @tag Area
    * @summary 格式化区域数据
    */
-  post(url: "/api/Area/DataFormat", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/Area/DataFormat", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Audit
@@ -1461,7 +1461,7 @@ export interface SwaggerApi{
    * @tag DictionaryType
    * @summary 下拉选择
    */
-  get(url: "/api/DictionaryType/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/DictionaryType/Options", options?: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
 
   /**
    * @tag Enterprise
@@ -1532,7 +1532,7 @@ export interface SwaggerApi{
    * @tag FaqCategory
    * @summary 获取所有树形帮助分类并附带内容
    */
-  get(url: "/api/FaqCategory/TreeAdnContnet", options: {} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
+  get(url: "/api/FaqCategory/TreeAdnContnet", options?: {} & IDefaultOptions): Promise<FaqCategoryTreeOutputListIResultModel>
 
   /**
    * @tag FaqCategory
@@ -1728,7 +1728,7 @@ export interface SwaggerApi{
    * @tag Menu
    * @summary 级联下拉选项
    */
-  get(url: "/api/Menu/TreeOptions", options: {} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
+  get(url: "/api/Menu/TreeOptions", options?: {} & IDefaultOptions): Promise<TreeOptionResultModelListIResultModel>
 
   /**
    * @tag Menu
@@ -1740,7 +1740,7 @@ export interface SwaggerApi{
    * @tag Notify
    * @summary 获取消息类型
    */
-  get(url: "/api/Notify/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Notify/Options", options?: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
 
   /**
    * @tag Notify
@@ -1774,7 +1774,7 @@ export interface SwaggerApi{
    * @tag Notify
    * @summary 获取未读消息数量
    */
-  get(url: "/api/Notify/UnReadedCount", options: {} & IDefaultOptions): Promise<NotifyCountOutputIResultModel>
+  get(url: "/api/Notify/UnReadedCount", options?: {} & IDefaultOptions): Promise<NotifyCountOutputIResultModel>
 
   /**
    * @tag Notify
@@ -1786,7 +1786,7 @@ export interface SwaggerApi{
    * @tag Notify
    * @summary 全部已读
    */
-  post(url: "/api/Notify/ReadAll", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/Notify/ReadAll", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Notify
@@ -1798,7 +1798,7 @@ export interface SwaggerApi{
    * @tag Notify
    * @summary 删除所有消息
    */
-  post(url: "/api/Notify/RemoveAll", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/Notify/RemoveAll", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Notify
@@ -1810,13 +1810,13 @@ export interface SwaggerApi{
    * @tag OpenApi
    * @summary 同步本系统API信息到数据库
    */
-  post(url: "/api/OpenApi/SyncCurrent", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/OpenApi/SyncCurrent", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag OpenApi
    * @summary 同步所有系统API信息(未实现)
    */
-  post(url: "/api/OpenApi/SyncAll", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/OpenApi/SyncAll", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag OpenApi
@@ -1830,7 +1830,7 @@ export interface SwaggerApi{
    * @tag OpenApi
    * @summary 树形下拉选项
    */
-  get(url: "/api/OpenApi/TreeOptions", options: {} & IDefaultOptions): Promise<OpenApiTreeOutputListIResultModel>
+  get(url: "/api/OpenApi/TreeOptions", options?: {} & IDefaultOptions): Promise<OpenApiTreeOutputListIResultModel>
 
   /**
    * @tag Organizations
@@ -1923,7 +1923,7 @@ export interface SwaggerApi{
    * @tag Roles
    * @summary 下拉选择
    */
-  get(url: "/api/Roles/Options", options: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
+  get(url: "/api/Roles/Options", options?: {} & IDefaultOptions): Promise<StringOptionResultModelListIResultModel>
 
   /**
    * @tag Roles
@@ -1943,24 +1943,24 @@ export interface SwaggerApi{
    * @tag Sample
    * @summary 测试
    */
-  get(url: "/api/Sample/Test", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Sample/Test", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Sample
    * @summary 输出日志
    */
-  get(url: "/api/Sample/LogInfo", options: {} & IDefaultOptions): Promise<null>
+  get(url: "/api/Sample/LogInfo", options?: {} & IDefaultOptions): Promise<null>
 
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/ResolveApis", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Sample/ResolveApis", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Sample
    * @summary 更新
    */
-  post(url: "/api/Sample/Update", options: {} & IDefaultOptions): Promise<IResultModel>
+  post(url: "/api/Sample/Update", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Sample
@@ -1989,25 +1989,25 @@ export interface SwaggerApi{
   /**
    * @tag Sample
    */
-  get(url: "/api/Sample/TestGlobalExceptionFilter", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Sample/TestGlobalExceptionFilter", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Sample
    * @summary 获取登录信息
    */
-  get(url: "/api/Sample/LoginInfo", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Sample/LoginInfo", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Test
    * @summary 缓存测试
    */
-  get(url: "/api/Test/TestCache", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Test/TestCache", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Test
    * @summary 随便测试
    */
-  get(url: "/api/Test/Test2", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Test/Test2", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Test
@@ -2029,19 +2029,19 @@ export interface SwaggerApi{
    * @tag Test
    * @summary 测试获取用户EID
    */
-  get(url: "/api/Test/GetLoginEid", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Test/GetLoginEid", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Test
    * @summary 测试异常抛出
    */
-  get(url: "/api/Test/ThrowEx", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Test/ThrowEx", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag Test
    * @summary OpenApiPolicy
    */
-  get(url: "/api/Test/OpenApiPolicy", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Test/OpenApiPolicy", options?: {} & IDefaultOptions): Promise<IResultModel>
 
   /**
    * @tag UserInfo
@@ -2101,7 +2101,7 @@ export interface SwaggerApi{
    * @tag Websocket
    * @summary Socket预连接
    */
-  get(url: "/api/Websocket/PreConnect", options: {} & IDefaultOptions): Promise<IResultModel>
+  get(url: "/api/Websocket/PreConnect", options?: {} & IDefaultOptions): Promise<IResultModel>
 }
 
 // swagger runtime. generate by swagger2ts
@@ -2259,7 +2259,7 @@ export class Runtime implements IRuntime {
 
     for (const method of methods) {
       // @ts-ignore ignore error
-      this[method] = (url: string, config: IRuntimeRequestCommonOptions) => {
+      this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
           method: method.toUpperCase(),
           url,
