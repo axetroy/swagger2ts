@@ -63,7 +63,7 @@ interface IRuntimeHeaderConfig {
   [method: string]: IRuntimeHeaderMapString;
 }
 
-interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "method"> {
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
   path?: {
     [key: string]: string;
   };
@@ -73,6 +73,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "method"> {
   header?: {
     [key: string]: string;
   };
+  body?: any;
   timeout?: number;
 }
 
@@ -248,7 +249,7 @@ export class Runtime implements IRuntime {
   private _timeout<T>(ms: number, promise: Promise<T>) {
     return new Promise<T>((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error("TIMEOUT"));
+        reject(new RuntimeError(`timeout of ${ms}ms`));
       }, ms);
 
       promise
@@ -375,7 +376,7 @@ export class Runtime implements IRuntime {
         return this._responseInterceptor.runSuccess<T>(config, resp, data);
       })
       .catch((err) => {
-        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err) : RuntimeError.fromError(new Error(err));
+        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err) : new RuntimeError(err + "");
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
