@@ -1,4 +1,4 @@
-import { generateMultipleLineComments, indentTxt, linesOfText } from "./helper.ts";
+import { generateMultipleLineComments, indentTxt, linesOfText, isValidVarName } from "./helper.ts";
 import {
   IOperationObject,
   IParameterObject,
@@ -75,7 +75,11 @@ function generateSchema(name: string, schema: ISchemaObject | IReferenceObject |
         const outputObject: string[] = [];
         for (const prop in schema.properties) {
           const propSchema = schema.properties[prop];
-          outputObject.push(`${" ".repeat(indent + 2)}${prop}${!propSchema.required ? "?" : ""}: ${generateSchema("", propSchema, indent, true)}`);
+          const indentStr = " ".repeat(indent + 2);
+          const propertyName = isValidVarName(prop) ? prop : '"' + prop + '"';
+          const optional = !propSchema.required ? "?" : "";
+
+          outputObject.push(`${indentStr}${propertyName}${optional}: ${generateSchema("", propSchema, indent, true)}`);
         }
         if (!outputObject.length) return name ? `interface ${name} {}` : "{}";
         return [name ? `interface ${name} {` : "{", ...outputObject, "}"].filter((v) => v.trim()).join("\n");
@@ -91,8 +95,10 @@ function generateParamsArray(params: Array<IParameterObject | IReferenceObject>,
     if (isReferenceObject(param)) {
       throw new Error("not support ref param");
     }
+    const paramName = isValidVarName(param.name) ? param.name : '"' + param.name + '"';
+    const optional = !param.required ? "?" : "";
 
-    output.push(`${param.name}${!param.required ? "?" : ""}: ${generateSchema("", param.schema, 0, true)}`);
+    output.push(`${paramName}${optional}: ${generateSchema("", param.schema, 0, true)}`);
   }
 
   if (!output.length) return "{}";
@@ -263,7 +269,9 @@ function generateApi(swagger: ISwagger, indent: number): string {
 
       const rows = [
         generateMultipleLineComments(docs),
-        `${method}(url: "${url}", options${!options.length ? '?' : ''}: {${options.join(", ")}} & IDefaultOptions): ${generateResponseBody(operation.responses)}`,
+        `${method}(url: "${url}", options${!options.length ? "?" : ""}: {${options.join(", ")}} & IDefaultOptions): ${generateResponseBody(
+          operation.responses
+        )}`,
         //
       ]
         .filter((v) => v)

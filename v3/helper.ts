@@ -30,3 +30,7 @@ export function indentTxt(txt: string, indent: number, ignoreEmptyLine: boolean)
 
   return arrayOfLines.map((line) => (/^\s*$/.test(line) ? line : " ".repeat(indent) + line)).join("\n");
 }
+
+export function isValidVarName(name: string): boolean {
+  return /^[a-zA-Z_$][0-9a-zA-Z_$]*$/.test(name)
+}
