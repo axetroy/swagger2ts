@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/axetroy/swagger2ts#readme",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.22.0"
   }
 }
