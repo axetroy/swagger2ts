@@ -167,7 +167,7 @@ interface JSONSchema {
   uniqueItems?: number;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
+  required?: boolean | string[];
   enum?: Array<string | number>;
 
   // swagger extension
@@ -178,7 +178,7 @@ interface JSONSchema {
   not?: ISchemaObject[];
   items?: ISchemaObject | IReferenceObject;
   properties?: { [key: string]: ISchemaObject };
-  additionalProperties?: { [key: string]: ISchemaObject };
+  additionalProperties?: ISchemaObject | IReferenceObject;
   description?: string;
   format?: string;
 }
