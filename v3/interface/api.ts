@@ -1,13 +1,10 @@
 import {
-  IOperationObject,
   IParameterObject,
   IReferenceObject,
   IRequestBodyObject,
   IResponseObject,
   IResponsesObject,
-  ISchemaObject,
   isReferenceObject,
-  isRequestBodyObject,
   ISwagger,
 } from "../types.ts";
 import { ApiGenerator, DefinitionGenerator } from "./generator.ts";

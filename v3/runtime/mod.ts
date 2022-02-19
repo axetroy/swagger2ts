@@ -1,5 +1,5 @@
 import { camelCase } from "https://deno.land/x/case@v2.1.0/mod.ts";
-import { IServerObject, ISwagger } from "./types.ts";
+import { IServerObject, ISwagger } from "../types.ts";
 
 function getServerUrl(serverInfo: IServerObject): URL {
   let urlStr = serverInfo.url;
@@ -56,7 +56,7 @@ function path2apiName(serverInfo: IServerObject): string {
 }
 
 // generate HTTP implement for swagger api
-export function generateImplement(
+export function generateRuntime(
   content: string,
   sdkContent: string,
   domain: string,

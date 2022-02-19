@@ -1,5 +1,5 @@
 import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
-import { generate as generateTsFile } from "./v3/generator/index.ts";
+import * as v3 from "./v3/mod.ts";
 import "./runtime/fetch.ts"; // import to check type and download deps
 
 async function getDeps(url: string): Promise<string | undefined> {
@@ -63,9 +63,14 @@ export async function generate(target: string): Promise<string> {
     throw new Error("can not found sdk file");
   }
 
-  const definition = generateTsFile(swaggerJSONContent);
+  const definition = v3.generateInterface(swaggerJSONContent);
+  const implement = v3.generateRuntime(swaggerJSONContent, new TextDecoder().decode(Deno.readFileSync(sdkFilepath)), domain);
 
-  const result = `${definition}`;
+  const result = `// Generate by swagger2ts
+${definition}
+
+${implement}
+  `;
 
   return result.trim();
 }

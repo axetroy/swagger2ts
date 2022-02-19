@@ -1,6 +1,6 @@
 // swagger runtime. generate by swagger2ts
 interface IRuntimeHeaderMapString {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 interface IRuntimeHeaderConfig {
@@ -16,7 +16,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
     [key: string]: string;
   };
   header?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   body?: any;
   timeout?: number;
@@ -40,10 +40,10 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-interface IRuntimeForm {
+export interface IRuntimeForm {
   [key: string]: any;
 }
-class RequestInterceptor implements IRequestInterceptor {
+export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
@@ -66,7 +66,7 @@ class RequestInterceptor implements IRequestInterceptor {
   }
 }
 
-class ResponseInterceptor implements IResponseInterceptor {
+export class ResponseInterceptor implements IResponseInterceptor {
   private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
   private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
@@ -146,7 +146,9 @@ export interface IRuntime {
   domain: string;
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
+  clone(): IRuntime;
 }
+
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -264,7 +266,12 @@ export class Runtime implements IRuntime {
     for (const key in config.header) {
       const value = config.header[key];
       if (value !== undefined) {
-        headers.set(key, value);
+        if (Array.isArray(value)) {
+          headers.delete(key);
+          value.forEach((v) => headers.append(key, v));
+        } else {
+          headers.set(key, value);
+        }
       }
     }
 
@@ -325,5 +332,9 @@ export class Runtime implements IRuntime {
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
+  }
+
+  public clone() {
+    return new Runtime(this._domain, this._prefix);
   }
 }
