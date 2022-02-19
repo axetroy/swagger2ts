@@ -38,7 +38,12 @@ interface Block {
 class InterfaceBlock implements Block {
   constructor(private g: BaseGenerator) {}
 
-  public writeProperty(name: string, type: string, optional: boolean | undefined, nullable: boolean | undefined) {
+  public writeProperty(
+    name: string,
+    type: string,
+    optional: boolean | undefined,
+    nullable: boolean | undefined,
+  ) {
     this.g.write(`${this.g.indentStr}${name}${optional ? "?" : ""}: ${type}`);
     this.g.write(nullable ? " | null" : "");
     this.g.write(this.g.EOL);
@@ -118,30 +123,44 @@ export class ApiGenerator extends DefinitionGenerator {
 
     this.writeln("export type Stringable = {");
     this.write(this.EOL);
-    this.indent++
+    this.indent++;
     this.writeln("toString(): string");
-    this.indent--
+    this.indent--;
     this.writeln("} | null | undefined | void");
 
     this.write(`export interface SwaggerQuery `);
     options.start();
-    options.writeProperty("[key: string]", "Stringable | Stringable[]", false, false);
+    options.writeProperty(
+      "[key: string]",
+      "Stringable | Stringable[]",
+      false,
+      false,
+    );
     options.end();
     this.write(this.EOL);
 
     this.write(`export interface SwaggerHeaders `);
     options.start();
-    options.writeProperty("[key: string]", "Stringable | Stringable[]", false, false);
+    options.writeProperty(
+      "[key: string]",
+      "Stringable | Stringable[]",
+      false,
+      false,
+    );
     options.end();
     this.write(this.EOL);
 
-    this.writeln(`export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }`);
+    this.writeln(
+      `export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }`,
+    );
     this.write(this.EOL);
-    this.writeln(`export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>`);
+    this.writeln(
+      `export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>`,
+    );
     this.write(this.EOL);
 
     this.write(
-      `export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions `
+      `export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions `,
     );
     options.start();
     options.writeProperty("path", "P", true, false);
@@ -159,7 +178,15 @@ export class ApiGenerator extends DefinitionGenerator {
     this.interface.end();
   }
 
-  writeApi(method: string, url: string, path: string, query: string, headers: string, body: string, returnValue: string) {
+  writeApi(
+    method: string,
+    url: string,
+    path: string,
+    query: string,
+    headers: string,
+    body: string,
+    returnValue: string,
+  ) {
     this.write(this.indentStr);
     this.write(method + "(");
     this.write(`url: '${url}', options: `);

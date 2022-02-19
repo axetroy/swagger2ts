@@ -1,4 +1,9 @@
-import { IReferenceObject, ISchemaObject, isReferenceObject, ISwagger } from "../types.ts";
+import {
+  IReferenceObject,
+  ISchemaObject,
+  isReferenceObject,
+  ISwagger,
+} from "../types.ts";
 import { DefinitionGenerator } from "./generator.ts";
 
 function getRealType(type?: string) {
@@ -23,7 +28,10 @@ function getRefName(ref: IReferenceObject): string {
 /**
  * 生成节点
  */
-export function traverse(g: DefinitionGenerator, schema: IReferenceObject | ISchemaObject) {
+export function traverse(
+  g: DefinitionGenerator,
+  schema: IReferenceObject | ISchemaObject,
+) {
   if (isReferenceObject(schema)) {
     g.write(`${getRefName(schema)}`);
     return;
@@ -83,11 +91,19 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
         comment.end();
       }
 
-      const isPropertyRequired =
-        typeof propertyType.required === "boolean" ? propertyType.required : Array.isArray(object.required) ? object.required.includes(attr) : false;
+      const isPropertyRequired = typeof propertyType.required === "boolean"
+        ? propertyType.required
+        : Array.isArray(object.required)
+        ? object.required.includes(attr)
+        : false;
 
       if (isReferenceObject(propertyType)) {
-        objectInterface.writeProperty(attr, getRefName(propertyType), !isPropertyRequired, propertyType.nullable);
+        objectInterface.writeProperty(
+          attr,
+          getRefName(propertyType),
+          !isPropertyRequired,
+          propertyType.nullable,
+        );
         continue;
       }
 

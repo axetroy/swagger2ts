@@ -18,7 +18,16 @@ function generatePath(swagger: ISwagger): string {
 
   g.start();
 
-  const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
+  const methods = [
+    "get",
+    "post",
+    "delete",
+    "put",
+    "head",
+    "options",
+    "trace",
+    "patch",
+  ];
 
   for (const path in swagger.paths) {
     const pathObject = swagger.paths[path];
@@ -31,18 +40,24 @@ function generatePath(swagger: ISwagger): string {
       const params: { [key: string]: string } = {};
 
       // @ts-ignore ignore error
-      const parameters = pathObject[method].parameters as Array<IParameterObject | IReferenceObject>;
+      const parameters = pathObject[method].parameters as Array<
+        IParameterObject | IReferenceObject
+      >;
 
       if (parameters) {
         inTypes.forEach((action) => {
           params[action] = "";
 
-          const paths = parameters.filter((v) => !isReferenceObject(v)).filter((v) => (v as IParameterObject).in === action) as IParameterObject[];
+          const paths = parameters.filter((v) => !isReferenceObject(v)).filter((
+            v,
+          ) => (v as IParameterObject).in === action) as IParameterObject[];
 
           for (const path of paths) {
             if (path.schema) {
               const g = new DefinitionGenerator();
-              path.schema.required = typeof path.schema.required === "boolean" ? path.schema.required : path.required;
+              path.schema.required = typeof path.schema.required === "boolean"
+                ? path.schema.required
+                : path.required;
               g.write("{");
               g.write(`${g.indentStr}${path.name}: `);
               traverse(g, path.schema);
@@ -56,11 +71,15 @@ function generatePath(swagger: ISwagger): string {
       }
 
       // @ts-ignore ignore error
-      const requestBody = pathObject[method].requestBody as IRequestBodyObject | IReferenceObject;
+      const requestBody = pathObject[method].requestBody as
+        | IRequestBodyObject
+        | IReferenceObject;
       // @ts-ignore ignore error
       const responseBody = pathObject[method].responses as IResponsesObject;
 
-      function generateBody(b?: IRequestBodyObject | IResponseObject | IReferenceObject): string {
+      function generateBody(
+        b?: IRequestBodyObject | IResponseObject | IReferenceObject,
+      ): string {
         if (!b) return "unknown";
 
         if (isReferenceObject(b)) {
@@ -74,13 +93,15 @@ function generatePath(swagger: ISwagger): string {
 
         if (!body.content) return "unknown";
 
-        const jsonBody = body.content["application/json"] || body.content["text/json"] || body.content["text/plain"];
+        const jsonBody = body.content["application/json"] ||
+          body.content["text/json"] || body.content["text/plain"];
         const xmlBody = body.content["application/xml"];
         const streamBody = body.content["application/octet-stream"];
         const formBody = body.content["multipart/form-data"];
         const anyBody = body.content["*/*"];
 
-        const mediaSchema = jsonBody || xmlBody || streamBody || formBody || anyBody;
+        const mediaSchema = jsonBody || xmlBody || streamBody || formBody ||
+          anyBody;
 
         if (!mediaSchema || !mediaSchema.schema) return "unknown";
 
@@ -96,9 +117,19 @@ function generatePath(swagger: ISwagger): string {
       }
 
       const body = generateBody(requestBody);
-      const response = generateBody(responseBody ? responseBody[200] || responseBody.default : undefined);
+      const response = generateBody(
+        responseBody ? responseBody[200] || responseBody.default : undefined,
+      );
 
-      g.writeApi(method, path, params.path, params.query, params.headers, body, response);
+      g.writeApi(
+        method,
+        path,
+        params.path,
+        params.query,
+        params.headers,
+        body,
+        response,
+      );
     }
   }
 
