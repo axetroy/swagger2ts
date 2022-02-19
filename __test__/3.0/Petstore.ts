@@ -1,21 +1,13 @@
 // Generate by swagger2ts
-/* default type by generation start */
-interface MapAny {
-  [key: string]: any
-}
-interface MapString {
-  [key: string]: string | undefined
-}
-
-type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
-/* default type by generation end */
-
 export interface Order {
   id?: number
   petId?: number
   quantity?: number
   shipDate?: string
-  status?: "placed" | "approved" | "delivered" /* Order Status */
+  /**
+   * @description Order Status
+   */
+  status?: 'placed' | 'approved' | 'delivered'
   complete?: boolean
 }
 
@@ -45,7 +37,10 @@ export interface User {
   email?: string
   password?: string
   phone?: string
-  userStatus?: number /* User Status */
+  /**
+   * @description User Status
+   */
+  userStatus?: number
 }
 
 export interface Tag {
@@ -55,11 +50,14 @@ export interface Tag {
 
 export interface Pet {
   id?: number
-  name?: string
+  name: string
   category?: Category
-  photoUrls?: Array<string | undefined>
+  photoUrls: Array<string>
   tags?: Array<Tag>
-  status?: "available" | "pending" | "sold" /* pet status in the store */
+  /**
+   * @description pet status in the store
+   */
+  status?: 'available' | 'pending' | 'sold'
 }
 
 export interface ApiResponse {
@@ -68,170 +66,153 @@ export interface ApiResponse {
   message?: string
 }
 
-export interface SwaggerApi{
-  /**
-   * @tag pet
-   * @summary Add a new pet to the store
-   * @description Add a new pet to the store
-   */
-  post(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
 
-  /**
-   * @tag pet
-   * @summary Update an existing pet
-   * @description Update an existing pet by Id
-   */
-  put(url: "/pet", options: {body: Pet} & IDefaultOptions): Promise<Pet>
 
-  /**
-   * @tag pet
-   * @summary Finds Pets by status
-   * @description Multiple status values can be provided with comma separated strings
-   */
-  get(url: "/pet/findByStatus", options: {query: {
-    status?: "available" | "pending" | "sold"
-  }} & IDefaultOptions): Promise<Array<Pet>>
-
-  /**
-   * @tag pet
-   * @summary Finds Pets by tags
-   * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-   */
-  get(url: "/pet/findByTags", options: {query: {
-    tags?: Array<string | undefined>
-  }} & IDefaultOptions): Promise<Array<Pet>>
-
-  /**
-   * @tag pet
-   * @summary Find pet by ID
-   * @description Returns a single pet
-   */
-  get(url: "/pet/{petId}", options: {path: {
-    petId: number
-  }} & IDefaultOptions): Promise<Pet>
-
-  /**
-   * @tag pet
-   * @summary Updates a pet in the store with form data
-   */
-  post(url: "/pet/{petId}", options: {path: {
-    petId: number
-  }, query: {
-    name?: string
-    status?: string
-  }} & IDefaultOptions): Promise<unknown>
-
-  /**
-   * @tag pet
-   * @summary Deletes a pet
-   */
-  delete(url: "/pet/{petId}", options: {path: {
-    petId: number
-  }, header: {
-    api_key?: string
-  }} & IDefaultOptions): Promise<unknown>
-
-  /**
-   * @tag pet
-   * @summary uploads an image
-   */
-  post(url: "/pet/{petId}/uploadImage", options: {path: {
-    petId: number
-  }, query: {
-    additionalMetadata?: string
-  }, body: File | Blob | undefined} & IDefaultOptions): Promise<ApiResponse>
-
-  /**
-   * @tag store
-   * @summary Returns pet inventories by status
-   * @description Returns a map of status codes to quantities
-   */
-  get(url: "/store/inventory", options?: {} & IDefaultOptions): Promise<{}>
-
-  /**
-   * @tag store
-   * @summary Place an order for a pet
-   * @description Place a new order in the store
-   */
-  post(url: "/store/order", options: {body: Order} & IDefaultOptions): Promise<Order>
-
-  /**
-   * @tag store
-   * @summary Find purchase order by ID
-   * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
-   */
-  get(url: "/store/order/{orderId}", options: {path: {
-    orderId: number
-  }} & IDefaultOptions): Promise<Order>
-
-  /**
-   * @tag store
-   * @summary Delete purchase order by ID
-   * @description For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
-   */
-  delete(url: "/store/order/{orderId}", options: {path: {
-    orderId: number
-  }} & IDefaultOptions): Promise<unknown>
-
-  /**
-   * @tag user
-   * @summary Create user
-   * @description This can only be done by the logged in user.
-   */
-  post(url: "/user", options: {body: User} & IDefaultOptions): Promise<User>
-
-  /**
-   * @tag user
-   * @summary Creates list of users with given input array
-   * @description Creates list of users with given input array
-   */
-  post(url: "/user/createWithList", options: {body: Array<User>} & IDefaultOptions): Promise<User>
-
-  /**
-   * @tag user
-   * @summary Logs user into the system
-   */
-  get(url: "/user/login", options: {query: {
-    username?: string
-    password?: string
-  }} & IDefaultOptions): Promise<string | undefined>
-
-  /**
-   * @tag user
-   * @summary Logs out current logged in user session
-   */
-  get(url: "/user/logout", options?: {} & IDefaultOptions): Promise<null>
-
-  /**
-   * @tag user
-   * @summary Get user by user name
-   */
-  get(url: "/user/{username}", options: {path: {
-    username: string
-  }} & IDefaultOptions): Promise<User>
-
-  /**
-   * @tag user
-   * @summary Delete user
-   * @description This can only be done by the logged in user.
-   */
-  delete(url: "/user/{username}", options: {path: {
-    username: string
-  }} & IDefaultOptions): Promise<unknown>
-
-  /**
-   * @tag user
-   * @summary Update user
-   * @description This can only be done by the logged in user.
-   */
-  put(url: "/user/{username}", options: {path: {
-    username: string
-  }, body: User} & IDefaultOptions): Promise<null>
+export interface SwaggerPath {
+  [key: string]: string
 }
+
+export type Stringable = {
+
+  toString(): string
+} | null | undefined | void
+export interface SwaggerQuery {
+  [key: string]: Stringable | Stringable[]
+}
+
+export interface SwaggerHeaders {
+  [key: string]: Stringable | Stringable[]
+}
+
+export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
+
+export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
+
+export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions {
+  path?: P
+  query?: Q
+  headers?: H
+  body?: B
+}
+
+export interface SwaggerApi {
+  /**
+   * @description Add a new pet to the store
+   * @summary Add a new pet to the store
+   * @tag pet
+   */
+  post(url: '/pet', options: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
+  /**
+   * @description Update an existing pet by Id
+   * @summary Update an existing pet
+   * @tag pet
+   */
+  put(url: '/pet', options: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
+  /**
+   * @description Multiple status values can be provided with comma separated strings
+   * @summary Finds Pets by status
+   * @tag pet
+   */
+  get(url: '/pet/findByStatus', options: SwaggerOptions<{}, {status: 'available' | 'pending' | 'sold'}, {}, unknown>): Promise<Array<Pet>>
+  /**
+   * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+   * @summary Finds Pets by tags
+   * @tag pet
+   */
+  get(url: '/pet/findByTags', options: SwaggerOptions<{}, {tags: Array<string>}, {}, unknown>): Promise<Array<Pet>>
+  /**
+   * @description Returns a single pet
+   * @summary Find pet by ID
+   * @tag pet
+   */
+  get(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {}, {}, unknown>, 'path'>): Promise<Pet>
+  /**
+   * @summary Updates a pet in the store with form data
+   * @tag pet
+   */
+  post(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {status: string}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary Deletes a pet
+   * @tag pet
+   */
+  delete(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary uploads an image
+   * @tag pet
+   */
+  post(url: '/pet/{petId}/uploadImage', options: RequireKeys<SwaggerOptions<{petId: number}, {additionalMetadata: string}, {}, Blob | Uint8Array>, 'path'>): Promise<ApiResponse>
+  /**
+   * @description Returns a map of status codes to quantities
+   * @summary Returns pet inventories by status
+   * @tag store
+   */
+  get(url: '/store/inventory', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<{
+  [key: string]: number
+}
+>
+  /**
+   * @description Place a new order in the store
+   * @summary Place an order for a pet
+   * @tag store
+   */
+  post(url: '/store/order', options: SwaggerOptions<{}, {}, {}, Order>): Promise<Order>
+  /**
+   * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+   * @summary Find purchase order by ID
+   * @tag store
+   */
+  get(url: '/store/order/{orderId}', options: RequireKeys<SwaggerOptions<{orderId: number}, {}, {}, unknown>, 'path'>): Promise<Order>
+  /**
+   * @description For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+   * @summary Delete purchase order by ID
+   * @tag store
+   */
+  delete(url: '/store/order/{orderId}', options: RequireKeys<SwaggerOptions<{orderId: number}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @description This can only be done by the logged in user.
+   * @summary Create user
+   * @tag user
+   */
+  post(url: '/user', options: SwaggerOptions<{}, {}, {}, User>): Promise<User>
+  /**
+   * @description Creates list of users with given input array
+   * @summary Creates list of users with given input array
+   * @tag user
+   */
+  post(url: '/user/createWithList', options: SwaggerOptions<{}, {}, {}, Array<User>>): Promise<User>
+  /**
+   * @summary Logs user into the system
+   * @tag user
+   */
+  get(url: '/user/login', options: SwaggerOptions<{}, {password: string}, {}, unknown>): Promise<string>
+  /**
+   * @summary Logs out current logged in user session
+   * @tag user
+   */
+  get(url: '/user/logout', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<unknown>
+  /**
+   * @summary Get user by user name
+   * @tag user
+   */
+  get(url: '/user/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<User>
+  /**
+   * @description This can only be done by the logged in user.
+   * @summary Delete user
+   * @tag user
+   */
+  delete(url: '/user/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @description This can only be done by the logged in user.
+   * @summary Update user
+   * @tag user
+   */
+  put(url: '/user/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, User>, 'path'>): Promise<unknown>
+}
+
 
 // swagger runtime. generate by swagger2ts
 interface IRuntimeHeaderMapString {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 interface IRuntimeHeaderConfig {
@@ -247,7 +228,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
     [key: string]: string;
   };
   header?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   body?: any;
   timeout?: number;
@@ -271,10 +252,10 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-interface IRuntimeForm {
+export interface IRuntimeForm {
   [key: string]: any;
 }
-class RequestInterceptor implements IRequestInterceptor {
+export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
@@ -297,7 +278,7 @@ class RequestInterceptor implements IRequestInterceptor {
   }
 }
 
-class ResponseInterceptor implements IResponseInterceptor {
+export class ResponseInterceptor implements IResponseInterceptor {
   private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
   private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
@@ -377,7 +358,9 @@ export interface IRuntime {
   domain: string;
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
+  clone(): IRuntime;
 }
+
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -495,7 +478,12 @@ export class Runtime implements IRuntime {
     for (const key in config.header) {
       const value = config.header[key];
       if (value !== undefined) {
-        headers.set(key, value);
+        if (Array.isArray(value)) {
+          headers.delete(key);
+          value.forEach((v) => headers.append(key, v));
+        } else {
+          headers.set(key, value);
+        }
       }
     }
 
@@ -556,6 +544,10 @@ export class Runtime implements IRuntime {
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
+  }
+
+  public clone() {
+    return new Runtime(this._domain, this._prefix);
   }
 }
 

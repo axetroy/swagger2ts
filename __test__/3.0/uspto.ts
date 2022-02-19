@@ -1,56 +1,86 @@
 // Generate by swagger2ts
-/* default type by generation start */
-interface MapAny {
-  [key: string]: any
-}
-interface MapString {
-  [key: string]: string | undefined
-}
-
-type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
-/* default type by generation end */
-
 export interface dataSetList {
   total?: number
   apis?: Array<{
-  apiKey?: string /* To be used as a dataset parameter value */
-  apiVersionNumber?: string /* To be used as a version parameter value */
-  apiUrl?: string /* The URL describing the dataset's fields */
-  apiDocumentationUrl?: string /* A URL to the API console for each API */
-}>
+    /**
+     * @description To be used as a dataset parameter value
+     */
+    apiKey?: string
+    /**
+     * @description To be used as a version parameter value
+     */
+    apiVersionNumber?: string
+    /**
+     * @description The URL describing the dataset's fields
+     */
+    apiUrl?: string
+    /**
+     * @description A URL to the API console for each API
+     */
+    apiDocumentationUrl?: string
+  }
+>
 }
 
-export interface SwaggerApi{
+
+
+export interface SwaggerPath {
+  [key: string]: string
+}
+
+export type Stringable = {
+
+  toString(): string
+} | null | undefined | void
+export interface SwaggerQuery {
+  [key: string]: Stringable | Stringable[]
+}
+
+export interface SwaggerHeaders {
+  [key: string]: Stringable | Stringable[]
+}
+
+export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
+
+export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
+
+export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions {
+  path?: P
+  query?: Q
+  headers?: H
+  body?: B
+}
+
+export interface SwaggerApi {
   /**
-   * @tag metadata
    * @summary List available data sets
-   */
-  get(url: "/", options?: {} & IDefaultOptions): Promise<dataSetList>
-
-  /**
    * @tag metadata
-   * @summary Provides the general information about the API and the list of fields that can be used to query the dataset.
-   * @description This GET API returns the list of all the searchable field names that are in the oa_citations. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the syntax options shown below.
    */
-  get(url: "/{dataset}/{version}/fields", options: {path: {
-    dataset: string
-    version: string
-  }} & IDefaultOptions): Promise<string | undefined>
-
+  get(url: '/', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<dataSetList>
   /**
-   * @tag search
-   * @summary Provides search capability for the data set with the given search criteria.
-   * @description This API is based on Solr/Lucene Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
+   * @description This GET API returns the list of all the searchable field names that are in the oa_citations. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the syntax options shown below.
+   * @summary Provides the general information about the API and the list of fields that can be used to query the dataset.
+   * @tag metadata
    */
-  post(url: "/{dataset}/{version}/records", options: {path: {
-    version: string
-    dataset: string
-  }, body: null} & IDefaultOptions): Promise<Array<{}>>
+  get(url: '/{dataset}/{version}/fields', options: RequireKeys<SwaggerOptions<{version: string}, {}, {}, unknown>, 'path'>): Promise<string>
+  /**
+   * @description This API is based on Solr/Lucene Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
+   * @summary Provides search capability for the data set with the given search criteria.
+   * @tag search
+   */
+  post(url: '/{dataset}/{version}/records', options: RequireKeys<SwaggerOptions<{dataset: string}, {}, {}, unknown>, 'path'>): Promise<Array<{
+  [key: string]: {
+    [key: string]: unknown
+  }
+
 }
+>>
+}
+
 
 // swagger runtime. generate by swagger2ts
 interface IRuntimeHeaderMapString {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 interface IRuntimeHeaderConfig {
@@ -66,7 +96,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
     [key: string]: string;
   };
   header?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   body?: any;
   timeout?: number;
@@ -90,10 +120,10 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-interface IRuntimeForm {
+export interface IRuntimeForm {
   [key: string]: any;
 }
-class RequestInterceptor implements IRequestInterceptor {
+export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
@@ -116,7 +146,7 @@ class RequestInterceptor implements IRequestInterceptor {
   }
 }
 
-class ResponseInterceptor implements IResponseInterceptor {
+export class ResponseInterceptor implements IResponseInterceptor {
   private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
   private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
@@ -196,7 +226,9 @@ export interface IRuntime {
   domain: string;
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
+  clone(): IRuntime;
 }
+
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -314,7 +346,12 @@ export class Runtime implements IRuntime {
     for (const key in config.header) {
       const value = config.header[key];
       if (value !== undefined) {
-        headers.set(key, value);
+        if (Array.isArray(value)) {
+          headers.delete(key);
+          value.forEach((v) => headers.append(key, v));
+        } else {
+          headers.set(key, value);
+        }
       }
     }
 
@@ -375,6 +412,10 @@ export class Runtime implements IRuntime {
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
+  }
+
+  public clone() {
+    return new Runtime(this._domain, this._prefix);
   }
 }
 

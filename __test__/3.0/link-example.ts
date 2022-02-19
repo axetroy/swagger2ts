@@ -1,15 +1,4 @@
 // Generate by swagger2ts
-/* default type by generation start */
-interface MapAny {
-  [key: string]: any
-}
-interface MapString {
-  [key: string]: string | undefined
-}
-
-type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
-/* default type by generation end */
-
 export interface user {
   username?: string
   uuid?: string
@@ -27,43 +16,48 @@ export interface pullrequest {
   author?: user
 }
 
-export interface SwaggerApi{
-  get(url: "/2.0/users/{username}", options: {path: {
-    username: string
-  }} & IDefaultOptions): Promise<user>
 
-  get(url: "/2.0/repositories/{username}", options: {path: {
-    username: string
-  }} & IDefaultOptions): Promise<Array<repository>>
 
-  get(url: "/2.0/repositories/{username}/{slug}", options: {path: {
-    username: string
-    slug: string
-  }} & IDefaultOptions): Promise<repository>
-
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests", options: {path: {
-    username: string
-    slug: string
-  }, query: {
-    state?: "open" | "merged" | "declined"
-  }} & IDefaultOptions): Promise<Array<pullrequest>>
-
-  get(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}", options: {path: {
-    username: string
-    slug: string
-    pid: string
-  }} & IDefaultOptions): Promise<pullrequest>
-
-  post(url: "/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge", options: {path: {
-    username: string
-    slug: string
-    pid: string
-  }} & IDefaultOptions): Promise<unknown>
+export interface SwaggerPath {
+  [key: string]: string
 }
+
+export type Stringable = {
+
+  toString(): string
+} | null | undefined | void
+export interface SwaggerQuery {
+  [key: string]: Stringable | Stringable[]
+}
+
+export interface SwaggerHeaders {
+  [key: string]: Stringable | Stringable[]
+}
+
+export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
+
+export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
+
+export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions {
+  path?: P
+  query?: Q
+  headers?: H
+  body?: B
+}
+
+export interface SwaggerApi {
+  get(url: '/2.0/users/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<user>
+  get(url: '/2.0/repositories/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<Array<repository>>
+  get(url: '/2.0/repositories/{username}/{slug}', options: RequireKeys<SwaggerOptions<{slug: string}, {}, {}, unknown>, 'path'>): Promise<repository>
+  get(url: '/2.0/repositories/{username}/{slug}/pullrequests', options: RequireKeys<SwaggerOptions<{slug: string}, {state: 'open' | 'merged' | 'declined'}, {}, unknown>, 'path'>): Promise<Array<pullrequest>>
+  get(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}', options: RequireKeys<SwaggerOptions<{pid: string}, {}, {}, unknown>, 'path'>): Promise<pullrequest>
+  post(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge', options: RequireKeys<SwaggerOptions<{pid: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+}
+
 
 // swagger runtime. generate by swagger2ts
 interface IRuntimeHeaderMapString {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 interface IRuntimeHeaderConfig {
@@ -79,7 +73,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
     [key: string]: string;
   };
   header?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   body?: any;
   timeout?: number;
@@ -103,10 +97,10 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-interface IRuntimeForm {
+export interface IRuntimeForm {
   [key: string]: any;
 }
-class RequestInterceptor implements IRequestInterceptor {
+export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
@@ -129,7 +123,7 @@ class RequestInterceptor implements IRequestInterceptor {
   }
 }
 
-class ResponseInterceptor implements IResponseInterceptor {
+export class ResponseInterceptor implements IResponseInterceptor {
   private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
   private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
@@ -209,7 +203,9 @@ export interface IRuntime {
   domain: string;
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
+  clone(): IRuntime;
 }
+
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -327,7 +323,12 @@ export class Runtime implements IRuntime {
     for (const key in config.header) {
       const value = config.header[key];
       if (value !== undefined) {
-        headers.set(key, value);
+        if (Array.isArray(value)) {
+          headers.delete(key);
+          value.forEach((v) => headers.append(key, v));
+        } else {
+          headers.set(key, value);
+        }
       }
     }
 
@@ -388,6 +389,10 @@ export class Runtime implements IRuntime {
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
+  }
+
+  public clone() {
+    return new Runtime(this._domain, this._prefix);
   }
 }
 

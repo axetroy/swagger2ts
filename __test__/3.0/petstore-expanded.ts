@@ -1,61 +1,72 @@
 // Generate by swagger2ts
-/* default type by generation start */
-interface MapAny {
-  [key: string]: any
-}
-interface MapString {
-  [key: string]: string | undefined
-}
-
-type IDefaultOptions = Omit<RequestInit, "body" | "method"> & { timeout?: number }
-/* default type by generation end */
-
-export type Pet = any
+export type Pet = unknown
 
 export interface NewPet {
-  name?: string
+  name: string
   tag?: string
 }
 
 export interface Error {
-  code?: number
-  message?: string
+  code: number
+  message: string
 }
 
-export interface SwaggerApi{
+
+
+export interface SwaggerPath {
+  [key: string]: string
+}
+
+export type Stringable = {
+
+  toString(): string
+} | null | undefined | void
+export interface SwaggerQuery {
+  [key: string]: Stringable | Stringable[]
+}
+
+export interface SwaggerHeaders {
+  [key: string]: Stringable | Stringable[]
+}
+
+export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
+
+export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
+
+export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions {
+  path?: P
+  query?: Q
+  headers?: H
+  body?: B
+}
+
+export interface SwaggerApi {
   /**
    * @description Returns all pets from the system that the user has access to
-   * @description Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
-   * @description Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
-   */
-  get(url: "/pets", options: {query: {
-    tags?: Array<string | undefined>
-    limit?: number
-  }} & IDefaultOptions): Promise<Array<Pet>>
+Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
 
+Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
+
+   */
+  get(url: '/pets', options: SwaggerOptions<{}, {limit: number}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Creates a new pet in the store. Duplicates are allowed
    */
-  post(url: "/pets", options: {body: NewPet} & IDefaultOptions): Promise<Pet>
-
+  post(url: '/pets', options: SwaggerOptions<{}, {}, {}, NewPet>): Promise<Pet>
   /**
    * @description Returns a user based on a single ID, if the user does not have access to the pet
    */
-  get(url: "/pets/{id}", options: {path: {
-    id: number
-  }} & IDefaultOptions): Promise<Pet>
-
+  get(url: '/pets/{id}', options: RequireKeys<SwaggerOptions<{id: number}, {}, {}, unknown>, 'path'>): Promise<Pet>
   /**
    * @description deletes a single pet based on the ID supplied
    */
-  delete(url: "/pets/{id}", options: {path: {
-    id: number
-  }} & IDefaultOptions): Promise<Error>
+  delete(url: '/pets/{id}', options: RequireKeys<SwaggerOptions<{id: number}, {}, {}, unknown>, 'path'>): Promise<Error>
 }
+
 
 // swagger runtime. generate by swagger2ts
 interface IRuntimeHeaderMapString {
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 interface IRuntimeHeaderConfig {
@@ -71,7 +82,7 @@ interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "metho
     [key: string]: string;
   };
   header?: {
-    [key: string]: string;
+    [key: string]: string | string[];
   };
   body?: any;
   timeout?: number;
@@ -95,10 +106,10 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-interface IRuntimeForm {
+export interface IRuntimeForm {
   [key: string]: any;
 }
-class RequestInterceptor implements IRequestInterceptor {
+export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
     this._fns.push(fn);
@@ -121,7 +132,7 @@ class RequestInterceptor implements IRequestInterceptor {
   }
 }
 
-class ResponseInterceptor implements IResponseInterceptor {
+export class ResponseInterceptor implements IResponseInterceptor {
   private _fnsSuccess: IResponseInterceptorSuccessFn<any>[] = [];
   private _fnsError: IResponseInterceptorErrorFn<any>[] = [];
   public use(successFn: IResponseInterceptorSuccessFn<any>, errorFn: IResponseInterceptorErrorFn<any>) {
@@ -201,7 +212,9 @@ export interface IRuntime {
   domain: string;
   prefix: string;
   request<T>(config: IRuntimeRequestOptions): Promise<T>;
+  clone(): IRuntime;
 }
+
 export class Runtime implements IRuntime {
   constructor(private _domain: string, private _prefix: string) {
     const methods = ["get", "post", "delete", "put", "head", "options", "trace", "patch"];
@@ -319,7 +332,12 @@ export class Runtime implements IRuntime {
     for (const key in config.header) {
       const value = config.header[key];
       if (value !== undefined) {
-        headers.set(key, value);
+        if (Array.isArray(value)) {
+          headers.delete(key);
+          value.forEach((v) => headers.append(key, v));
+        } else {
+          headers.set(key, value);
+        }
       }
     }
 
@@ -380,6 +398,10 @@ export class Runtime implements IRuntime {
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
+  }
+
+  public clone() {
+    return new Runtime(this._domain, this._prefix);
   }
 }
 
