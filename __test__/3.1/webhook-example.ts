@@ -4,7 +4,7 @@ export type Pet = unknown
 
 
 export interface SwaggerPath {
-  [key: string]: string
+  [key: string]: string | number
 }
 
 export type Stringable = {
@@ -364,7 +364,7 @@ export class Runtime implements IRuntime {
         return this._responseInterceptor.runSuccess<T>(config, resp, data);
       })
       .catch((err) => {
-        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err) : new RuntimeError(err + "");
+        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err as unknown as Error) : new RuntimeError(err + "");
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });

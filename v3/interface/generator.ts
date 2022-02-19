@@ -117,7 +117,7 @@ export class ApiGenerator extends DefinitionGenerator {
 
     this.write(`export interface SwaggerPath `);
     options.start();
-    options.writeProperty("[key: string]", "string", false, false);
+    options.writeProperty("[key: string]", "string | number", false, false);
     options.end();
     this.write(this.EOL);
 
