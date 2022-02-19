@@ -1,4 +1,5 @@
 import {
+  IOperationObject,
   IParameterObject,
   IReferenceObject,
   IRequestBodyObject,
@@ -117,6 +118,25 @@ function generatePath(swagger: ISwagger): string {
       const response = generateBody(
         responseBody ? responseBody[200] || responseBody.default : undefined,
       );
+
+      const comment = g.createCommentBlock();
+
+      // @ts-expect-error ignore error
+      const op = pathObject[method] as IOperationObject;
+
+      if (op.description || op.summary) {
+        comment.start();
+        if (op.description) {
+          comment.write("description", op.description);
+        }
+        if (op.summary) {
+          comment.write("summary", op.summary);
+        }
+        if (op.tags && op.tags.length) {
+          comment.write("tag", op.tags.join(", "));
+        }
+        comment.end();
+      }
 
       g.writeApi(
         method,

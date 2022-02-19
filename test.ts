@@ -79,10 +79,34 @@ export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends S
 }
 
 export interface SwaggerApi {
+  /**
+   * @summary 文件上传测试
+   * @tags auth-server-endpoint
+   */
   post(url: '/other', options: SwaggerOptions<{}, {name: string}, {}, Blob | Uint8Array>): Promise<ResponseEntity>
+  /**
+   * @description oauth2.0 应用接入信息查询
+   * @summary 查询
+   * @tags 应用接入管理
+   */
   get(url: '/register/client', options: SwaggerOptions<{}, {size: number}, {}, unknown>): Promise<PageResultVOOfClientVO>
+  /**
+   * @description oauth2.0 应用接入提交信息
+   * @summary 新增
+   * @tags 应用接入管理
+   */
   post(url: '/register/client', options: SwaggerOptions<{}, {redirectUri: string}, {}, unknown>): Promise<ResponseEntity>
+  /**
+   * @description oauth2.0 应用接入信息变更
+   * @summary 修改
+   * @tags 应用接入管理
+   */
   post(url: '/register/client/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {redirectUri: string}, {}, unknown>, 'path'>): Promise<ResponseEntity>
+  /**
+   * @description oauth2.0 应用接入信息删除
+   * @summary 删除
+   * @tags 应用接入管理
+   */
   delete(url: '/register/client/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<ResponseEntity>
 }
 
