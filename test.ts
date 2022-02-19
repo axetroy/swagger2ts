@@ -1,5 +1,5 @@
-import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
-import { assertEquals, assert } from "https://deno.land/std@0.105.0/testing/asserts.ts";
+import * as path from "https://deno.land/std@0.126.0/path/mod.ts";
+import { assertEquals, assert } from "https://deno.land/std@0.126.0/testing/asserts.ts";
 import { generate } from "./swagger2ts.ts";
 
 /**

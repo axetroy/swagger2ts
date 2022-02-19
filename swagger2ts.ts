@@ -1,4 +1,4 @@
-import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.126.0/path/mod.ts";
 import * as v3 from "./v3/mod.ts";
 import "./runtime/fetch.ts"; // import to check type and download deps
 
