@@ -51,20 +51,21 @@ export interface ResponseEntity {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -83,25 +84,25 @@ export interface SwaggerApi {
    * @summary 文件上传测试
    * @tag auth-server-endpoint
    */
-  post(url: '/other', options: SwaggerOptions<{}, {name: string}, {}, Blob | Uint8Array>): Promise<ResponseEntity>
+  post(url: '/other', options: SwaggerOptions<{}, {name?: string}, {}, Blob | Uint8Array>): Promise<ResponseEntity>
   /**
    * @description oauth2.0 应用接入信息查询
    * @summary 查询
    * @tag 应用接入管理
    */
-  get(url: '/register/client', options: SwaggerOptions<{}, {size: number}, {}, unknown>): Promise<PageResultVOOfClientVO>
+  get(url: '/register/client', options: RequireKeys<SwaggerOptions<{}, {page: number, size: number}, {}, unknown>, 'query'>): Promise<PageResultVOOfClientVO>
   /**
    * @description oauth2.0 应用接入提交信息
    * @summary 新增
    * @tag 应用接入管理
    */
-  post(url: '/register/client', options: SwaggerOptions<{}, {redirectUri: string}, {}, unknown>): Promise<ResponseEntity>
+  post(url: '/register/client', options: RequireKeys<SwaggerOptions<{}, {clientSecret: string, name: string, redirectUri: string}, {}, unknown>, 'query'>): Promise<ResponseEntity>
   /**
    * @description oauth2.0 应用接入信息变更
    * @summary 修改
    * @tag 应用接入管理
    */
-  post(url: '/register/client/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {redirectUri: string}, {}, unknown>, 'path'>): Promise<ResponseEntity>
+  post(url: '/register/client/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {clientSecret: string, name: string, redirectUri: string}, {}, unknown>, 'path' | 'query'>): Promise<ResponseEntity>
   /**
    * @description oauth2.0 应用接入信息删除
    * @summary 删除

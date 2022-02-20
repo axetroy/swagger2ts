@@ -58,8 +58,8 @@ export interface IOperationObject {
     [key: string]: ICallbackObject | IReferenceObject;
   };
   deprecated?: boolean;
-  security: ISecurityRequirementObject[];
-  servers: IServerObject[];
+  security?: ISecurityRequirementObject[];
+  servers?: IServerObject[];
 }
 
 export interface IComponentsObject {
@@ -118,8 +118,8 @@ export interface IRequestBodyObject {
 }
 
 export interface IResponsesObject {
-  default: IResponseObject | IReferenceObject;
-  [httpCode: string]: IResponseObject | IReferenceObject;
+  default?: IResponseObject | IReferenceObject;
+  [httpCode: string]: IResponseObject | IReferenceObject | void;
 }
 
 export interface IResponseObject {
@@ -146,9 +146,9 @@ interface ILinkObject {
 
 interface IMediaTypeObject {
   schema?: ISchemaObject | IReferenceObject;
-  example: any;
-  examples: any; // TODO
-  encoding: {
+  example?: any;
+  examples?: any; // TODO
+  encoding?: {
     [key: string]: IEncodingObject;
   };
 }

@@ -2402,20 +2402,21 @@ export interface UpdateUserBasicInfoInput {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -2444,22 +2445,22 @@ export interface SwaggerApi {
    * @summary 退出登录
    * @tag Account
    */
-  get(url: '/api/Account/Logout', options: SwaggerOptions<{}, {logoutId: string | null}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/Account/Logout', options: SwaggerOptions<{}, {logoutId?: string | null}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary Ids登录错误信息
    * @tag Account
    */
-  get(url: '/api/Account/Error', options: SwaggerOptions<{}, {errorId: string | null}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/Account/Error', options: SwaggerOptions<{}, {errorId?: string | null}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 获取初始化数据
    * @tag App
    */
-  get(url: '/api/App/Init', options: SwaggerOptions<{}, {client: ClientEnums}, {}, unknown>): Promise<InitAppOutputIResultModel>
+  get(url: '/api/App/Init', options: SwaggerOptions<{}, {client?: ClientEnums}, {}, unknown>): Promise<InitAppOutputIResultModel>
   /**
    * @summary 获取最新版本信息
    * @tag AppVersion
    */
-  get(url: '/api/AppVersion/GetVersion', options: SwaggerOptions<{}, {type: number}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/AppVersion/GetVersion', options: SwaggerOptions<{}, {type?: number}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 增加版本信息
    * @tag AppVersion
@@ -2469,12 +2470,12 @@ export interface SwaggerApi {
    * @summary 获取版本记录
    * @tag AppVersion
    */
-  get(url: '/api/AppVersion/GetVersionRecords', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<AppVersionDtoPageListIResultModel>
+  get(url: '/api/AppVersion/GetVersionRecords', options: SwaggerOptions<{}, {Type?: number, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<AppVersionDtoPageListIResultModel>
   /**
    * @summary 分页查询
    * @tag Area
    */
-  get(url: '/api/Area/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<AreaListOutputPageListIResultModel>
+  get(url: '/api/Area/Page', options: SwaggerOptions<{}, {Level?: number | null, ParentCode?: string | null, ParentId?: string | null, Code?: string | null, Name?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<AreaListOutputPageListIResultModel>
   /**
    * @summary 添加区域
    * @tag Area
@@ -2494,12 +2495,12 @@ export interface SwaggerApi {
    * @summary 级联下拉选项
    * @tag Area
    */
-  get(url: '/api/Area/TreeOptions', options: SwaggerOptions<{}, {AreaCodeFull: string | null}, {}, unknown>): Promise<TreeOptionResultModelListIResultModel>
+  get(url: '/api/Area/TreeOptions', options: SwaggerOptions<{}, {Level?: number | null, LevelFull?: number | null, ParentCode?: string | null, AreaCode?: string | null, AreaCodeFull?: string | null}, {}, unknown>): Promise<TreeOptionResultModelListIResultModel>
   /**
    * @summary 特定级别的下拉选项
    * @tag Area
    */
-  get(url: '/api/Area/OptionsBySpecificLevel', options: SwaggerOptions<{}, {AreaCodeFull: string | null}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
+  get(url: '/api/Area/OptionsBySpecificLevel', options: SwaggerOptions<{}, {Level?: number | null, LevelFull?: number | null, ParentCode?: string | null, AreaCode?: string | null, AreaCodeFull?: string | null}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
   /**
    * @summary 格式化区域数据
    * @tag Area
@@ -2509,7 +2510,7 @@ export interface SwaggerApi {
    * @summary 列表查询
    * @tag Audit
    */
-  get(url: '/api/Audit/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<AuditListOutputPageListIResultModel>
+  get(url: '/api/Audit/Page', options: SwaggerOptions<{}, {FilterNoUserLog?: boolean, Route?: string | null, RouteSummary?: string | null, Url?: string | null, Method?: string | null, StatusCode?: number | null, RemoteIP?: string | null, UserId?: string | null, UserName?: string | null, CreationTimeStart?: string | null, CreationTimeEnd?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<AuditListOutputPageListIResultModel>
   /**
    * @summary 新增
    * @tag Dictionary
@@ -2519,7 +2520,7 @@ export interface SwaggerApi {
    * @summary 详情
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<DictionaryIResultModel>
+  get(url: '/api/Dictionary/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<DictionaryIResultModel>
   /**
    * @summary 修改
    * @tag Dictionary
@@ -2529,7 +2530,7 @@ export interface SwaggerApi {
    * @summary 分页查询
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<DictionaryDtoPageListIResultModel>
+  get(url: '/api/Dictionary/Page', options: SwaggerOptions<{}, {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<DictionaryDtoPageListIResultModel>
   /**
    * @summary 移除
    * @tag Dictionary
@@ -2539,22 +2540,22 @@ export interface SwaggerApi {
    * @summary 根据类型树形获取
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/ListByType', options: SwaggerOptions<{}, {typeId: string | null}, {}, unknown>): Promise<DictionaryListIResultModel>
+  get(url: '/api/Dictionary/ListByType', options: SwaggerOptions<{}, {typeId?: string | null}, {}, unknown>): Promise<DictionaryListIResultModel>
   /**
    * @summary 根据数据字典类型code获取对应下拉选项
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/OptionsByCode', options: SwaggerOptions<{}, {isLoadAll: boolean}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
+  get(url: '/api/Dictionary/OptionsByCode', options: SwaggerOptions<{}, {code?: string | null, isLoadAll?: boolean}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
   /**
    * @summary 根据数据字典类型code获取对应下拉选项（多个）
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/OptionsListByCodes', options: SwaggerOptions<{}, {isLoadAll: boolean}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
+  get(url: '/api/Dictionary/OptionsListByCodes', options: SwaggerOptions<{}, {codes?: string | null, isLoadAll?: boolean}, {}, unknown>): Promise<StringOptionResultModelListIResultModel>
   /**
    * @summary 根据类型树形获取(树形)
    * @tag Dictionary
    */
-  get(url: '/api/Dictionary/TreeOptionsByCode', options: SwaggerOptions<{}, {isLoadAll: boolean}, {}, unknown>): Promise<StringTreeOptionResultModelDtoListIResultModel>
+  get(url: '/api/Dictionary/TreeOptionsByCode', options: SwaggerOptions<{}, {code?: string | null, isLoadAll?: boolean}, {}, unknown>): Promise<StringTreeOptionResultModelDtoListIResultModel>
   /**
    * @summary 新增
    * @tag DictionaryType
@@ -2564,7 +2565,7 @@ export interface SwaggerApi {
    * @summary 详情
    * @tag DictionaryType
    */
-  get(url: '/api/DictionaryType/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<DictionaryTypeIResultModel>
+  get(url: '/api/DictionaryType/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<DictionaryTypeIResultModel>
   /**
    * @summary 修改
    * @tag DictionaryType
@@ -2574,7 +2575,7 @@ export interface SwaggerApi {
    * @summary 分页查询
    * @tag DictionaryType
    */
-  get(url: '/api/DictionaryType/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<DictionaryTypeDtoPageListIResultModel>
+  get(url: '/api/DictionaryType/Page', options: SwaggerOptions<{}, {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<DictionaryTypeDtoPageListIResultModel>
   /**
    * @summary 移除
    * @tag DictionaryType
@@ -2589,12 +2590,12 @@ export interface SwaggerApi {
    * @summary 分页列表
    * @tag Enterprise
    */
-  get(url: '/api/Enterprise/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<EnterpriseListOutputPageListIResultModel>
+  get(url: '/api/Enterprise/Page', options: SwaggerOptions<{}, {Id?: string | null, Code?: string | null, Level?: number | null, Name?: string | null, Path?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<EnterpriseListOutputPageListIResultModel>
   /**
    * @summary 详情
    * @tag Enterprise
    */
-  get(url: '/api/Enterprise/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<EnterpriseOutputIResultModel>
+  get(url: '/api/Enterprise/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<EnterpriseOutputIResultModel>
   /**
    * @summary 添加
    * @tag Enterprise
@@ -2614,12 +2615,12 @@ export interface SwaggerApi {
    * @summary 级联下拉选项
    * @tag Enterprise
    */
-  get(url: '/api/Enterprise/TreeOptions', options: SwaggerOptions<{}, {Path: string | null}, {}, unknown>): Promise<TreeOptionResultModelListIResultModel>
+  get(url: '/api/Enterprise/TreeOptions', options: SwaggerOptions<{}, {Path?: string | null}, {}, unknown>): Promise<TreeOptionResultModelListIResultModel>
   /**
    * @summary 获取所有树形帮助分类
    * @tag FaqCategory
    */
-  get(url: '/api/FaqCategory/Tree', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<FaqCategoryTreeOutputListIResultModel>
+  get(url: '/api/FaqCategory/Tree', options: SwaggerOptions<{}, {ParentId?: string | null, Name?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<FaqCategoryTreeOutputListIResultModel>
   /**
    * @summary 获取所有树形帮助分类并附带内容
    * @tag FaqCategory
@@ -2629,7 +2630,7 @@ export interface SwaggerApi {
    * @summary 详情
    * @tag FaqCategory
    */
-  get(url: '/api/FaqCategory/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<FaqCategoryOutputIResultModel>
+  get(url: '/api/FaqCategory/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<FaqCategoryOutputIResultModel>
   /**
    * @summary 添加
    * @tag FaqCategory
@@ -2649,12 +2650,12 @@ export interface SwaggerApi {
    * @summary 分页列表
    * @tag FaqContent
    */
-  get(url: '/api/FaqContent/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<FaqContentListOutputPageListIResultModel>
+  get(url: '/api/FaqContent/Page', options: SwaggerOptions<{}, {CategoryId?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<FaqContentListOutputPageListIResultModel>
   /**
    * @summary 详情
    * @tag FaqContent
    */
-  get(url: '/api/FaqContent/Detail', options: SwaggerOptions<{}, {isView: boolean}, {}, unknown>): Promise<FaqContentOutputIResultModel>
+  get(url: '/api/FaqContent/Detail', options: SwaggerOptions<{}, {id?: string | null, isView?: boolean}, {}, unknown>): Promise<FaqContentOutputIResultModel>
   /**
    * @summary 添加
    * @tag FaqContent
@@ -2684,13 +2685,13 @@ export interface SwaggerApi {
    * @summary 获取文件(返回byte[])
    * @tag File
    */
-  get(url: '/api/File/Get', options: SwaggerOptions<{}, {code: string | null}, {}, unknown>): Promise<unknown>
+  get(url: '/api/File/Get', options: SwaggerOptions<{}, {code?: string | null}, {}, unknown>): Promise<unknown>
   /**
    * @summary 下载文件(返回Stream)
    * @tag File
    */
-  get(url: '/api/File/Download', options: SwaggerOptions<{}, {code: string | null}, {}, unknown>): Promise<unknown>
-  get(url: '/api/File/DownloadByStream', options: SwaggerOptions<{}, {code: string | null}, {}, unknown>): Promise<unknown>
+  get(url: '/api/File/Download', options: SwaggerOptions<{}, {code?: string | null}, {}, unknown>): Promise<unknown>
+  get(url: '/api/File/DownloadByStream', options: SwaggerOptions<{}, {code?: string | null}, {}, unknown>): Promise<unknown>
   /**
    * @summary 删除文件
    * @tag File
@@ -2700,7 +2701,7 @@ export interface SwaggerApi {
    * @summary 列表
    * @tag LoginLog
    */
-  get(url: '/api/LoginLog/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<LoginLogListOutputPageListIResultModel>
+  get(url: '/api/LoginLog/Page', options: SwaggerOptions<{}, {UserName?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<LoginLogListOutputPageListIResultModel>
   /**
    * @summary 新增
    * @tag Menu
@@ -2715,27 +2716,27 @@ export interface SwaggerApi {
    * @summary 详情
    * @tag Menu
    */
-  get(url: '/api/Menu/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<MenuIResultModel>
+  get(url: '/api/Menu/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<MenuIResultModel>
   /**
    * @summary 分页
    * @tag Menu
    */
-  get(url: '/api/Menu/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<MenuPageListIResultModel>
+  get(url: '/api/Menu/Page', options: SwaggerOptions<{}, {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<MenuPageListIResultModel>
   /**
    * @summary 获取所有树形菜单
    * @tag Menu
    */
-  get(url: '/api/Menu/Tree', options: SwaggerOptions<{}, {client: ClientEnums}, {}, unknown>): Promise<MenuOutputListIResultModel>
+  get(url: '/api/Menu/Tree', options: SwaggerOptions<{}, {client?: ClientEnums}, {}, unknown>): Promise<MenuOutputListIResultModel>
   /**
    * @summary 获取角色树形菜单
    * @tag Menu
    */
-  get(url: '/api/Menu/LoadTreeByRole', options: SwaggerOptions<{}, {roleId: string | null}, {}, unknown>): Promise<MenuOutputListIResultModel>
+  get(url: '/api/Menu/LoadTreeByRole', options: SwaggerOptions<{}, {roleId?: string | null}, {}, unknown>): Promise<MenuOutputListIResultModel>
   /**
    * @summary 获取菜单按钮
    * @tag Menu
    */
-  get(url: '/api/Menu/Buttons', options: SwaggerOptions<{}, {menuId: string | null}, {}, unknown>): Promise<ButtonDtoIResultModel>
+  get(url: '/api/Menu/Buttons', options: SwaggerOptions<{}, {menuId?: string | null}, {}, unknown>): Promise<ButtonDtoIResultModel>
   /**
    * @summary 配置菜单按钮
    * @tag Menu
@@ -2760,12 +2761,12 @@ export interface SwaggerApi {
    * @summary 获取通知列表
    * @tag Notify
    */
-  get(url: '/api/Notify/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<NotifyListOutputPageListIResultModel>
+  get(url: '/api/Notify/Page', options: SwaggerOptions<{}, {Type?: string | null, Readed?: boolean | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<NotifyListOutputPageListIResultModel>
   /**
    * @summary 获取通知列表(信息预览框使用)
    * @tag Notify
    */
-  get(url: '/api/Notify/PageLite', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<NotifyListOutputPageListIResultModel>
+  get(url: '/api/Notify/PageLite', options: SwaggerOptions<{}, {Type?: string | null, Readed?: boolean | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<NotifyListOutputPageListIResultModel>
   /**
    * @summary 获取未读消息数量
    * @tag Notify
@@ -2810,7 +2811,7 @@ export interface SwaggerApi {
    * @summary 同步API信息到数据库
    * @tag OpenApi
    */
-  post(url: '/api/OpenApi/AddOrUpdate', options: SwaggerOptions<{}, {data: string | null}, {}, unknown>): Promise<IResultModel>
+  post(url: '/api/OpenApi/AddOrUpdate', options: SwaggerOptions<{}, {data?: string | null}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 树形下拉选项
    * @tag OpenApi
@@ -2820,12 +2821,12 @@ export interface SwaggerApi {
    * @summary 分页列表
    * @tag Organizations
    */
-  get(url: '/api/Organizations/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<OrganizationsListOutputPageListIResultModel>
+  get(url: '/api/Organizations/Page', options: SwaggerOptions<{}, {EnterpriseId?: string | null, Name?: string | null, Path?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<OrganizationsListOutputPageListIResultModel>
   /**
    * @summary 详情
    * @tag Organizations
    */
-  get(url: '/api/Organizations/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<OrganizationsOutputIResultModel>
+  get(url: '/api/Organizations/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<OrganizationsOutputIResultModel>
   /**
    * @summary 添加
    * @tag Organizations
@@ -2850,12 +2851,12 @@ export interface SwaggerApi {
    * @summary 分页查询
    * @tag Roles
    */
-  get(url: '/api/Roles/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<RolesListOutputPageListIResultModel>
+  get(url: '/api/Roles/Page', options: SwaggerOptions<{}, {RoleName?: string | null, Code?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<RolesListOutputPageListIResultModel>
   /**
    * @summary 获取单个信息
    * @tag Roles
    */
-  get(url: '/api/Roles/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<RolesDtoIResultModel>
+  get(url: '/api/Roles/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<RolesDtoIResultModel>
   /**
    * @summary 新增
    * @tag Roles
@@ -2885,7 +2886,7 @@ export interface SwaggerApi {
    * @summary 获取菜单按钮
    * @tag Roles
    */
-  get(url: '/api/Roles/GetMenus', options: SwaggerOptions<{}, {roleId: string | null}, {}, unknown>): Promise<RoleMenuTreeOutputListIResultModel>
+  get(url: '/api/Roles/GetMenus', options: SwaggerOptions<{}, {roleId?: string | null}, {}, unknown>): Promise<RoleMenuTreeOutputListIResultModel>
   /**
    * @summary 测试
    * @tag Sample
@@ -2906,12 +2907,12 @@ export interface SwaggerApi {
    * @summary Page New
    * @tag Sample
    */
-  get(url: '/api/Sample/PageNew', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<SampleOutputPageListIResultModel>
+  get(url: '/api/Sample/PageNew', options: SwaggerOptions<{}, {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<SampleOutputPageListIResultModel>
   /**
    * @summary Page
    * @tag Sample
    */
-  get(url: '/api/Sample/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/Sample/Page', options: SwaggerOptions<{}, {Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<IResultModel>
   get(url: '/api/Sample/TestGlobalExceptionFilter', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 获取登录信息
@@ -2932,12 +2933,12 @@ export interface SwaggerApi {
    * @summary Aes测试
    * @tag Test
    */
-  get(url: '/api/Test/TestAes', options: SwaggerOptions<{}, {text: string | null}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/Test/TestAes', options: SwaggerOptions<{}, {text?: string | null}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 时间返回格式测试
    * @tag Test
    */
-  get(url: '/api/Test/TestDateTime', options: SwaggerOptions<{}, {time: string}, {}, unknown>): Promise<IResultModel>
+  get(url: '/api/Test/TestDateTime', options: SwaggerOptions<{}, {time?: string}, {}, unknown>): Promise<IResultModel>
   /**
    * @summary 测试获取用户EID
    * @tag Test
@@ -2957,12 +2958,12 @@ export interface SwaggerApi {
    * @summary 列表
    * @tag UserInfo
    */
-  get(url: '/api/UserInfo/Page', options: SwaggerOptions<{}, {Order: string | null}, {}, unknown>): Promise<UserInfoListOutputPageListIResultModel>
+  get(url: '/api/UserInfo/Page', options: SwaggerOptions<{}, {UserName?: string | null, RealName?: string | null, PhoneNumber?: string | null, EnterpriseId?: string | null, Keyword?: string | null, Page?: number, PageSize?: number, TotalCount?: number, Order?: string | null}, {}, unknown>): Promise<UserInfoListOutputPageListIResultModel>
   /**
    * @summary 获取单个信息
    * @tag UserInfo
    */
-  get(url: '/api/UserInfo/Detail', options: SwaggerOptions<{}, {id: string | null}, {}, unknown>): Promise<UserInfoOutputIResultModel>
+  get(url: '/api/UserInfo/Detail', options: SwaggerOptions<{}, {id?: string | null}, {}, unknown>): Promise<UserInfoOutputIResultModel>
   /**
    * @summary 添加
    * @tag UserInfo

@@ -203,20 +203,21 @@ export interface 角色树查询 {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }

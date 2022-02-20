@@ -68,20 +68,21 @@ export interface ApiResponse {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -113,13 +114,13 @@ export interface SwaggerApi {
    * @summary Finds Pets by status
    * @tag pet
    */
-  get(url: '/pet/findByStatus', options: SwaggerOptions<{}, {status: 'available' | 'pending' | 'sold'}, {}, unknown>): Promise<Array<Pet>>
+  get(url: '/pet/findByStatus', options: SwaggerOptions<{}, {status?: 'available' | 'pending' | 'sold'}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    * @summary Finds Pets by tags
    * @tag pet
    */
-  get(url: '/pet/findByTags', options: SwaggerOptions<{}, {tags: Array<string>}, {}, unknown>): Promise<Array<Pet>>
+  get(url: '/pet/findByTags', options: SwaggerOptions<{}, {tags?: Array<string>}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Returns a single pet
    * @summary Find pet by ID
@@ -130,17 +131,17 @@ export interface SwaggerApi {
    * @summary Updates a pet in the store with form data
    * @tag pet
    */
-  post(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {status: string}, {}, unknown>, 'path'>): Promise<unknown>
+  post(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {name?: string, status?: string}, {}, unknown>, 'path'>): Promise<unknown>
   /**
    * @summary Deletes a pet
    * @tag pet
    */
-  delete(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  delete(url: '/pet/{petId}', options: RequireKeys<SwaggerOptions<{petId: number}, {}, {api_key?: string}, unknown>, 'path'>): Promise<unknown>
   /**
    * @summary uploads an image
    * @tag pet
    */
-  post(url: '/pet/{petId}/uploadImage', options: RequireKeys<SwaggerOptions<{petId: number}, {additionalMetadata: string}, {}, Blob | Uint8Array>, 'path'>): Promise<ApiResponse>
+  post(url: '/pet/{petId}/uploadImage', options: RequireKeys<SwaggerOptions<{petId: number}, {additionalMetadata?: string}, {}, Blob | Uint8Array>, 'path'>): Promise<ApiResponse>
   /**
    * @description Returns a map of status codes to quantities
    * @summary Returns pet inventories by status
@@ -184,7 +185,7 @@ export interface SwaggerApi {
    * @summary Logs user into the system
    * @tag user
    */
-  get(url: '/user/login', options: SwaggerOptions<{}, {password: string}, {}, unknown>): Promise<string>
+  get(url: '/user/login', options: SwaggerOptions<{}, {username?: string, password?: string}, {}, unknown>): Promise<string>
   /**
    * @summary Logs out current logged in user session
    * @tag user

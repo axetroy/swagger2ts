@@ -11,9 +11,7 @@ export function generateInterface(content: string): string {
     output.push(generateDefinition(swagger.components));
   }
 
-  if (swagger.paths) {
-    output.push(generatePaths(swagger.paths));
-  }
+  output.push(generatePaths(swagger.paths));
 
   return output.join("\n\n");
 }

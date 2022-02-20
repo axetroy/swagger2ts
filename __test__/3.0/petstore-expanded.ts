@@ -13,20 +13,21 @@ export interface Error {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -48,7 +49,7 @@ Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagitt
 Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
 
    */
-  get(url: '/pets', options: SwaggerOptions<{}, {limit: number}, {}, unknown>): Promise<Array<Pet>>
+  get(url: '/pets', options: SwaggerOptions<{}, {tags?: Array<string>, limit?: number}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Creates a new pet in the store. Duplicates are allowed
    */

@@ -24,20 +24,21 @@ export interface dataSetList {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -62,13 +63,13 @@ export interface SwaggerApi {
    * @summary Provides the general information about the API and the list of fields that can be used to query the dataset.
    * @tag metadata
    */
-  get(url: '/{dataset}/{version}/fields', options: RequireKeys<SwaggerOptions<{version: string}, {}, {}, unknown>, 'path'>): Promise<string>
+  get(url: '/{dataset}/{version}/fields', options: RequireKeys<SwaggerOptions<{dataset: string, version: string}, {}, {}, unknown>, 'path'>): Promise<string>
   /**
    * @description This API is based on Solr/Lucene Search. The data is indexed using SOLR. This GET API returns the list of all the searchable field names that are in the Solr Index. Please see the 'fields' attribute which returns an array of field names. Each field or a combination of fields can be searched using the Solr/Lucene Syntax. Please refer https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview for the query syntax. List of field names that are searchable can be determined using above GET api.
    * @summary Provides search capability for the data set with the given search criteria.
    * @tag search
    */
-  post(url: '/{dataset}/{version}/records', options: RequireKeys<SwaggerOptions<{dataset: string}, {}, {}, unknown>, 'path'>): Promise<Array<{
+  post(url: '/{dataset}/{version}/records', options: RequireKeys<SwaggerOptions<{version: string, dataset: string}, {}, {}, unknown>, 'path'>): Promise<Array<{
   [key: string]: {
     [key: string]: unknown
   }

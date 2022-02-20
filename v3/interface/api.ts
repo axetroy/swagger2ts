@@ -11,10 +11,13 @@ import {
 import { ApiGenerator, DefinitionGenerator } from "./generator.ts";
 import { traverse } from "./definition.ts";
 
-export function generatePaths(paths: IPathsComponent): string {
+export function generatePaths(
+  paths: IPathsComponent,
+  withInterface = true,
+): string {
   const g = new ApiGenerator();
 
-  g.start();
+  g.start(withInterface);
 
   const methods = [
     "get",
@@ -35,38 +38,58 @@ export function generatePaths(paths: IPathsComponent): string {
     for (const method of defineMethods) {
       const inTypes = ["path", "query", "header"];
 
-      const params: { [key: string]: string } = {};
+      const paramsMap: {
+        [inType: string]: { required: boolean; type: string };
+      } = {};
 
       // @ts-ignore ignore error
       const parameters = pathObject[method].parameters as Array<
         IParameterObject | IReferenceObject
       >;
 
-      if (parameters) {
-        inTypes.forEach((action) => {
-          params[action] = "";
+      inTypes.forEach((action) => {
+        paramsMap[action] = { required: false, type: "" };
 
-          const paths = parameters.filter((v) => !isReferenceObject(v)).filter((
+        if (!parameters) return;
+
+        const params = parameters.filter((v) => !isReferenceObject(v)).filter(
+          (
             v,
-          ) => (v as IParameterObject).in === action) as IParameterObject[];
+          ) => (v as IParameterObject).in === action,
+        ) as IParameterObject[];
 
-          for (const path of paths) {
-            if (path.schema) {
-              const g = new DefinitionGenerator();
-              path.schema.required = typeof path.schema.required === "boolean"
-                ? path.schema.required
-                : path.required;
-              g.write("{");
-              g.write(`${g.indentStr}${path.name}: `);
-              traverse(g, path.schema);
-              g.write("}");
-              params[action] = g.toString();
-            } else {
-              params[action] = "unknown";
+        if (!params.length) {
+          return;
+        }
+
+        const paramGen = new DefinitionGenerator();
+        paramGen.write("{");
+
+        params.forEach((param, index) => {
+          if (param.schema) {
+            const isRequired = param.schema.required =
+              typeof param.schema.required === "boolean"
+                ? param.schema.required
+                : param.required;
+            if (!!isRequired === true) {
+              paramsMap[action].required = true;
             }
+            paramGen.write(
+              `${paramGen.indentStr}${param.name}${!isRequired ? "?" : ""}: `,
+            );
+            traverse(paramGen, param.schema);
+            if (index !== params.length - 1) {
+              paramGen.write(", ");
+            }
+          } else {
+            paramGen.write(`${param.name}: unknown`);
           }
         });
-      }
+
+        paramGen.write("}");
+
+        paramsMap[action].type = paramGen.toString();
+      });
 
       // @ts-ignore ignore error
       const requestBody = pathObject[method].requestBody as
@@ -141,9 +164,9 @@ export function generatePaths(paths: IPathsComponent): string {
       g.writeApi(
         method,
         path,
-        params.path,
-        params.query,
-        params.headers,
+        paramsMap.path,
+        paramsMap.query,
+        paramsMap.header,
         body,
         response,
       );

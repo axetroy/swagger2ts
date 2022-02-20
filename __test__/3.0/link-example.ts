@@ -18,20 +18,21 @@ export interface pullrequest {
 
 
 
+
 export interface SwaggerPath {
   [key: string]: string | number
 }
 
-export type Stringable = {
-
+export type Stringify = {
   toString(): string
 } | null | undefined | void
+
 export interface SwaggerQuery {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export interface SwaggerHeaders {
-  [key: string]: Stringable | Stringable[]
+  [key: string]: Stringify | Stringify[]
 }
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
@@ -48,10 +49,10 @@ export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends S
 export interface SwaggerApi {
   get(url: '/2.0/users/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<user>
   get(url: '/2.0/repositories/{username}', options: RequireKeys<SwaggerOptions<{username: string}, {}, {}, unknown>, 'path'>): Promise<Array<repository>>
-  get(url: '/2.0/repositories/{username}/{slug}', options: RequireKeys<SwaggerOptions<{slug: string}, {}, {}, unknown>, 'path'>): Promise<repository>
-  get(url: '/2.0/repositories/{username}/{slug}/pullrequests', options: RequireKeys<SwaggerOptions<{slug: string}, {state: 'open' | 'merged' | 'declined'}, {}, unknown>, 'path'>): Promise<Array<pullrequest>>
-  get(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}', options: RequireKeys<SwaggerOptions<{pid: string}, {}, {}, unknown>, 'path'>): Promise<pullrequest>
-  post(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge', options: RequireKeys<SwaggerOptions<{pid: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  get(url: '/2.0/repositories/{username}/{slug}', options: RequireKeys<SwaggerOptions<{username: string, slug: string}, {}, {}, unknown>, 'path'>): Promise<repository>
+  get(url: '/2.0/repositories/{username}/{slug}/pullrequests', options: RequireKeys<SwaggerOptions<{username: string, slug: string}, {state?: 'open' | 'merged' | 'declined'}, {}, unknown>, 'path'>): Promise<Array<pullrequest>>
+  get(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}', options: RequireKeys<SwaggerOptions<{username: string, slug: string, pid: string}, {}, {}, unknown>, 'path'>): Promise<pullrequest>
+  post(url: '/2.0/repositories/{username}/{slug}/pullrequests/{pid}/merge', options: RequireKeys<SwaggerOptions<{username: string, slug: string, pid: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
 }
 
 
