@@ -43,6 +43,7 @@ type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: Ru
 export interface IRuntimeForm {
   [key: string]: any;
 }
+
 export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {

@@ -2402,26 +2402,18 @@ export interface UpdateUserBasicInfoInput {
 
 
 
+/** ===== build-in interface start ===== */
+export type Stringify = string | number | null | undefined | void
 
-export interface SwaggerPath {
-  [key: string]: string | number
-}
+export type SwaggerPath = Record<string, string | number>
 
-export type Stringify = {
-  toString(): string
-} | null | undefined | void
+export type SwaggerQuery = Record<string, Stringify | Stringify[]>
 
-export interface SwaggerQuery {
-  [key: string]: Stringify | Stringify[]
-}
-
-export interface SwaggerHeaders {
-  [key: string]: Stringify | Stringify[]
-}
+export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 
 export type SwaggerCommonOptions = Omit<RequestInit, "body" | "method" | "headers"> & { timeout?: number }
 
-export type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
+export type RequireKeys<T extends Record<string, any>, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
 
 export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions {
   path?: P
@@ -2429,6 +2421,8 @@ export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends S
   headers?: H
   body?: B
 }
+
+/** ===== build-in interface end ===== */
 
 export interface SwaggerApi {
   /**
@@ -3042,6 +3036,7 @@ type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: Ru
 export interface IRuntimeForm {
   [key: string]: any;
 }
+
 export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
