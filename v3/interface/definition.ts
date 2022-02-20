@@ -77,8 +77,6 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
 
   objectInterface.start();
 
-  object.required;
-
   if (object.properties) {
     for (const attr in object.properties) {
       const propertyType = object.properties[attr];
@@ -87,7 +85,7 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
 
       if (propertyType.description) {
         comment.start();
-        comment.write("description", propertyType.description);
+        comment.writeTag("description", propertyType.description);
         comment.end();
       }
 
@@ -189,14 +187,16 @@ function generateComponent(swagger: ISwagger): string {
         const comment = g.createCommentBlock();
 
         if (isReferenceObject(schema)) {
-          g.write("export ");
-          g.declareType(componentName, getRefName(schema));
+          g.declareType(componentName, getRefName(schema), true);
           continue;
         }
 
         if (schema.description) {
           comment.start();
-          comment.write("description", schema.description);
+          if (schema.deprecated) {
+            comment.writeTag("deprecated", "");
+          }
+          comment.writeTag("description", schema.description);
           comment.end();
         }
 
@@ -209,16 +209,19 @@ function generateComponent(swagger: ISwagger): string {
             break;
           case "array":
             g.write(`export type ${componentName} = Array<`);
-            traverse(g, schema.items!);
+            if (!schema.items) {
+              g.write("unknown");
+            } else {
+              traverse(g, schema.items!);
+            }
             g.writeln(">");
             break;
           default:
-            g.write("export ");
             if (schema.enum) {
-              g.declareEnum(componentName, schema.enum);
+              g.declareEnum(componentName, schema.enum, true);
               g.write(g.EOL);
             } else {
-              g.declareType(componentName, getRealType(schema.type));
+              g.declareType(componentName, getRealType(schema.type), true);
               g.write(g.EOL);
             }
 

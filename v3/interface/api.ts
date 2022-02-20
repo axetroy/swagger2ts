@@ -127,13 +127,13 @@ function generatePath(swagger: ISwagger): string {
       if (op.description || op.summary) {
         comment.start();
         if (op.description) {
-          comment.write("description", op.description);
+          comment.writeTag("description", op.description);
         }
         if (op.summary) {
-          comment.write("summary", op.summary);
+          comment.writeTag("summary", op.summary);
         }
         if (op.tags && op.tags.length) {
-          comment.write("tag", op.tags.join(", "));
+          comment.writeTag("tag", op.tags.join(", "));
         }
         comment.end();
       }

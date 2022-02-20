@@ -1,88 +1,23 @@
-class BaseGenerator {
-  public indent = 0;
-  private indentBase = 2;
-  private content = "";
-  public EOL = "\n";
-
-  public get indentStr() {
-    return " ".repeat(this.indent * this.indentBase);
-  }
-
-  public write(str: string) {
-    this.content += str;
-  }
-
-  public writeln(str: string) {
-    this.content += this.indentStr + str + this.EOL;
-  }
-
-  public dropLastEmptyLine(n: number) {
-    if (n <= 0) return;
-
-    while (n > 0) {
-      this.content = this.content.replace(new RegExp(this.EOL + "$"), "");
-      n--;
-    }
-  }
-
-  public toString() {
-    return this.content;
-  }
-}
-
-interface Block {
-  start(): void;
-  end(): void;
-}
-
-class InterfaceBlock implements Block {
-  constructor(private g: BaseGenerator) {}
-
-  public writeProperty(
-    name: string,
-    type: string,
-    optional: boolean | undefined,
-    nullable: boolean | undefined,
-  ) {
-    this.g.write(`${this.g.indentStr}${name}${optional ? "?" : ""}: ${type}`);
-    this.g.write(nullable ? " | null" : "");
-    this.g.write(this.g.EOL);
-  }
-
-  public start() {
-    this.g.write("{");
-    this.g.write(this.g.EOL);
-    this.g.indent++;
-  }
-
-  public end() {
-    this.g.indent--;
-    this.g.writeln("}");
-  }
-}
-
-export class CommentBlock implements Block {
-  constructor(private g: BaseGenerator) {}
-
-  public start() {
-    this.g.writeln(`/**`);
-  }
-
-  public write(tag: string, content: string) {
-    this.g.writeln(` * @${tag} ${content}`);
-  }
-
-  public end() {
-    this.g.writeln(` */`);
-  }
-}
+import { BaseGenerator } from "./base_generator.ts";
+import { CommentBlock } from "./comment.ts";
+import { InterfaceBlock } from "./interface.ts";
 
 export class DefinitionGenerator extends BaseGenerator {
-  public declareType(name: string, type: string) {
+  public declareType(name: string, type: string, exposed: boolean) {
+    if (exposed) {
+      this.write("export ");
+    }
     this.write(`type ${name} = ${type}`);
   }
 
-  public declareEnum(name: string, values: Array<string | number>) {
+  public declareEnum(
+    name: string,
+    values: Array<string | number>,
+    exposed: boolean,
+  ) {
+    if (exposed) {
+      this.write("export ");
+    }
     this.write(`type ${name} = ${values.join(" | ")}`);
   }
 
@@ -113,12 +48,16 @@ export class ApiGenerator extends DefinitionGenerator {
   private interface = this.createInterfaceBlock();
 
   start() {
-    const options = this.createInterfaceBlock();
+    const interfaceSwaggerPath = this.createInterfaceBlock();
 
-    this.write(`export interface SwaggerPath `);
-    options.start();
-    options.writeProperty("[key: string]", "string | number", false, false);
-    options.end();
+    interfaceSwaggerPath.start("SwaggerPath");
+    interfaceSwaggerPath.writeProperty(
+      "[key: string]",
+      "string | number",
+      false,
+      false,
+    );
+    interfaceSwaggerPath.end();
     this.write(this.EOL);
 
     this.writeln("export type Stringable = {");
@@ -128,26 +67,26 @@ export class ApiGenerator extends DefinitionGenerator {
     this.indent--;
     this.writeln("} | null | undefined | void");
 
-    this.write(`export interface SwaggerQuery `);
-    options.start();
-    options.writeProperty(
+    const interfaceSwaggerQuery = this.createInterfaceBlock();
+    interfaceSwaggerQuery.start("SwaggerQuery");
+    interfaceSwaggerQuery.writeProperty(
       "[key: string]",
       "Stringable | Stringable[]",
       false,
       false,
     );
-    options.end();
+    interfaceSwaggerQuery.end();
     this.write(this.EOL);
 
-    this.write(`export interface SwaggerHeaders `);
-    options.start();
-    options.writeProperty(
+    const interfaceSwaggerHeaders = this.createInterfaceBlock();
+    interfaceSwaggerHeaders.start("SwaggerHeaders");
+    interfaceSwaggerHeaders.writeProperty(
       "[key: string]",
       "Stringable | Stringable[]",
       false,
       false,
     );
-    options.end();
+    interfaceSwaggerHeaders.end();
     this.write(this.EOL);
 
     this.writeln(
@@ -159,15 +98,15 @@ export class ApiGenerator extends DefinitionGenerator {
     );
     this.write(this.EOL);
 
-    this.write(
-      `export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions `,
+    const interfaceSwaggerOptions = this.createInterfaceBlock();
+    interfaceSwaggerOptions.start(
+      `SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends SwaggerQuery = SwaggerQuery, H extends SwaggerHeaders = SwaggerHeaders, B = any> extends SwaggerCommonOptions`,
     );
-    options.start();
-    options.writeProperty("path", "P", true, false);
-    options.writeProperty("query", "Q", true, false);
-    options.writeProperty("headers", "H", true, false);
-    options.writeProperty("body", "B", true, false);
-    options.end();
+    interfaceSwaggerOptions.writeProperty("path", "P", true, false);
+    interfaceSwaggerOptions.writeProperty("query", "Q", true, false);
+    interfaceSwaggerOptions.writeProperty("headers", "H", true, false);
+    interfaceSwaggerOptions.writeProperty("body", "B", true, false);
+    interfaceSwaggerOptions.end();
     this.write(this.EOL);
 
     this.write(`export interface SwaggerApi `);
