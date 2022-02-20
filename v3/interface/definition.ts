@@ -1,8 +1,8 @@
 import {
+  IComponentsObject,
   IReferenceObject,
   ISchemaObject,
   isReferenceObject,
-  ISwagger,
 } from "../types.ts";
 import { DefinitionGenerator } from "./generator.ts";
 
@@ -176,67 +176,58 @@ function traverseArray(g: DefinitionGenerator, array: ISchemaObject) {
 /**
  * 生成组件
  */
-function generateComponent(swagger: ISwagger): string {
+export function generateDefinition(components: IComponentsObject): string {
   const g = new DefinitionGenerator();
 
-  if (swagger.components) {
-    if (swagger.components.schemas) {
-      for (const componentName in swagger.components.schemas) {
-        const schema = swagger.components.schemas[componentName];
+  if (components.schemas) {
+    for (const componentName in components.schemas) {
+      const schema = components.schemas[componentName];
 
-        const comment = g.createCommentBlock();
+      const comment = g.createCommentBlock();
 
-        if (isReferenceObject(schema)) {
-          g.declareType(componentName, getRefName(schema), true);
-          continue;
+      if (isReferenceObject(schema)) {
+        g.declareType(componentName, getRefName(schema), true);
+        continue;
+      }
+
+      if (schema.description) {
+        comment.start();
+        if (schema.deprecated) {
+          comment.writeTag("deprecated", "");
         }
+        comment.writeTag("description", schema.description);
+        comment.end();
+      }
 
-        if (schema.description) {
-          comment.start();
-          if (schema.deprecated) {
-            comment.writeTag("deprecated", "");
+      switch (schema.type) {
+        case "object":
+          g.write(`export interface ${componentName} `);
+          traverse(g, schema);
+          g.write(g.EOL);
+
+          break;
+        case "array":
+          g.write(`export type ${componentName} = Array<`);
+          if (!schema.items) {
+            g.write("unknown");
+          } else {
+            traverse(g, schema.items!);
           }
-          comment.writeTag("description", schema.description);
-          comment.end();
-        }
-
-        switch (schema.type) {
-          case "object":
-            g.write(`export interface ${componentName} `);
-            traverse(g, schema);
+          g.writeln(">");
+          break;
+        default:
+          if (schema.enum) {
+            g.declareEnum(componentName, schema.enum, true);
             g.write(g.EOL);
-
-            break;
-          case "array":
-            g.write(`export type ${componentName} = Array<`);
-            if (!schema.items) {
-              g.write("unknown");
-            } else {
-              traverse(g, schema.items!);
-            }
-            g.writeln(">");
-            break;
-          default:
-            if (schema.enum) {
-              g.declareEnum(componentName, schema.enum, true);
-              g.write(g.EOL);
-            } else {
-              g.declareType(componentName, getRealType(schema.type), true);
-              g.write(g.EOL);
-            }
-
+          } else {
+            g.declareType(componentName, getRealType(schema.type), true);
             g.write(g.EOL);
-        }
+          }
+
+          g.write(g.EOL);
       }
     }
   }
 
   return g.toString();
-}
-
-// generate HTTP definition for swagger api
-export function generateDefinition(content: string): string {
-  const swagger = JSON.parse(content) as ISwagger;
-
-  return generateComponent(swagger);
 }

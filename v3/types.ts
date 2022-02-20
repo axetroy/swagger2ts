@@ -19,13 +19,15 @@ export interface ISwagger {
     version: string;
   };
   servers?: Array<IServerObject>;
-  paths: {
-    [url: string]: IPathItemObject;
-  };
+  paths: IPathsComponent;
   components?: IComponentsObject;
   security?: ISecurityRequirementObject[];
   tags?: ITagObject[];
   externalDocs?: IExternalDocumentationObject;
+}
+
+export interface IPathsComponent {
+  [url: string]: IPathItemObject;
 }
 
 interface ISecurityRequirementObject {
@@ -60,7 +62,7 @@ export interface IOperationObject {
   servers: IServerObject[];
 }
 
-interface IComponentsObject {
+export interface IComponentsObject {
   schemas: { [key: string]: ISchemaObject | IReferenceObject };
   responses: { [key: string]: IResponseObject | IReferenceObject };
   parameters: { [key: string]: IParameterObject | IReferenceObject };

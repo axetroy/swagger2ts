@@ -1,17 +1,17 @@
 import {
   IOperationObject,
   IParameterObject,
+  IPathsComponent,
   IReferenceObject,
   IRequestBodyObject,
   IResponseObject,
   IResponsesObject,
   isReferenceObject,
-  ISwagger,
 } from "../types.ts";
 import { ApiGenerator, DefinitionGenerator } from "./generator.ts";
 import { traverse } from "./definition.ts";
 
-function generatePath(swagger: ISwagger): string {
+export function generatePaths(paths: IPathsComponent): string {
   const g = new ApiGenerator();
 
   g.start();
@@ -27,8 +27,8 @@ function generatePath(swagger: ISwagger): string {
     "patch",
   ];
 
-  for (const path in swagger.paths) {
-    const pathObject = swagger.paths[path];
+  for (const path in paths) {
+    const pathObject = paths[path];
 
     const defineMethods = methods.filter((v) => v in pathObject);
 
@@ -153,10 +153,4 @@ function generatePath(swagger: ISwagger): string {
   g.end();
 
   return g.toString();
-}
-
-export function generateApi(content: string): string {
-  const swagger = JSON.parse(content) as ISwagger;
-
-  return generatePath(swagger);
 }

@@ -1,8 +1,19 @@
 import { generateDefinition } from "./definition.ts";
-import { generateApi } from "./api.ts";
+import { generatePaths } from "./api.ts";
+import { ISwagger } from "../types.ts";
 
 export function generateInterface(content: string): string {
-  const output = [generateDefinition(content), generateApi(content)];
+  const swagger = JSON.parse(content) as ISwagger;
+
+  const output = [];
+
+  if (swagger.components) {
+    output.push(generateDefinition(swagger.components));
+  }
+
+  if (swagger.paths) {
+    output.push(generatePaths(swagger.paths));
+  }
 
   return output.join("\n\n");
 }
