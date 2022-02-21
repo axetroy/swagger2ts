@@ -20,8 +20,7 @@ export interface dataSetList {
      * @format uriref
      */
     apiDocumentationUrl?: string
-  }
->
+  }>
 }
 
 
@@ -70,8 +69,7 @@ export interface SwaggerApi {
     [key: string]: unknown
   }
 
-}
->>
+}>>
 }
 
 

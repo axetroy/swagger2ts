@@ -11,6 +11,10 @@ export class BaseGenerator {
     return " ".repeat(this.indent * this.indentBase);
   }
 
+  public trimEnd() {
+    this.content = this.content.trimEnd();
+  }
+
   /**
    * 写入
    * @param str 字符串
@@ -25,18 +29,6 @@ export class BaseGenerator {
    */
   public writeln(str: string) {
     this.content += this.indentStr + str + this.EOL;
-  }
-
-  /**
-   * 丢弃最后 N 行的空白行
-   */
-  public dropLastEmptyLine(n: number) {
-    if (n <= 0) return;
-
-    while (n > 0) {
-      this.content = this.content.replace(new RegExp(this.EOL + "$"), "");
-      n--;
-    }
   }
 
   /**

@@ -121,7 +121,7 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
           traverse(g, propertyType);
 
           if (propertyType.nullable) {
-            g.dropLastEmptyLine(1);
+            g.trimEnd();
             g.write(" | null");
             g.write(g.EOL);
           }
@@ -182,6 +182,7 @@ function traverseArray(g: DefinitionGenerator, array: ISchemaObject) {
         g.write(getRealType(array.items?.type));
     }
 
+    g.trimEnd();
     g.write(">");
   }
 }
