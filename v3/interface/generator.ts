@@ -21,20 +21,6 @@ export class DefinitionGenerator extends BaseGenerator {
     this.write(`type ${name} = ${values.join(" | ")}`);
   }
 
-  public declareInterface(name: string, properties: { [key: string]: any }) {
-    this.writeln(`interface ${name} {`);
-    this.indent++;
-
-    for (const attr in properties) {
-      const value = properties[attr];
-
-      this.writeln(`${attr}: ${value}`);
-    }
-
-    this.indent--;
-    this.writeln("}");
-  }
-
   public createInterfaceBlock(): InterfaceBlock {
     return new InterfaceBlock(this);
   }
