@@ -3,7 +3,7 @@ import { generatePaths } from "./api.ts";
 
 Deno.test({
   name: "write",
-  fn: async () => {
+  fn: () => {
     const output = generatePaths({
       "/{dataset}/{version}/fields": {
         get: {
