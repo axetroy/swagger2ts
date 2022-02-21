@@ -52,11 +52,9 @@ export function generatePaths(
 
         if (!parameters) return;
 
-        const params = parameters.filter((v) => !isReferenceObject(v)).filter(
-          (
-            v,
-          ) => (v as IParameterObject).in === action,
-        ) as IParameterObject[];
+        const params = parameters.filter((v) => !isReferenceObject(v)).filter((
+          v,
+        ) => (v as IParameterObject).in === action) as IParameterObject[];
 
         if (!params.length) {
           return;
@@ -67,10 +65,11 @@ export function generatePaths(
 
         params.forEach((param, index) => {
           if (param.schema) {
-            const isRequired = param.schema.required =
-              typeof param.schema.required === "boolean"
-                ? param.schema.required
-                : param.required;
+            const isRequired =
+              (param.schema.required =
+                typeof param.schema.required === "boolean"
+                  ? param.schema.required
+                  : param.required);
             if (!!isRequired === true) {
               paramsMap[action].required = true;
             }
@@ -98,9 +97,9 @@ export function generatePaths(
       // @ts-ignore ignore error
       const responseBody = pathObject[method].responses as IResponsesObject;
 
-      function generateBody(
+      const generateBody = (
         b?: IRequestBodyObject | IResponseObject | IReferenceObject,
-      ): string {
+      ): string => {
         if (!b) return "unknown";
 
         if (isReferenceObject(b)) {
@@ -135,7 +134,7 @@ export function generatePaths(
         }
 
         return g.toString();
-      }
+      };
 
       const body = generateBody(requestBody);
       const response = generateBody(

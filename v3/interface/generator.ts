@@ -97,13 +97,14 @@ export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends S
 
     const requireKeys = [];
 
-    const isRequiredParams = path.required || query.required || headers.required
+    const isRequiredParams = path.required || query.required ||
+      headers.required;
 
     if (isRequiredParams) {
       this.write("RequireKeys<");
     }
 
-    this.write('SwaggerOptions<')
+    this.write("SwaggerOptions<");
 
     if (path.type) {
       this.write(path.type);
