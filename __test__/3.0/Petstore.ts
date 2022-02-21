@@ -1,8 +1,20 @@
 // Generate by swagger2ts
 export interface Order {
+  /**
+   * @format int64
+   */
   id?: number
+  /**
+   * @format int64
+   */
   petId?: number
+  /**
+   * @format int32
+   */
   quantity?: number
+  /**
+   * @format date-time
+   */
   shipDate?: string
   /**
    * @description Order Status
@@ -12,6 +24,9 @@ export interface Order {
 }
 
 export interface Customer {
+  /**
+   * @format int64
+   */
   id?: number
   username?: string
   address?: Array<Address>
@@ -25,11 +40,17 @@ export interface Address {
 }
 
 export interface Category {
+  /**
+   * @format int64
+   */
   id?: number
   name?: string
 }
 
 export interface User {
+  /**
+   * @format int64
+   */
   id?: number
   username?: string
   firstName?: string
@@ -39,16 +60,23 @@ export interface User {
   phone?: string
   /**
    * @description User Status
+   * @format int32
    */
   userStatus?: number
 }
 
 export interface Tag {
+  /**
+   * @format int64
+   */
   id?: number
   name?: string
 }
 
 export interface Pet {
+  /**
+   * @format int64
+   */
   id?: number
   name: string
   category?: Category
@@ -61,6 +89,9 @@ export interface Pet {
 }
 
 export interface ApiResponse {
+  /**
+   * @format int32
+   */
   code?: number
   type?: string
   message?: string

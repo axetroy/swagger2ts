@@ -10,6 +10,7 @@ export interface ButtonDTO {
   permission: string
   /**
    * @description 上级节点ID
+   * @format int64
    */
   pid: number
   /**
@@ -33,6 +34,7 @@ export interface MenuTreeVO {
   icon?: string
   /**
    * @description id
+   * @format int64
    */
   id?: number
   /**
@@ -72,6 +74,7 @@ export interface RoleDTO {
   name: string
   /**
    * @description 归属
+   * @format int64
    */
   pid: number
 }
@@ -95,6 +98,7 @@ export interface SitemapDTO {
   params?: string
   /**
    * @description 上级节点ID
+   * @format int64
    */
   pid?: number
   /**
@@ -122,6 +126,7 @@ export interface 菜单树 {
   deleted?: boolean
   /**
    * @description 更新时间
+   * @format date-time
    */
   gmtModified?: string
   /**
@@ -130,6 +135,7 @@ export interface 菜单树 {
   icon?: string
   /**
    * @description id
+   * @format int64
    */
   id?: number
   /**
@@ -154,6 +160,7 @@ export interface 菜单树 {
   permission?: string
   /**
    * @description 上级节点ID
+   * @format int64
    */
   pid?: number
   /**
@@ -181,10 +188,12 @@ export interface 角色树查询 {
   description?: string
   /**
    * @description 更新时间
+   * @format date-time
    */
   gmtModified?: string
   /**
    * @description id
+   * @format int64
    */
   id?: number
   /**
@@ -197,6 +206,7 @@ export interface 角色树查询 {
   name?: string
   /**
    * @description 上级节点ID
+   * @format int64
    */
   pid?: number
 }

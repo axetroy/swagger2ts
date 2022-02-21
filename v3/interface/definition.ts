@@ -84,8 +84,16 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
       const comment = g.createCommentBlock();
 
       if (propertyType.description) {
-        comment.start();
+        if (!comment.started) comment.start();
         comment.writeTag("description", propertyType.description);
+      }
+
+      if (propertyType.format) {
+        if (!comment.started) comment.start();
+        comment.writeTag("format", propertyType.format);
+      }
+
+      if (comment.started) {
         comment.end();
       }
 

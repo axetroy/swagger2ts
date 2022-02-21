@@ -12,10 +12,12 @@ export interface dataSetList {
     apiVersionNumber?: string
     /**
      * @description The URL describing the dataset's fields
+     * @format uriref
      */
     apiUrl?: string
     /**
      * @description A URL to the API console for each API
+     * @format uriref
      */
     apiDocumentationUrl?: string
   }

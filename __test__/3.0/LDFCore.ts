@@ -52,6 +52,9 @@ export interface LoginUserOutput {
 export interface LoginUserOutputAuthResut {
   error?: string | null
   access_token?: string | null
+  /**
+   * @format int32
+   */
   expires_in?: number
   token_type?: string | null
   refresh_token?: string | null
@@ -71,6 +74,9 @@ export interface SpaLoginModel {
 
 export interface IResultModel {
   successful?: boolean
+  /**
+   * @format int32
+   */
   code?: number
   msg?: string | null
 }
@@ -103,14 +109,17 @@ export interface MenuOutput {
   show?: boolean
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
    * @description 打开方式
+   * @format int32
    */
   target?: number
   /**
    * @description 菜单类型
+   * @format int32
    */
   type?: number
   client?: ClientEnums
@@ -154,6 +163,7 @@ export interface RolesDto {
   remarks?: string | null
   /**
    * @description 排序值
+   * @format int32
    */
   sortId?: number
 }
@@ -192,10 +202,12 @@ export interface InitAppUserInfoOutput {
   realName?: string | null
   /**
    * @description 性别(1.男 2.女)
+   * @format int32
    */
   sex?: number
   /**
    * @description 状态
+   * @format int32
    */
   status?: number
   /**
@@ -212,6 +224,7 @@ export interface InitAppUserInfoOutput {
   rolesName?: Array<string> | null
   /**
    * @description 用户类型
+   * @format int32
    */
   userType?: number
   /**
@@ -277,17 +290,28 @@ export interface AppVersionDto {
   version?: string | null
   /**
    * @description 类型（安卓/IOS）
+   * @format int32
    */
   type?: number
   /**
    * @description 版本更新时间（前端无需赋值）
+   * @format date-time
    */
   creationTime?: string
 }
 
 export interface AppVersionDtoPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<AppVersionDto> | null
@@ -323,6 +347,7 @@ export interface AreaListOutput {
   pinYin?: string | null
   /**
    * @description 级数
+   * @format int32
    */
   level?: number
   /**
@@ -332,8 +357,17 @@ export interface AreaListOutput {
 }
 
 export interface AreaListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<AreaListOutput> | null
@@ -365,6 +399,7 @@ export interface AreaDto {
   enabled?: boolean
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number | null
   /**
@@ -381,6 +416,7 @@ export interface AreaDto {
   isLeaf?: boolean
   /**
    * @description 级数
+   * @format int32
    */
   level?: number
   /**
@@ -407,11 +443,17 @@ export interface StringTreeOptionResultModel {
   value?: string | null
   disabled?: boolean
   isLeaf?: boolean
+  /**
+   * @format int32
+   */
   level?: number | null
   data?: unknown | null
   id?: string | null
   pid?: string | null
   children?: Array<StringTreeOptionResultModel> | null
+  /**
+   * @format int32
+   */
   sortId?: number
 }
 
@@ -420,11 +462,17 @@ export interface TreeOptionResultModel {
   value?: string | null
   disabled?: boolean
   isLeaf?: boolean
+  /**
+   * @format int32
+   */
   level?: number | null
   data?: unknown | null
   id?: string | null
   pid?: string | null
   children?: Array<StringTreeOptionResultModel> | null
+  /**
+   * @format int32
+   */
   sortId?: number
 }
 
@@ -437,6 +485,9 @@ export interface StringOptionResultModel {
   value?: string | null
   disabled?: boolean
   data?: unknown | null
+  /**
+   * @format int32
+   */
   sortId?: number
 }
 
@@ -450,16 +501,31 @@ export interface AuditListOutput {
   routeSummary?: string | null
   url?: string | null
   method?: string | null
+  /**
+   * @format int32
+   */
   statusCode?: number
   remoteIP?: string | null
   userId?: string | null
   userName?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
 }
 
 export interface AuditListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<AuditListOutput> | null
@@ -495,6 +561,7 @@ export interface DictionaryDto {
   remark?: string | null
   /**
    * @description 排序
+   * @format int32
    */
   sortId?: number | null
   /**
@@ -516,9 +583,15 @@ export interface DictionaryDto {
  */
 export interface DictionaryType {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -539,9 +612,15 @@ export interface DictionaryType {
  */
 export interface Dictionary {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -572,6 +651,7 @@ export interface Dictionary {
   remark?: string | null
   /**
    * @description 排序
+   * @format int32
    */
   sortId?: number | null
   /**
@@ -588,8 +668,17 @@ export interface DictionaryIResultModel {
 }
 
 export interface DictionaryDtoPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<DictionaryDto> | null
@@ -613,6 +702,9 @@ export interface StringTreeOptionResultModelDto {
   value?: string | null
   disabled?: boolean
   isLeaf?: boolean
+  /**
+   * @format int32
+   */
   level?: number | null
   data?: unknown | null
   id?: string | null
@@ -621,6 +713,9 @@ export interface StringTreeOptionResultModelDto {
    * @description 重写隐藏父类Children
    */
   children?: Array<StringTreeOptionResultModelDto> | null
+  /**
+   * @format int32
+   */
   sortId?: number
   /**
    * @description 扩展
@@ -655,8 +750,17 @@ export interface DictionaryTypeIResultModel {
 }
 
 export interface DictionaryTypeDtoPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<DictionaryTypeDto> | null
@@ -708,6 +812,7 @@ export interface EnterpriseListOutput {
   legalRepresentativeNumber?: string | null
   /**
    * @description 级数
+   * @format int32
    */
   level?: number
   /**
@@ -732,17 +837,28 @@ export interface EnterpriseListOutput {
   simpleName?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
   /**
    * @description 企业类型(1:企业, 2:个人)
+   * @format int32
    */
   type?: number
 }
 
 export interface EnterpriseListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<EnterpriseListOutput> | null
@@ -794,6 +910,7 @@ export interface EnterpriseOutput {
   legalRepresentativeNumber?: string | null
   /**
    * @description 级数
+   * @format int32
    */
   level?: number
   /**
@@ -818,10 +935,12 @@ export interface EnterpriseOutput {
   simpleName?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
   /**
    * @description 企业类型(1:企业, 2:个人)
+   * @format int32
    */
   type?: number
 }
@@ -880,10 +999,12 @@ export interface EnterpriseInput {
   name?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
   /**
    * @description 企业类型(1:企业, 2:个人)
+   * @format int32
    */
   type?: number
 }
@@ -923,6 +1044,7 @@ export interface FaqCategoryTreeOutput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   type?: FaqCategoryOutputType
@@ -966,6 +1088,7 @@ export interface FaqCategoryOutput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
 }
@@ -1004,6 +1127,7 @@ export interface FaqCategoryInput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
 }
@@ -1026,6 +1150,7 @@ export interface FaqContentListOutput {
   content?: string | null
   /**
    * @description 阅读量
+   * @format int32
    */
   readingQuantity?: number
   /**
@@ -1034,6 +1159,7 @@ export interface FaqContentListOutput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
@@ -1043,8 +1169,17 @@ export interface FaqContentListOutput {
 }
 
 export interface FaqContentListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<FaqContentListOutput> | null
@@ -1072,6 +1207,7 @@ export interface FaqContentOutput {
   content?: string | null
   /**
    * @description 阅读量
+   * @format int32
    */
   readingQuantity?: number
   /**
@@ -1080,6 +1216,7 @@ export interface FaqContentOutput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
@@ -1110,6 +1247,7 @@ export interface FaqContentInput {
   content?: string | null
   /**
    * @description 阅读量
+   * @format int32
    */
   readingQuantity?: number
   /**
@@ -1118,6 +1256,7 @@ export interface FaqContentInput {
   remarks?: string | null
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
@@ -1152,6 +1291,7 @@ export interface LoginLogListOutput {
   device?: string | null
   /**
    * @description 耗时（毫秒）
+   * @format int64
    */
   elapsedMilliseconds?: number
   /**
@@ -1168,6 +1308,7 @@ export interface LoginLogListOutput {
   userName?: string | null
   /**
    * @description 创建时间
+   * @format date-time
    */
   creationTime?: string
   /**
@@ -1177,8 +1318,17 @@ export interface LoginLogListOutput {
 }
 
 export interface LoginLogListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<LoginLogListOutput> | null
@@ -1231,10 +1381,12 @@ export interface MenuInput {
   show?: boolean
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
    * @description 打开方式
+   * @format int32
    */
   target?: number
   client?: ClientEnums
@@ -1267,6 +1419,7 @@ export interface Api {
   httpMethod?: string | null
   /**
    * @description 层级(从1开始)
+   * @format int32
    */
   level?: number
   /**
@@ -1292,9 +1445,15 @@ export interface Api {
  */
 export interface Enterprise {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1337,6 +1496,7 @@ export interface Enterprise {
   legalRepresentativeNumber?: string | null
   /**
    * @description 级数
+   * @format int32
    */
   level?: number
   /**
@@ -1361,10 +1521,12 @@ export interface Enterprise {
   simpleName?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
   /**
    * @description 企业类型(1:企业, 2:个人)
+   * @format int32
    */
   type?: number
   organizations?: Array<Organizations> | null
@@ -1376,9 +1538,15 @@ export interface Enterprise {
  */
 export interface Organizations {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1393,6 +1561,7 @@ export interface Organizations {
   leader?: string | null
   /**
    * @description 级别
+   * @format int32
    */
   level?: number
   /**
@@ -1413,6 +1582,7 @@ export interface Organizations {
   pathText?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
   enterprise?: Enterprise
@@ -1448,9 +1618,15 @@ export interface Claim {
  */
 export interface UserInfo {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1493,14 +1669,17 @@ export interface UserInfo {
   realName?: string | null
   /**
    * @description 性别(1.男 2.女)
+   * @format int32
    */
   sex?: number
   /**
    * @description 状态
+   * @format int32
    */
   status?: number
   /**
    * @description 用户类型
+   * @format int32
    */
   type?: number
   /**
@@ -1521,9 +1700,15 @@ export interface UserInfo {
  */
 export interface Roles {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1542,6 +1727,7 @@ export interface Roles {
   roleName?: string | null
   /**
    * @description 排序值
+   * @format int32
    */
   sortId?: number
   /**
@@ -1563,9 +1749,15 @@ export interface Roles {
  */
 export interface Button {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1600,9 +1792,15 @@ export interface Button {
  */
 export interface Menu {
   id?: string | null
+  /**
+   * @format date-time
+   */
   creationTime?: string
   creatorUserId?: string | null
   creatorUserName?: string | null
+  /**
+   * @format date-time
+   */
   lastModificationTime?: string
   lastModifierUserId?: string | null
   lastModifierUserName?: string | null
@@ -1622,6 +1820,7 @@ export interface Menu {
   parentId?: string | null
   /**
    * @description 等级
+   * @format int32
    */
   level?: number
   /**
@@ -1654,14 +1853,17 @@ export interface Menu {
   show?: boolean
   /**
    * @description 排序码
+   * @format int32
    */
   sort?: number
   /**
    * @description 打开方式（1：当前页面，2：新页面）
+   * @format int32
    */
   target?: number
   /**
    * @description 菜单类型
+   * @format int32
    */
   type?: number
   /**
@@ -1678,8 +1880,17 @@ export interface MenuIResultModel {
 }
 
 export interface MenuPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<Menu> | null
@@ -1768,6 +1979,7 @@ export interface NotifyListOutput {
   readed?: boolean
   /**
    * @description 通知创建时间
+   * @format date-time
    */
   creationTime?: string
   /**
@@ -1782,8 +1994,17 @@ export interface NotifyListOutput {
 }
 
 export interface NotifyListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<NotifyListOutput> | null
@@ -1796,6 +2017,7 @@ export interface NotifyListOutputPageListIResultModel {
 export interface NotifyCountOutput {
   /**
    * @description 未读数量
+   * @format int64
    */
   count?: number
 }
@@ -1856,6 +2078,7 @@ export interface OpenApiTreeOutput {
   name?: string | null
   /**
    * @description 层级，从1开始
+   * @format int32
    */
   level?: number
   /**
@@ -1886,6 +2109,7 @@ export interface OrganizationsListOutput {
   leader?: string | null
   /**
    * @description 级别
+   * @format int32
    */
   level?: number
   /**
@@ -1906,13 +2130,23 @@ export interface OrganizationsListOutput {
   pathText?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
 }
 
 export interface OrganizationsListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<OrganizationsListOutput> | null
@@ -1940,6 +2174,7 @@ export interface OrganizationsOutput {
   leader?: string | null
   /**
    * @description 级别
+   * @format int32
    */
   level?: number
   /**
@@ -1960,6 +2195,7 @@ export interface OrganizationsOutput {
   pathText?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
 }
@@ -1994,6 +2230,7 @@ export interface OrganizationsInput {
   parentId?: string | null
   /**
    * @description 排序号
+   * @format int32
    */
   sortId?: number
 }
@@ -2030,13 +2267,23 @@ export interface RolesListOutput {
   roleName?: string | null
   /**
    * @description 排序值
+   * @format int32
    */
   sortId?: number
 }
 
 export interface RolesListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<RolesListOutput> | null
@@ -2117,8 +2364,17 @@ export interface SampleOutput {
 }
 
 export interface SampleOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<SampleOutput> | null
@@ -2158,10 +2414,12 @@ export interface UserInfoListOutput {
   realName?: string | null
   /**
    * @description 性别(1.男 2.女)
+   * @format int32
    */
   sex?: number
   /**
    * @description 状态
+   * @format int32
    */
   status?: number
   /**
@@ -2190,10 +2448,12 @@ export interface UserInfoListOutput {
   enterpriseId?: string | null
   /**
    * @description 员工类型
+   * @format int32
    */
   type?: number
   /**
    * @description 用户类型
+   * @format int32
    */
   userType?: number
   /**
@@ -2203,8 +2463,17 @@ export interface UserInfoListOutput {
 }
 
 export interface UserInfoListOutputPageList {
+  /**
+   * @format int32
+   */
   page?: number
+  /**
+   * @format int32
+   */
   pageSize?: number
+  /**
+   * @format int64
+   */
   totalCount?: number
   order?: string | null
   list?: Array<UserInfoListOutput> | null
@@ -2248,10 +2517,12 @@ export interface UserInfoOutput {
   realName?: string | null
   /**
    * @description 性别(1.男 2.女)
+   * @format int32
    */
   sex?: number
   /**
    * @description 状态
+   * @format int32
    */
   status?: number
   /**
@@ -2268,6 +2539,7 @@ export interface UserInfoOutput {
   rolesName?: Array<string> | null
   /**
    * @description 用户类型
+   * @format int32
    */
   userType?: number
   /**
@@ -2322,14 +2594,17 @@ export interface UserInfoInput {
   realName?: string | null
   /**
    * @description 性别(1.男 2.女)
+   * @format int32
    */
   sex?: number
   /**
    * @description 状态
+   * @format int32
    */
   status?: number
   /**
    * @description 用户类型
+   * @format int32
    */
   type?: number
   /**
