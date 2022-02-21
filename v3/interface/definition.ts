@@ -5,6 +5,7 @@ import {
   isReferenceObject,
 } from "../types.ts";
 import { DefinitionGenerator } from "./generator.ts";
+import { isValidVarName } from "../helper.ts";
 
 function getRealType(type?: string) {
   if (type === undefined) return "unknown";
@@ -136,10 +137,14 @@ function traverseObject(g: DefinitionGenerator, object: ISchemaObject) {
 
           g.write(g.EOL);
           break;
-        default:
-          g.write(`${g.indentStr}${attr}${isPropertyRequired ? "" : "?"}: `);
+        default: {
+          const propertyName = isValidVarName(attr) ? attr : `'${attr}'`;
+          g.write(
+            `${g.indentStr}${propertyName}${isPropertyRequired ? "" : "?"}: `,
+          );
           traverse(g, propertyType);
           g.write(g.EOL);
+        }
       }
     }
   }
