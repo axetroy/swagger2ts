@@ -4,7 +4,7 @@ import { BaseGenerator } from "./base_generator.ts";
 
 Deno.test({
   name: "write",
-  fn: async () => {
+  fn: () => {
     const g = new BaseGenerator();
     const block = new CommentBlock(g);
 
@@ -27,8 +27,58 @@ Deno.test({
 });
 
 Deno.test({
+  name: "write with multiple comment",
+  fn: () => {
+    const g = new BaseGenerator();
+    const block = new CommentBlock(g);
+
+    block.start();
+
+    block.write("first line comment\nsecond line comment");
+
+    block.end();
+
+    g.toString();
+    assertEquals(
+      g.toString(),
+      `
+/**
+ * first line comment
+ * second line comment
+ */
+`.trimStart(),
+    );
+  },
+});
+
+Deno.test({
+  name: "write with multiple comment with tag",
+  fn: () => {
+    const g = new BaseGenerator();
+    const block = new CommentBlock(g);
+
+    block.start();
+
+    block.writeTag("description", "first line comment\nsecond line comment");
+
+    block.end();
+
+    g.toString();
+    assertEquals(
+      g.toString(),
+      `
+/**
+ * @description first line comment
+ *              second line comment
+ */
+`.trimStart(),
+    );
+  },
+});
+
+Deno.test({
   name: "write multiple line",
-  fn: async () => {
+  fn: () => {
     const g = new BaseGenerator();
     const block = new CommentBlock(g);
 
@@ -54,7 +104,7 @@ Deno.test({
 
 Deno.test({
   name: "write tag",
-  fn: async () => {
+  fn: () => {
     const g = new BaseGenerator();
     const block = new CommentBlock(g);
 
@@ -78,7 +128,7 @@ Deno.test({
 
 Deno.test({
   name: "write multiple tag",
-  fn: async () => {
+  fn: () => {
     const g = new BaseGenerator();
     const block = new CommentBlock(g);
 
