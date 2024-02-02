@@ -158,7 +158,7 @@ export class Runtime implements IRuntime {
       // @ts-ignore ignore error
       this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
-          method: method.toUpperCase(),
+          method: method.toUpperCase() as Uppercase<string>,
           url,
           ...config,
         });
