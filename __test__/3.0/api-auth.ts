@@ -62,7 +62,7 @@ export type Stringify = string | number | null | undefined | void
 
 export type SwaggerPath = Record<string, string | number>
 
-export type SwaggerQuery = Record<string, Stringify | Stringify[]>
+export type SwaggerQuery = Record<string, Stringify | Stringify[] | Record<string, any>>
 
 export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 
@@ -84,7 +84,7 @@ export interface SwaggerApi {
    * @summary 文件上传测试
    * @tag auth-server-endpoint
    */
-  post(url: '/other', options: SwaggerOptions<{}, {name?: string}, {}, Blob | Uint8Array>): Promise<ResponseEntity>
+  post(url: '/other', options?: SwaggerOptions<{}, {name?: string}, {}, Blob | Uint8Array>): Promise<ResponseEntity>
   /**
    * @description oauth2.0 应用接入信息查询
    * @summary 查询

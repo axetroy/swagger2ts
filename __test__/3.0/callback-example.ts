@@ -4,7 +4,7 @@ export type Stringify = string | number | null | undefined | void
 
 export type SwaggerPath = Record<string, string | number>
 
-export type SwaggerQuery = Record<string, Stringify | Stringify[]>
+export type SwaggerQuery = Record<string, Stringify | Stringify[] | Record<string, any>>
 
 export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 

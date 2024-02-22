@@ -104,7 +104,7 @@ export type Stringify = string | number | null | undefined | void
 
 export type SwaggerPath = Record<string, string | number>
 
-export type SwaggerQuery = Record<string, Stringify | Stringify[]>
+export type SwaggerQuery = Record<string, Stringify | Stringify[] | Record<string, any>>
 
 export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 
@@ -127,25 +127,25 @@ export interface SwaggerApi {
    * @summary Add a new pet to the store
    * @tag pet
    */
-  post(url: '/pet', options: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
+  post(url: '/pet', options?: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
   /**
    * @description Update an existing pet by Id
    * @summary Update an existing pet
    * @tag pet
    */
-  put(url: '/pet', options: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
+  put(url: '/pet', options?: SwaggerOptions<{}, {}, {}, Pet>): Promise<Pet>
   /**
    * @description Multiple status values can be provided with comma separated strings
    * @summary Finds Pets by status
    * @tag pet
    */
-  get(url: '/pet/findByStatus', options: SwaggerOptions<{}, {status?: 'available' | 'pending' | 'sold'}, {}, unknown>): Promise<Array<Pet>>
+  get(url: '/pet/findByStatus', options?: SwaggerOptions<{}, {status?: 'available' | 'pending' | 'sold'}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    * @summary Finds Pets by tags
    * @tag pet
    */
-  get(url: '/pet/findByTags', options: SwaggerOptions<{}, {tags?: Array<string>}, {}, unknown>): Promise<Array<Pet>>
+  get(url: '/pet/findByTags', options?: SwaggerOptions<{}, {tags?: Array<string>}, {}, unknown>): Promise<Array<Pet>>
   /**
    * @description Returns a single pet
    * @summary Find pet by ID
@@ -172,7 +172,7 @@ export interface SwaggerApi {
    * @summary Returns pet inventories by status
    * @tag store
    */
-  get(url: '/store/inventory', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<{
+  get(url: '/store/inventory', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<{
   [key: string]: number
 }
 >
@@ -181,7 +181,7 @@ export interface SwaggerApi {
    * @summary Place an order for a pet
    * @tag store
    */
-  post(url: '/store/order', options: SwaggerOptions<{}, {}, {}, Order>): Promise<Order>
+  post(url: '/store/order', options?: SwaggerOptions<{}, {}, {}, Order>): Promise<Order>
   /**
    * @description For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
    * @summary Find purchase order by ID
@@ -199,23 +199,23 @@ export interface SwaggerApi {
    * @summary Create user
    * @tag user
    */
-  post(url: '/user', options: SwaggerOptions<{}, {}, {}, User>): Promise<User>
+  post(url: '/user', options?: SwaggerOptions<{}, {}, {}, User>): Promise<User>
   /**
    * @description Creates list of users with given input array
    * @summary Creates list of users with given input array
    * @tag user
    */
-  post(url: '/user/createWithList', options: SwaggerOptions<{}, {}, {}, Array<User>>): Promise<User>
+  post(url: '/user/createWithList', options?: SwaggerOptions<{}, {}, {}, Array<User>>): Promise<User>
   /**
    * @summary Logs user into the system
    * @tag user
    */
-  get(url: '/user/login', options: SwaggerOptions<{}, {username?: string, password?: string}, {}, unknown>): Promise<string>
+  get(url: '/user/login', options?: SwaggerOptions<{}, {username?: string, password?: string}, {}, unknown>): Promise<string>
   /**
    * @summary Logs out current logged in user session
    * @tag user
    */
-  get(url: '/user/logout', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<unknown>
+  get(url: '/user/logout', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<unknown>
   /**
    * @summary Get user by user name
    * @tag user

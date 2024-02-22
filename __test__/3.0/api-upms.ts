@@ -218,7 +218,7 @@ export type Stringify = string | number | null | undefined | void
 
 export type SwaggerPath = Record<string, string | number>
 
-export type SwaggerQuery = Record<string, Stringify | Stringify[]>
+export type SwaggerQuery = Record<string, Stringify | Stringify[] | Record<string, any>>
 
 export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 
@@ -240,22 +240,22 @@ export interface SwaggerApi {
    * @summary 按钮
    * @tag 公共接口
    */
-  get(url: '/button', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
+  get(url: '/button', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
   /**
    * @summary 导航条
    * @tag 公共接口
    */
-  get(url: '/navbar', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
+  get(url: '/navbar', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
   /**
    * @summary 查询
    * @tag 角色管理
    */
-  get(url: '/role', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<角色树查询>>
+  get(url: '/role', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<角色树查询>>
   /**
    * @summary 新增
    * @tag 角色管理
    */
-  post(url: '/role', options: SwaggerOptions<{}, {}, {}, RoleDTO>): Promise<unknown>
+  post(url: '/role', options?: SwaggerOptions<{}, {}, {}, RoleDTO>): Promise<unknown>
   /**
    * @description 角色删除是一个危险的操作，不提供批量服务
    * @summary 删除
@@ -295,18 +295,18 @@ export interface SwaggerApi {
    * @summary 查询
    * @tag 菜单管理
    */
-  get(url: '/sitemap', options: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<菜单树>>
+  get(url: '/sitemap', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<菜单树>>
   /**
    * @description 添加菜单
    * @summary 新增
    * @tag 菜单管理
    */
-  post(url: '/sitemap', options: SwaggerOptions<{}, {}, {}, SitemapDTO>): Promise<unknown>
+  post(url: '/sitemap', options?: SwaggerOptions<{}, {}, {}, SitemapDTO>): Promise<unknown>
   /**
    * @summary 添加按钮
    * @tag 菜单管理
    */
-  post(url: '/sitemap/button', options: SwaggerOptions<{}, {}, {}, ButtonDTO>): Promise<unknown>
+  post(url: '/sitemap/button', options?: SwaggerOptions<{}, {}, {}, ButtonDTO>): Promise<unknown>
   /**
    * @summary 修改按钮
    * @tag 菜单管理
