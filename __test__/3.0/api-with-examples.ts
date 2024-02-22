@@ -193,7 +193,7 @@ export class Runtime implements IRuntime {
       // @ts-ignore ignore error
       this[method] = (url: string, config?: IRuntimeRequestCommonOptions = {}) => {
         return this.request({
-          method: method.toUpperCase(),
+          method: method.toUpperCase() as Uppercase<string>,
           url,
           ...config,
         });
@@ -280,8 +280,14 @@ export class Runtime implements IRuntime {
     if (config.query) {
       for (const key in config.query) {
         const value = config.query[key];
-        if (value !== undefined) {
-          url.searchParams.append(key, value);
+        if (value !== undefined && value !== null) {
+          if (Object.prototype.toString.call(value) === '[object Object]') {
+            url.searchParams.append(key, JSON.stringify(value));
+          } else if (Array.isArray(value)) {
+            value.forEach(v => url.searchParams.append(key, v))
+          } else {
+            url.searchParams.append(key, value);
+          }
         }
       }
     }
