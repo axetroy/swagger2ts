@@ -337,16 +337,10 @@ interface IRuntimeHeaderConfig {
   [method: string]: IRuntimeHeaderMapString;
 }
 
-interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method"> {
-  path?: {
-    [key: string]: string;
-  };
-  query?: {
-    [key: string]: string;
-  };
-  header?: {
-    [key: string]: string | string[];
-  };
+interface IRuntimeRequestCommonOptions extends Omit<RequestInit, "body" | "method" | "headers"> {
+  path?: Record<string, string>;
+  query?: Record<string, string | number | any[] | Record<string, any>>;
+  headers?: Record<string, string | string[]>;
   body?: any;
   timeout?: number;
 }
@@ -557,35 +551,37 @@ export class Runtime implements IRuntime {
 
   public async request<T>(config: IRuntimeRequestOptions): Promise<T> {
     const url = new URL(this.baseURL + config.url);
-    config.header = config.header || {};
+    config.headers = config.headers || {};
 
     const defaults = this.defaults;
 
     // set default header
     for (const key in defaults.headers.common) {
-      config.header[key] = defaults.headers.common[key];
+      config.headers[key] = defaults.headers.common[key];
     }
 
     // set header for this method
     for (const key in defaults.headers[config.method] || {}) {
-      config.header[key] = defaults.headers[config.method][key];
+      config.headers[key] = defaults.headers[config.method][key];
     }
 
+    // set query for this method
     if (config.query) {
       for (const key in config.query) {
         const value = config.query[key];
         if (value !== undefined && value !== null) {
-          if (Object.prototype.toString.call(value) === '[object Object]') {
+          if (Object.prototype.toString.call(value) === "[object Object]") {
             url.searchParams.append(key, JSON.stringify(value));
           } else if (Array.isArray(value)) {
-            value.forEach(v => url.searchParams.append(key, v))
+            value.forEach((v) => url.searchParams.append(key, v));
           } else {
-            url.searchParams.append(key, value);
+            url.searchParams.append(key, value + "");
           }
         }
       }
     }
 
+    // set path for this method
     if (config.path) {
       for (const key in config.path) {
         const t1 = encodeURI("{");
@@ -599,8 +595,8 @@ export class Runtime implements IRuntime {
 
     const headers = new Headers();
 
-    for (const key in config.header) {
-      const value = config.header[key];
+    for (const key in config.headers) {
+      const value = config.headers[key];
       if (value !== undefined) {
         if (Array.isArray(value)) {
           headers.delete(key);
@@ -664,7 +660,8 @@ export class Runtime implements IRuntime {
         return this._responseInterceptor.runSuccess<T>(config, resp, data);
       })
       .catch((err) => {
-        const runtimeErr = err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err as unknown as Error) : new RuntimeError(err + "");
+        const runtimeErr =
+          err instanceof RuntimeError ? err : err instanceof Error ? RuntimeError.fromError(err as unknown as Error) : new RuntimeError(err + "");
 
         return this._responseInterceptor.runError<T>(config, runtimeErr);
       });
