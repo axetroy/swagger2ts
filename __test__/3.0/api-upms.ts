@@ -553,17 +553,21 @@ export class Runtime implements IRuntime {
     const url = new URL(this.baseURL + config.url);
     config.headers = config.headers || {};
 
+    const headersObject: typeof config.headers = Object.create(null);
+
     const defaults = this.defaults;
 
     // set default header
     for (const key in defaults.headers.common) {
-      config.headers[key] = defaults.headers.common[key];
+      headersObject[key] = defaults.headers.common[key];
     }
 
     // set header for this method
     for (const key in defaults.headers[config.method] || {}) {
-      config.headers[key] = defaults.headers[config.method][key];
+      headersObject[key] = defaults.headers[config.method][key];
     }
+
+    Object.assign(headersObject, config.headers);
 
     // set query for this method
     if (config.query) {
@@ -595,8 +599,8 @@ export class Runtime implements IRuntime {
 
     const headers = new Headers();
 
-    for (const key in config.headers) {
-      const value = config.headers[key];
+    for (const key in headersObject) {
+      const value = headersObject[key];
       if (value !== undefined) {
         if (Array.isArray(value)) {
           headers.delete(key);
