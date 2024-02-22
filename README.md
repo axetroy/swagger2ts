@@ -20,7 +20,7 @@ deno install \
   --no-check \
   --reload \
   -f \
-  https://github.com/axetroy/swagger2ts/raw/v0.2.25/swagger2ts.ts
+  https://github.com/axetroy/swagger2ts/raw/v0.2.26/swagger2ts.ts
 ```
 
 或者通过 [npm](https://npmjs.com) 安装
@@ -52,7 +52,7 @@ console.log(output);
 #### 通过 Deno 函数调用
 
 ```ts
-import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.2.25/generate.ts";
+import { generate } from "https://github.com/axetroy/swagger2ts/raw/v0.2.26/generate.ts";
 
 const output = await generate("/path/to/swagger.json");
 // const output = await generate("https://example.com/swagger.json");

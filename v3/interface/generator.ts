@@ -10,11 +10,7 @@ export class DefinitionGenerator extends BaseGenerator {
     this.write(`type ${name} = ${type}`);
   }
 
-  public declareEnum(
-    name: string,
-    values: Array<string | number>,
-    exposed: boolean,
-  ) {
+  public declareEnum(name: string, values: Array<string | number>, exposed: boolean) {
     if (exposed) {
       this.write("export ");
     }
@@ -40,7 +36,7 @@ export type Stringify = string | number | null | undefined | void
 
 export type SwaggerPath = Record<string, string | number>
 
-export type SwaggerQuery = Record<string, Stringify | Stringify[]>
+export type SwaggerQuery = Record<string, Stringify | Stringify[] | Record<string, any>>
 
 export type SwaggerHeaders = Record<string, Stringify | Stringify[]>
 
@@ -75,16 +71,15 @@ export interface SwaggerOptions<P extends SwaggerPath = SwaggerPath, Q extends S
     query: { required: boolean; type: string },
     headers: { required: boolean; type: string },
     body: string,
-    returnValue: string,
+    returnValue: string
   ) {
+    const isRequiredParams = path.required || query.required || headers.required;
+
     this.write(this.indentStr);
     this.write(method + "(");
-    this.write(`url: '${url}', options: `);
+    this.write(`url: '${url}', options${isRequiredParams ? '' : '?'}: `);
 
-    const requireKeys = [];
-
-    const isRequiredParams = path.required || query.required ||
-      headers.required;
+    const requireKeys: string[] = [];
 
     if (isRequiredParams) {
       this.write("RequireKeys<");
