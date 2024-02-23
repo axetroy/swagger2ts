@@ -363,10 +363,6 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-export interface IRuntimeForm {
-  [key: string]: any;
-}
-
 export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
@@ -430,7 +426,7 @@ export class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
-export class RuntimeForm<T extends IRuntimeForm> {
+export class RuntimeFormData<T extends Record<string, any>> {
   constructor(private _form: T) {}
   public formData(): FormData {
     const form = new FormData();
@@ -618,7 +614,7 @@ export class Runtime implements IRuntime {
         ? undefined
         : ["GET", "HEAD"].indexOf(config.method.toUpperCase()) > -1
         ? undefined
-        : config.body instanceof RuntimeForm
+        : config.body instanceof RuntimeFormData
         ? config.body.formData()
         : config.body instanceof FormData
         ? config.body

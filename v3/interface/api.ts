@@ -128,7 +128,10 @@ export function generatePaths(
         const g = new DefinitionGenerator();
 
         if (formBody && mediaSchema === formBody) {
-          g.write("FormData");
+          // g.write("FormData");
+          g.write("RuntimeFormData<");
+          traverse(g, mediaSchema.schema);
+          g.write(">");
         } else {
           traverse(g, mediaSchema.schema);
         }
@@ -143,7 +146,6 @@ export function generatePaths(
 
       const comment = g.createCommentBlock();
 
-      // @ts-expect-error ignore error
       const op = pathObject[method] as IOperationObject;
 
       if (op.description || op.summary) {

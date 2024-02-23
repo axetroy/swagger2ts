@@ -2944,12 +2944,26 @@ export interface SwaggerApi {
    * @summary 文件上传
    * @tag File
    */
-  post(url: '/api/File/Upload', options?: SwaggerOptions<{}, {}, {}, FormData>): Promise<IResultModel>
+  post(url: '/api/File/Upload', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  module?: string | null
+}
+>>): Promise<IResultModel>
   /**
    * @summary 图片上传
    * @tag File
    */
-  post(url: '/api/File/UploadPic', options?: SwaggerOptions<{}, {}, {}, FormData>): Promise<IResultModel>
+  post(url: '/api/File/UploadPic', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  module?: string | null
+  /**
+   * @format int32
+   */
+  width?: number | null
+  /**
+   * @format int32
+   */
+  height?: number | null
+}
+>>): Promise<IResultModel>
   /**
    * @summary 获取文件(返回byte[])
    * @tag File
@@ -2965,7 +2979,10 @@ export interface SwaggerApi {
    * @summary 删除文件
    * @tag File
    */
-  post(url: '/api/File/Remove', options?: SwaggerOptions<{}, {}, {}, FormData>): Promise<IResultModel>
+  post(url: '/api/File/Remove', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  code?: string | null
+}
+>>): Promise<IResultModel>
   /**
    * @summary 列表
    * @tag LoginLog
@@ -3302,10 +3319,6 @@ type IRequestInterceptorFn = (config: IRuntimeRequestOptions) => Promise<IRuntim
 type IResponseInterceptorSuccessFn<T> = (config: IRuntimeRequestOptions, response: Response, data: T) => Promise<T>;
 type IResponseInterceptorErrorFn<T> = (config: IRuntimeRequestOptions, Error: RuntimeError) => Promise<T>;
 
-export interface IRuntimeForm {
-  [key: string]: any;
-}
-
 export class RequestInterceptor implements IRequestInterceptor {
   private _fns: IRequestInterceptorFn[] = [];
   public use(fn: IRequestInterceptorFn) {
@@ -3369,7 +3382,7 @@ export class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
-export class RuntimeForm<T extends IRuntimeForm> {
+export class RuntimeFormData<T extends Record<string, any>> {
   constructor(private _form: T) {}
   public formData(): FormData {
     const form = new FormData();
@@ -3557,7 +3570,7 @@ export class Runtime implements IRuntime {
         ? undefined
         : ["GET", "HEAD"].indexOf(config.method.toUpperCase()) > -1
         ? undefined
-        : config.body instanceof RuntimeForm
+        : config.body instanceof RuntimeFormData
         ? config.body.formData()
         : config.body instanceof FormData
         ? config.body
