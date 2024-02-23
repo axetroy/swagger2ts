@@ -221,6 +221,8 @@ export class Runtime implements IRuntime {
   }
 
   public async request<T>(config: IRuntimeRequestOptions): Promise<T> {
+    config = await this._requestInterceptor.run(config);
+
     const url = new URL(this.baseURL + config.url);
     config.headers = config.headers || {};
 
@@ -265,8 +267,6 @@ export class Runtime implements IRuntime {
         url.pathname = url.pathname.replace(reg, config.path[key]);
       }
     }
-
-    config = await this._requestInterceptor.run(config);
 
     const headers = new Headers();
 
