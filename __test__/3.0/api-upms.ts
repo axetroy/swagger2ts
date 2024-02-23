@@ -550,6 +550,8 @@ export class Runtime implements IRuntime {
   }
 
   public async request<T>(config: IRuntimeRequestOptions): Promise<T> {
+    config = await this._requestInterceptor.run(config);
+
     const url = new URL(this.baseURL + config.url);
     config.headers = config.headers || {};
 
@@ -595,8 +597,6 @@ export class Runtime implements IRuntime {
       }
     }
 
-    config = await this._requestInterceptor.run(config);
-
     const headers = new Headers();
 
     for (const key in headersObject) {
@@ -620,11 +620,18 @@ export class Runtime implements IRuntime {
         ? undefined
         : config.body instanceof RuntimeForm
         ? config.body.formData()
+        : config.body instanceof FormData
+        ? config.body
         : config.body instanceof Blob
         ? config.body
         : typeof config.body === "object"
         ? JSON.stringify(config.body)
         : config.body.toString();
+
+    // 如果是 FormData, 删除 Content-Type，让浏览器自动设置
+    if (body instanceof FormData) {
+      headers.delete("Content-Type");
+    }
 
     const exec = () =>
       fetch(url.toString(), {
