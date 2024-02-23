@@ -808,7 +808,7 @@ export interface SwaggerApi {
    * @summary 新增
    * @tag 模板管理
    */
-  post(url: '/template', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  post(url: '/template', options?: SwaggerOptions<{}, {}, {}, TypedFormData<{
   /**
    * @format binary
    */
@@ -1107,7 +1107,9 @@ export class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
-export class RuntimeFormData<T extends Record<string, any>> {
+type TypedFormDataValue = FormDataEntryValue | Blob;
+
+export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
   constructor(private _form: T) {}
   public formData(): FormData {
     const form = new FormData();
@@ -1295,7 +1297,7 @@ export class Runtime implements IRuntime {
         ? undefined
         : ["GET", "HEAD"].indexOf(config.method.toUpperCase()) > -1
         ? undefined
-        : config.body instanceof RuntimeFormData
+        : config.body instanceof TypedFormData
         ? config.body.formData()
         : config.body instanceof FormData
         ? config.body

@@ -129,7 +129,7 @@ export function generatePaths(
 
         if (formBody && mediaSchema === formBody) {
           // g.write("FormData");
-          g.write("RuntimeFormData<");
+          g.write("TypedFormData<");
           traverse(g, mediaSchema.schema);
           g.write(">");
         } else {

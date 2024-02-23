@@ -2944,7 +2944,7 @@ export interface SwaggerApi {
    * @summary 文件上传
    * @tag File
    */
-  post(url: '/api/File/Upload', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  post(url: '/api/File/Upload', options?: SwaggerOptions<{}, {}, {}, TypedFormData<{
   module?: string | null
 }
 >>): Promise<IResultModel>
@@ -2952,7 +2952,7 @@ export interface SwaggerApi {
    * @summary 图片上传
    * @tag File
    */
-  post(url: '/api/File/UploadPic', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  post(url: '/api/File/UploadPic', options?: SwaggerOptions<{}, {}, {}, TypedFormData<{
   module?: string | null
   /**
    * @format int32
@@ -2979,7 +2979,7 @@ export interface SwaggerApi {
    * @summary 删除文件
    * @tag File
    */
-  post(url: '/api/File/Remove', options?: SwaggerOptions<{}, {}, {}, RuntimeFormData<{
+  post(url: '/api/File/Remove', options?: SwaggerOptions<{}, {}, {}, TypedFormData<{
   code?: string | null
 }
 >>): Promise<IResultModel>
@@ -3382,7 +3382,9 @@ export class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
-export class RuntimeFormData<T extends Record<string, any>> {
+type TypedFormDataValue = FormDataEntryValue | Blob;
+
+export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
   constructor(private _form: T) {}
   public formData(): FormData {
     const form = new FormData();
@@ -3570,7 +3572,7 @@ export class Runtime implements IRuntime {
         ? undefined
         : ["GET", "HEAD"].indexOf(config.method.toUpperCase()) > -1
         ? undefined
-        : config.body instanceof RuntimeFormData
+        : config.body instanceof TypedFormData
         ? config.body.formData()
         : config.body instanceof FormData
         ? config.body
