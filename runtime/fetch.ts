@@ -291,11 +291,18 @@ export class Runtime implements IRuntime {
         ? undefined
         : config.body instanceof RuntimeForm
         ? config.body.formData()
+        : config.body instanceof FormData
+        ? config.body
         : config.body instanceof Blob
         ? config.body
         : typeof config.body === "object"
         ? JSON.stringify(config.body)
         : config.body.toString();
+
+    // 如果是 FormData, 删除 Content-Type，让浏览器自动设置
+    if (body instanceof FormData) {
+      headers.delete("Content-Type");
+    }
 
     const exec = () =>
       fetch(url.toString(), {
