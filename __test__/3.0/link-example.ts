@@ -149,7 +149,7 @@ export class ResponseInterceptor implements IResponseInterceptor {
   }
 }
 
-type TypedFormDataValue = FormDataEntryValue | Blob;
+type TypedFormDataValue = FormDataEntryValue | Blob | Uint8Array;
 
 export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
   constructor(private _form: T) {}
@@ -157,8 +157,13 @@ export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
     const form = new FormData();
 
     for (const key in this._form) {
-      if (this._form[key] !== undefined) {
-        form.append(key, this._form[key]);
+      const value = this._form[key];
+      if (value !== undefined) {
+        if (value instanceof Uint8Array) {
+          form.append(key, new Blob([value]));
+        } else {
+          form.append(key, value);
+        }
       }
     }
 
