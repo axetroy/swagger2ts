@@ -146,6 +146,7 @@ export function generatePaths(
 
       const comment = g.createCommentBlock();
 
+      // @ts-expect-error ignore
       const op = pathObject[method] as IOperationObject;
 
       if (op.description || op.summary) {
