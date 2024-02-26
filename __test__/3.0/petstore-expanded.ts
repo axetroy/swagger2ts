@@ -199,6 +199,36 @@ export class RuntimeError extends Error {
   }
 }
 
+interface ISerializer {
+  use(fn: Function): void;
+}
+
+export class QuerySerializer implements ISerializer {
+  private __fn__: URLQuerySerializer = (query) => {
+    const params = new URLSearchParams();
+    for (const key in query) {
+      const value = query[key];
+      if (value !== undefined && value !== null) {
+        if (Object.prototype.toString.call(value) === "[object Object]") {
+          params.append(key, JSON.stringify(value));
+        } else if (Array.isArray(value)) {
+          value.forEach((v) => params.append(key, v));
+        } else {
+          params.append(key, value + "");
+        }
+      }
+    }
+
+    return params
+  };
+
+  use(fn: URLQuerySerializer) {
+    this.__fn__ = fn;
+  }
+}
+
+type URLQuerySerializer = (query: Record<string, string | number | any[] | Record<string, any>>) => URLSearchParams;
+
 export interface IRuntime {
   readonly interceptors: { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
   readonly defaults: { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
@@ -223,10 +253,30 @@ export class Runtime implements IRuntime {
         });
       };
     }
+
+    this._querySerializer.use((query) => {
+      const params = new URLSearchParams();
+
+      for (const key in query) {
+        const value = query[key];
+        if (value !== undefined && value !== null) {
+          if (Object.prototype.toString.call(value) === "[object Object]") {
+            params.append(key, JSON.stringify(value));
+          } else if (Array.isArray(value)) {
+            value.forEach((v) => params.append(key, v));
+          } else {
+            params.append(key, value + "");
+          }
+        }
+      }
+
+      return params;
+    });
   }
 
   private _requestInterceptor = new RequestInterceptor();
   private _responseInterceptor = new ResponseInterceptor();
+  private _querySerializer = new QuerySerializer();
 
   private _defaults = {
     timeout: 60 * 1000, // 60s,
@@ -245,6 +295,16 @@ export class Runtime implements IRuntime {
       },
       get response() {
         return self._responseInterceptor as IResponseInterceptor;
+      },
+    };
+  }
+
+  public get serializer() {
+    const self = this;
+
+    return {
+      get query() {
+        return self._querySerializer;
       },
     };
   }
@@ -309,18 +369,10 @@ export class Runtime implements IRuntime {
 
     // set query for this method
     if (config.query) {
-      for (const key in config.query) {
-        const value = config.query[key];
-        if (value !== undefined && value !== null) {
-          if (Object.prototype.toString.call(value) === "[object Object]") {
-            url.searchParams.append(key, JSON.stringify(value));
-          } else if (Array.isArray(value)) {
-            value.forEach((v) => url.searchParams.append(key, v));
-          } else {
-            url.searchParams.append(key, value + "");
-          }
-        }
-      }
+      // @ts-expect-error ignore
+      const params = this.serializer.query.__fn__(config.query);
+
+      url.search = params.toString();
     }
 
     // set path for this method
