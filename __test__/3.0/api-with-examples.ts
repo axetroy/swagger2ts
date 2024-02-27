@@ -145,6 +145,7 @@ export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
         if (value instanceof Uint8Array) {
           form.append(key, new Blob([value]));
         } else {
+          // @ts-ignore
           form.append(key, value);
         }
       }
@@ -204,6 +205,7 @@ type URLQuerySerializer = (query: Record<string, string | number | any[] | Recor
 
 export interface IRuntime {
   readonly interceptors: { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
+  readonly serializer: { readonly query: QuerySerializer };
   readonly defaults: { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
   readonly baseURL: string;
   domain: string;

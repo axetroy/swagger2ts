@@ -113,15 +113,13 @@ export interface SealDTO {
   pwd?: string
 }
 
-export interface FileVO {
-  /**
-   * @description id
-   */
+export interface MergeBaseVO {
   id?: string
-  /**
-   * @description 名称
-   */
   name?: string
+  /**
+   * @format int32
+   */
+  step?: number
 }
 
 export interface MoveDTOString {
@@ -137,96 +135,6 @@ export interface MoveDTOString {
    * @description 目标节点的上方-true / 下方-false
    */
   before: boolean
-}
-
-/**
- * @description 待签署的人员列表,二维数组
- */
-export interface Member {
-  userId?: string
-  name?: string
-}
-
-export interface SignFlowDTO {
-  /**
-   * @description 注册文件ID
-   */
-  groupRegisterId?: string
-  /**
-   * @description 待签署的人员列表,二维数组
-   */
-  member?: Array<Array<Member>>
-}
-
-export interface PageQuerySignFlowQuery {
-  /**
-   * @description 页码
-   * @format int32
-   */
-  page: number
-  /**
-   * @description 每页显示数量(最多200条)
-   * @format int32
-   */
-  size: number
-  query?: SignFlowQuery
-}
-
-/**
- * @description 查询条件信息
- */
-export interface SignFlowQuery {
-  [key: string]: unknown
-}
-
-export interface PageResultSignFlowVO {
-  /**
-   * @format int64
-   */
-  total?: number
-  data?: Array<SignFlowVO>
-}
-
-export interface SignFlowVO {
-  /**
-   * @description 当前流程节点的ID
-   */
-  id?: string
-  /**
-   * @description 整个流程的ID
-   */
-  pid?: string
-  /**
-   * @description 册名
-   */
-  groupRegisterName?: string
-  /**
-   * @description 册数
-   */
-  groupRegisterSize?: string
-  /**
-   * @description 项目名
-   */
-  projectName?: string
-  /**
-   * @description 发起人
-   */
-  promoterName?: string
-  /**
-   * @description 发起时间
-   * @format date-time
-   */
-  gmtStart?: string
-  /**
-   * @description 到达时间
-   * @format date-time
-   */
-  gmtReach?: string
-  /**
-   * @description 状态
-   * @format int32
-   */
-  status?: number
 }
 
 export interface PageQueryTemplateQuery {
@@ -295,6 +203,12 @@ export interface TemplateVO {
    * @format date-time
    */
   gmtModified?: string
+}
+
+export interface TemplateBaseVO {
+  id?: string
+  name?: string
+  path?: string
 }
 
 export interface SitemapTreeVO {
@@ -487,6 +401,47 @@ export interface MenuTreeVO {
   children?: Array<MenuTreeVO>
 }
 
+export interface FlyPageOcr {
+  name?: string
+  url?: string
+  users?: Array<User>
+}
+
+export interface FlyPageVO {
+  name?: string
+  path?: string
+  info?: FlyPageOcr
+}
+
+export interface User {
+  id?: string
+  name?: string
+}
+
+/**
+ * @description 扉页
+ */
+export interface FileDTO {
+  name?: string
+  path?: string
+}
+
+export interface FrontCoverVO {
+  /**
+   * @description 日期
+   */
+  date?: string
+  /**
+   * @description 分册等级
+   * @format int32
+   */
+  level?: number
+  cover?: FileDTO
+  catalog?: FileDTO
+  volume?: FileDTO
+  fly?: FileDTO
+}
+
 /**
  * @description 查询条件信息
  */
@@ -531,14 +486,6 @@ export interface PageResultLogApiDO {
    */
   total?: number
   data?: Array<LogApiDO>
-}
-
-export interface FileSigningUrl {
-  /**
-   * @format int64
-   */
-  expires_in?: number
-  url?: string
 }
 
 export interface DirectoryFileVO {
@@ -643,92 +590,6 @@ export interface DictTreeVO {
   children?: Array<DictTreeVO>
 }
 
-export interface DirectoryTreeVO {
-  /**
-   * @description id
-   */
-  id?: string
-  /**
-   * @description 名称
-   */
-  name?: string
-  /**
-   * @description 下级
-   */
-  children?: Array<DirectoryTreeVO>
-}
-
-/**
- * @description 查询条件信息
- */
-export interface FileQuery {
-  /**
-   * @description 名称
-   */
-  name?: string
-  /**
-   * @description 同步状态 NOT_STARTED(未开始),COMPLETE(完成),IN_PROGRESS(进行中),ERROR(错误)
-   */
-  status?: 'NOT_STARTED' | 'COMPLETE' | 'IN_PROGRESS' | 'ERROR'
-}
-
-export interface PageQueryFileQuery {
-  /**
-   * @description 页码
-   * @format int32
-   */
-  page: number
-  /**
-   * @description 每页显示数量(最多200条)
-   * @format int32
-   */
-  size: number
-  query?: FileQuery
-}
-
-export interface FileListVO {
-  /**
-   * @description id
-   */
-  id?: string
-  /**
-   * @description 目录
-   */
-  directory?: string
-  /**
-   * @description 大小
-   * @format int64
-   */
-  length?: number
-  /**
-   * @description 页数
-   * @format int32
-   */
-  page?: number
-  /**
-   * @description 同步状态 NOT_STARTED(未开始),COMPLETE(完成),IN_PROGRESS(进行中),ERROR(错误)
-   */
-  status?: 'NOT_STARTED' | 'COMPLETE' | 'IN_PROGRESS' | 'ERROR'
-  /**
-   * @description 创建时间
-   * @format date-time
-   */
-  gmtCreate?: string
-  /**
-   * @description 更新时间
-   * @format date-time
-   */
-  gmtModified?: string
-}
-
-export interface PageResultFileListVO {
-  /**
-   * @format int64
-   */
-  total?: number
-  data?: Array<FileListVO>
-}
-
 
 
 /** ===== build-in interface start ===== */
@@ -800,7 +661,7 @@ export interface SwaggerApi {
    */
   put(url: '/dict/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, DictDTO>, 'path'>): Promise<unknown>
   /**
-   * @summary 查询
+   * @summary 分页查询
    * @tag 模板管理
    */
   get(url: '/template', options: RequireKeys<SwaggerOptions<{}, {query: PageQueryTemplateQuery}, {}, unknown>, 'query'>): Promise<PageResultTemplateVO>
@@ -822,7 +683,7 @@ export interface SwaggerApi {
    */
   tag?: string
   /**
-   * @description 类型1-封面、2——目录、3-分册
+   * @description 类型1-封面、2—目录、3-分册
    */
   type?: '1' | '2' | '3'
 }
@@ -907,10 +768,107 @@ export interface SwaggerApi {
    */
   post(url: '/organization/sync', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<unknown>
   /**
-   * @summary 上传
-   * @tag 文件库
+   * @summary 新增
+   * @tag 组册
    */
-  post(url: '/files', options: RequireKeys<SwaggerOptions<{}, {file: Blob | Uint8Array}, {}, string>, 'query'>): Promise<FileVO>
+  post(url: '/merge', options?: SwaggerOptions<{}, {}, {}, TypedFormData<{
+  /**
+   * @description 项目ID
+   */
+  projectId?: string
+  /**
+   * @description 日期
+   */
+  date?: string
+  /**
+   * @description 分册等级1、2
+   */
+  level?: '1' | '2'
+  /**
+   * @description 扉页
+   * @format binary
+   */
+  file?: Blob | Uint8Array
+  /**
+   * @description 封面文件名称
+   */
+  'cover.name'?: string
+  /**
+   * @description 封面文件路径
+   */
+  'cover.path'?: string
+  /**
+   * @description 目录文件名称
+   */
+  'catalog.name'?: string
+  /**
+   * @description 目录文件路径
+   */
+  'catalog.path'?: string
+  /**
+   * @description 分册文件名称
+   */
+  'volume.name'?: string
+  /**
+   * @description 分册文件路径
+   */
+  'volume.path'?: string
+}
+>>): Promise<MergeBaseVO>
+  /**
+   * @summary 扉页OCR
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/fly/ocr', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary 查询封面
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/cover', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FrontCoverVO>
+  /**
+   * @summary 更新封面
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/cover', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, TypedFormData<{
+  /**
+   * @description 日期
+   */
+  date?: string
+  /**
+   * @description 分册等级1、2
+   */
+  level?: '1' | '2'
+  /**
+   * @description 扉页
+   * @format binary
+   */
+  file?: Blob | Uint8Array
+  /**
+   * @description 封面文件名称
+   */
+  'cover.name'?: string
+  /**
+   * @description 封面文件路径
+   */
+  'cover.path'?: string
+  /**
+   * @description 目录文件名称
+   */
+  'catalog.name'?: string
+  /**
+   * @description 目录文件路径
+   */
+  'catalog.path'?: string
+  /**
+   * @description 分册文件名称
+   */
+  'volume.name'?: string
+  /**
+   * @description 分册文件路径
+   */
+  'volume.path'?: string
+}
+>>, 'path'>): Promise<unknown>
   /**
    * @description 取得所以的分类
    * @summary 查询分类
@@ -928,15 +886,10 @@ export interface SwaggerApi {
    */
   post(url: '/dict/move', options?: SwaggerOptions<{}, {}, {}, MoveDTOString>): Promise<unknown>
   /**
-   * @summary 发起扉页签署
-   * @tag sign-flow-controller
+   * @summary 列表查询
+   * @tag 模板管理
    */
-  post(url: '/', options?: SwaggerOptions<{}, {}, {}, SignFlowDTO>): Promise<unknown>
-  /**
-   * @summary 查询当前用户待签署的数据
-   * @tag sign-flow-controller
-   */
-  get(url: '/user', options: RequireKeys<SwaggerOptions<{}, {query: PageQuerySignFlowQuery}, {}, unknown>, 'query'>): Promise<PageResultSignFlowVO>
+  get(url: '/template/list', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<TemplateBaseVO>>
   /**
    * @description 登录回调地址，携带授权码 code
    * @summary 登录回调
@@ -961,20 +914,20 @@ export interface SwaggerApi {
    */
   get(url: '/navbar', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
   /**
+   * @summary 步骤查询
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/info', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<MergeBaseVO>
+  /**
+   * @summary 查询扉页
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/fly', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FlyPageVO>
+  /**
    * @summary 查询
    * @tag 日志管理
    */
   get(url: '/log/api', options: RequireKeys<SwaggerOptions<{}, {query: PageQueryKeywordQuery}, {}, unknown>, 'query'>): Promise<PageResultLogApiDO>
-  /**
-   * @summary 获取文件
-   * @tag 文件库
-   */
-  get(url: '/files/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FileSigningUrl>
-  /**
-   * @summary 删除
-   * @tag 文件库
-   */
-  delete(url: '/files/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
   /**
    * @summary 文件查询
    * @tag 项目信息
@@ -990,16 +943,6 @@ export interface SwaggerApi {
    * @tag 项目信息
    */
   get(url: '/directory', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<DirectoryVO>>
-  /**
-   * @summary 目录树
-   * @tag 成果库
-   */
-  get(url: '/achievement/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<DirectoryTreeVO>>
-  /**
-   * @summary 文件列表
-   * @tag 成果库
-   */
-  get(url: '/achievement/{id}/files', options: RequireKeys<SwaggerOptions<{id: string}, {query: PageQueryFileQuery}, {}, unknown>, 'path' | 'query'>): Promise<PageResultFileListVO>
   /**
    * @summary 删除
    * @tag 模板管理
@@ -1120,6 +1063,7 @@ export class TypedFormData<T extends Record<string, TypedFormDataValue>> {
         if (value instanceof Uint8Array) {
           form.append(key, new Blob([value]));
         } else {
+          // @ts-ignore
           form.append(key, value);
         }
       }
@@ -1179,6 +1123,7 @@ type URLQuerySerializer = (query: Record<string, string | number | any[] | Recor
 
 export interface IRuntime {
   readonly interceptors: { readonly request: IRequestInterceptor; readonly response: IResponseInterceptor };
+  readonly serializer: { readonly query: QuerySerializer };
   readonly defaults: { readonly timeout: number; readonly headers: IRuntimeHeaderConfig };
   readonly baseURL: string;
   domain: string;
