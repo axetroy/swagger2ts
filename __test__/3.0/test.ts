@@ -83,6 +83,26 @@ export interface DictDTO {
   name: string
 }
 
+export interface VolumeDTO {
+  pid?: string
+  name?: string
+}
+
+export interface MoveDTOString {
+  /**
+   * @description 移动的 id
+   */
+  movingId: string
+  /**
+   * @description 目标 id
+   */
+  targetId: string
+  /**
+   * @description 目标节点的上方-true / 下方-false
+   */
+  before: boolean
+}
+
 export interface MoveDTO {
   /**
    * @description 移动的 id
@@ -115,26 +135,123 @@ export interface SealDTO {
 
 export interface MergeBaseVO {
   id?: string
+  /**
+   * @description 名称
+   */
   name?: string
   /**
+   * @description 分册等级
+   * @format int32
+   */
+  level?: number
+  /**
+   * @description 步骤
    * @format int32
    */
   step?: number
+  /**
+   * @description 项目ID
+   */
+  projectId?: string
 }
 
-export interface MoveDTOString {
+export interface KvStringString {
+  id?: string
+  name?: string
+}
+
+export interface FlyOcrUserDTO {
+  id: string
   /**
-   * @description 移动的 id
+   * @description 姓名
    */
-  movingId: string
+  name: string
   /**
-   * @description 目标 id
+   * @description 签章位置信息
    */
-  targetId: string
+  data: Array<SealPositionDTO>
+}
+
+/**
+ * @description 签章位置信息
+ */
+export interface SealPositionDTO {
   /**
-   * @description 目标节点的上方-true / 下方-false
+   * @format float
    */
-  before: boolean
+  x?: number
+  /**
+   * @format float
+   */
+  y?: number
+}
+
+/**
+ * @description 人员信息
+ */
+export interface FlyOcrUserVO {
+  id?: string
+  /**
+   * @description 姓名
+   */
+  name?: string
+  /**
+   * @description 签章位置信息
+   */
+  data?: Array<SealPositionVO>
+}
+
+export interface FlyPageOcrVO {
+  /**
+   * @description 预览文件
+   */
+  url?: string
+  /**
+   * @description 人员信息
+   */
+  users?: Array<FlyOcrUserVO>
+}
+
+/**
+ * @description 签章位置信息
+ */
+export interface SealPositionVO {
+  /**
+   * @format float
+   */
+  x?: number
+  /**
+   * @format float
+   */
+  y?: number
+}
+
+export interface VolumeFileVO {
+  id?: string
+  name?: string
+  tableName?: string
+  code?: string
+  /**
+   * @format int32
+   */
+  page?: number
+  /**
+   * @format int64
+   */
+  length?: number
+  chapter?: string
+  /**
+   * @format date-time
+   */
+  gmtModified?: string
+}
+
+export interface FileSigningUrl {
+  /**
+   * @format int64
+   */
+  expires_in?: number
+  url?: string
 }
 
 export interface PageQueryTemplateQuery {
@@ -401,21 +518,22 @@ export interface MenuTreeVO {
   children?: Array<MenuTreeVO>
 }
 
-export interface FlyPageOcr {
+export interface VolumeVO {
+  id?: string
   name?: string
-  url?: string
-  users?: Array<User>
+  children?: Array<VolumeVO>
 }
 
 export interface FlyPageVO {
+  /**
+   * @description 文件名称
+   */
   name?: string
-  path?: string
-  info?: FlyPageOcr
-}
-
-export interface User {
-  id?: string
-  name?: string
+  /**
+   * @description 是否已进行ocr
+   */
+  ocr?: boolean
+  info?: FlyPageOcrVO
 }
 
 /**
@@ -440,6 +558,47 @@ export interface FrontCoverVO {
   catalog?: FileDTO
   volume?: FileDTO
   fly?: FileDTO
+}
+
+export interface CatalogVO {
+  id?: string
+  /**
+   * @description 名称
+   */
+  name?: string
+  /**
+   * @description 文件信息
+   */
+  files?: Array<VolumeFileBaseVO>
+  /**
+   * @description 分册信息
+   */
+  children?: Array<CatalogVO>
+}
+
+/**
+ * @description 文件信息
+ */
+export interface VolumeFileBaseVO {
+  id?: string
+  /**
+   * @description 名称
+   */
+  name?: string
+  /**
+   * @description 页码
+   * @format int32
+   */
+  page?: number
+  /**
+   * @description 大小
+   * @format int64
+   */
+  length?: number
+  /**
+   * @description 篇章
+   */
+  chapter?: string
 }
 
 /**
@@ -661,6 +820,56 @@ export interface SwaggerApi {
    */
   put(url: '/dict/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, DictDTO>, 'path'>): Promise<unknown>
   /**
+   * @summary 更新分册
+   * @tag 组册
+   */
+  post(url: '/volume/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, VolumeDTO>, 'path'>): Promise<unknown>
+  /**
+   * @summary 删除分册
+   * @tag 组册
+   */
+  delete(url: '/volume/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary 查询分册文件
+   * @tag 组册
+   */
+  get(url: '/volume/{id}/files', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<VolumeFileVO>>
+  /**
+   * @summary 添加分册文件
+   * @tag 组册
+   */
+  post(url: '/volume/{id}/files', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, Array<string>>, 'path'>): Promise<unknown>
+  /**
+   * @summary 删除分册文件
+   * @tag 组册
+   */
+  delete(url: '/volume/{id}/files', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary 排序分册文件
+   * @tag 组册
+   */
+  post(url: '/volume/{id}/files/move', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, MoveDTOString>, 'path'>): Promise<unknown>
+  /**
+   * @summary 下载分册目录
+   * @tag 组册
+   */
+  get(url: '/volume/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FileSigningUrl>
+  /**
+   * @summary 上传分册目录
+   * @tag 组册
+   */
+  post(url: '/volume/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {file: Blob | Uint8Array}, {}, unknown>, 'path' | 'query'>): Promise<unknown>
+  /**
+   * @summary 删除分册目录
+   * @tag 组册
+   */
+  delete(url: '/volume/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary 分册排序
+   * @tag 组册
+   */
+  post(url: '/volume/move', options?: SwaggerOptions<{}, {}, {}, MoveDTOString>): Promise<unknown>
+  /**
    * @summary 分页查询
    * @tag 模板管理
    */
@@ -816,10 +1025,30 @@ export interface SwaggerApi {
 }
 >>): Promise<MergeBaseVO>
   /**
+   * @summary 查询分册
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/volume', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<VolumeVO>>
+  /**
+   * @summary 新增分册
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/volume', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, VolumeDTO>, 'path'>): Promise<KvStringString>
+  /**
+   * @summary 查询扉页
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/fly', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FlyPageVO>
+  /**
+   * @summary 保存扉页
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/fly', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, Array<FlyOcrUserDTO>>, 'path'>): Promise<unknown>
+  /**
    * @summary 扉页OCR
    * @tag 组册
    */
-  post(url: '/merge/{id}/fly/ocr', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  post(url: '/merge/{id}/fly/ocr', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FlyPageOcrVO>
   /**
    * @summary 查询封面
    * @tag 组册
@@ -914,15 +1143,15 @@ export interface SwaggerApi {
    */
   get(url: '/navbar', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
   /**
-   * @summary 步骤查询
+   * @summary 查询信息
    * @tag 组册
    */
   get(url: '/merge/{id}/info', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<MergeBaseVO>
   /**
-   * @summary 查询扉页
+   * @summary 查询目录
    * @tag 组册
    */
-  get(url: '/merge/{id}/fly', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FlyPageVO>
+  get(url: '/merge/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<CatalogVO>>
   /**
    * @summary 查询
    * @tag 日志管理
@@ -943,6 +1172,11 @@ export interface SwaggerApi {
    * @tag 项目信息
    */
   get(url: '/directory', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<DirectoryVO>>
+  /**
+   * @summary 删除分册文件
+   * @tag 组册
+   */
+  delete(url: '/volume/{id}/files/{fileId}', options: RequireKeys<SwaggerOptions<{id: string, fileId: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
   /**
    * @summary 删除
    * @tag 模板管理
