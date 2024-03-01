@@ -567,6 +567,10 @@ export interface CatalogVO {
    */
   name?: string
   /**
+   * @description 目录
+   */
+  exists?: boolean
+  /**
    * @description 文件信息
    */
   files?: Array<VolumeFileBaseVO>
@@ -858,7 +862,14 @@ export interface SwaggerApi {
    * @summary 上传分册目录
    * @tag 组册
    */
-  post(url: '/volume/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {file: Blob | Uint8Array}, {}, unknown>, 'path' | 'query'>): Promise<unknown>
+  post(url: '/volume/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, TypedFormData<{
+  /**
+   * @description 扉页
+   * @format binary
+   */
+  file?: Blob | Uint8Array
+}
+>>, 'path'>): Promise<unknown>
   /**
    * @summary 删除分册目录
    * @tag 组册

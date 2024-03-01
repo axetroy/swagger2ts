@@ -706,17 +706,25 @@
                         "schema": {
                             "type": "string"
                         }
-                    },
-                    {
-                        "name": "file",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "binary"
-                        }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "description": "扉页",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "请求成功！"
@@ -3535,6 +3543,10 @@
                     "name": {
                         "type": "string",
                         "description": "名称"
+                    },
+                    "exists": {
+                        "type": "boolean",
+                        "description": "目录"
                     },
                     "files": {
                         "type": "array",
