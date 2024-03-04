@@ -133,6 +133,23 @@ export interface SealDTO {
   pwd?: string
 }
 
+export interface PreviewDTO {
+  name?: string
+  url?: string
+}
+
+export interface PreviewSignVO {
+  url?: string
+}
+
+/**
+ * @description 操作人
+ */
+export interface CreateByVO {
+  id?: string
+  name?: string
+}
+
 export interface MergeBaseVO {
   id?: string
   /**
@@ -153,6 +170,11 @@ export interface MergeBaseVO {
    * @description 项目ID
    */
   projectId?: string
+  /**
+   * @description 时间
+   */
+  date?: string
+  createBy?: CreateByVO
 }
 
 export interface KvStringString {
@@ -226,6 +248,41 @@ export interface SealPositionVO {
   y?: number
 }
 
+export interface AchievementFileDTO {
+  id?: string
+  name?: string
+  projectName?: string
+}
+
+export interface SignUserDTO {
+  userId?: string
+  userName?: string
+  /**
+   * @format int32
+   */
+  sort?: number
+  point?: Array<Array<number>>
+}
+
+export interface LoginDTO {
+  /**
+   * @description 账号
+   */
+  username: string
+  /**
+   * @description 密码
+   */
+  password: string
+}
+
+export interface TokenVO {
+  access_token?: string
+  /**
+   * @format int64
+   */
+  expires_in?: number
+}
+
 export interface VolumeFileVO {
   id?: string
   name?: string
@@ -252,6 +309,27 @@ export interface FileSigningUrl {
    */
   expires_in?: number
   url?: string
+  name?: string
+}
+
+export interface UserVO {
+  id?: string
+  /**
+   * @description 名称
+   */
+  name?: string
+  /**
+   * @description 电子邮箱
+   */
+  email?: string
+  /**
+   * @description 手机
+   */
+  mobile?: string
+  /**
+   * @description 电话
+   */
+  tel?: string
 }
 
 export interface PageQueryTemplateQuery {
@@ -651,6 +729,151 @@ export interface PageResultLogApiDO {
   data?: Array<LogApiDO>
 }
 
+export interface UserSignPointVO {
+  userId?: string
+  username?: string
+  point?: Array<Array<number>>
+  signImgBase64?: string
+}
+
+/**
+ * @description 查询条件信息
+ */
+export interface FlowTaskQuery {
+  name?: string
+}
+
+export interface PageQueryFlowTaskQuery {
+  /**
+   * @description 页码
+   * @format int32
+   */
+  page: number
+  /**
+   * @description 每页显示数量(最多200条)
+   * @format int32
+   */
+  size: number
+  query?: FlowTaskQuery
+}
+
+export interface FlowTaskRunVO {
+  id?: string
+  flowId?: string
+  /**
+   * @description 待办类型
+   */
+  type?: 'SIGN' | 'STAMP'
+  /**
+   * @description 组测的文件
+   */
+  achievementFileList?: Array<AchievementFileDTO>
+  /**
+   * @description 册名
+   */
+  achievementName?: string
+  /**
+   * @description 册数
+   * @format int32
+   */
+  achievementNumber?: number
+  /**
+   * @description 项目名称
+   */
+  projectName?: string
+  /**
+   * @description 发起人ID
+   */
+  startUserId?: string
+  /**
+   * @description 发起人名称
+   */
+  startUserName?: string
+  /**
+   * @description 电子签章状态
+   */
+  status?: 'WAIT' | 'PROCESSING' | 'ERROR'
+  /**
+   * @description 发起时间
+   * @format date-time
+   */
+  gmtStart?: string
+  /**
+   * @description 到达时间
+   * @format date-time
+   */
+  gmtArrive?: string
+}
+
+export interface PageResultFlowTaskRunVO {
+  /**
+   * @format int64
+   */
+  total?: number
+  data?: Array<FlowTaskRunVO>
+}
+
+export interface FlowTaskHistoryVO {
+  id?: string
+  flowId?: string
+  /**
+   * @description 处理结果状态
+   */
+  status?: 'SUCCESS' | 'REFUSE'
+  /**
+   * @description 待办类型
+   */
+  type?: 'SIGN' | 'STAMP'
+  /**
+   * @description 册ID
+   */
+  achievementId?: string
+  /**
+   * @description 册名
+   */
+  achievementName?: string
+  /**
+   * @description 册数
+   * @format int32
+   */
+  achievementNumber?: number
+  /**
+   * @description 项目名称
+   */
+  projectName?: string
+  /**
+   * @description 发起人ID
+   */
+  startUserId?: string
+  /**
+   * @description 发起人名称
+   */
+  startUserName?: string
+  /**
+   * @description 发起时间
+   * @format date-time
+   */
+  gmtStart?: string
+  /**
+   * @description 到达时间
+   * @format date-time
+   */
+  gmtArrive?: string
+  /**
+   * @description 处理时间
+   * @format date-time
+   */
+  gmtHandler?: string
+}
+
+export interface PageResultFlowTaskHistoryVO {
+  /**
+   * @format int64
+   */
+  total?: number
+  data?: Array<FlowTaskHistoryVO>
+}
+
 export interface DirectoryFileVO {
   /**
    * @description id
@@ -983,6 +1206,11 @@ export interface SwaggerApi {
    */
   post(url: '/role/{id}/authority', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, Array<string>>, 'path'>): Promise<unknown>
   /**
+   * @summary 新增
+   * @tag 预览
+   */
+  post(url: '/preview', options?: SwaggerOptions<{}, {}, {}, PreviewDTO>): Promise<PreviewSignVO>
+  /**
    * @summary 同步数据
    * @tag 组织机构
    */
@@ -1045,6 +1273,27 @@ export interface SwaggerApi {
    * @tag 组册
    */
   post(url: '/merge/{id}/volume', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, VolumeDTO>, 'path'>): Promise<KvStringString>
+  /**
+   * @summary 下载分册表
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/volume/file', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FileSigningUrl>
+  /**
+   * @summary 上传分册表
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/volume/file', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, TypedFormData<{
+  /**
+   * @format binary
+   */
+  file?: Blob | Uint8Array
+}
+>>, 'path'>): Promise<unknown>
+  /**
+   * @summary 状态变更
+   * @tag 组册
+   */
+  post(url: '/merge/{id}/status', options: RequireKeys<SwaggerOptions<{id: string}, {status: '1' | '2' | '3' | '4' | '5' | '6'}, {}, unknown>, 'path' | 'query'>): Promise<unknown>
   /**
    * @summary 查询扉页
    * @tag 组册
@@ -1110,6 +1359,11 @@ export interface SwaggerApi {
 }
 >>, 'path'>): Promise<unknown>
   /**
+   * @summary 发起签名
+   * @tag 流程管理
+   */
+  post(url: '/flow/start/sing', options: RequireKeys<SwaggerOptions<{}, {achievementFileList: Array<AchievementFileDTO>, userList: Array<SignUserDTO>}, {}, unknown>, 'query'>): Promise<unknown>
+  /**
    * @description 取得所以的分类
    * @summary 查询分类
    * @tag 数据字典
@@ -1126,6 +1380,16 @@ export interface SwaggerApi {
    */
   post(url: '/dict/move', options?: SwaggerOptions<{}, {}, {}, MoveDTOString>): Promise<unknown>
   /**
+   * @summary 登录
+   * @tag 登录
+   */
+  post(url: '/auth/login', options?: SwaggerOptions<{}, {}, {}, LoginDTO>): Promise<TokenVO>
+  /**
+   * @summary 用户信息
+   * @tag 用户管理
+   */
+  get(url: '/users/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<UserVO>
+  /**
    * @summary 列表查询
    * @tag 模板管理
    */
@@ -1133,13 +1397,13 @@ export interface SwaggerApi {
   /**
    * @description 登录回调地址，携带授权码 code
    * @summary 登录回调
-   * @tag 登录集成
+   * @tag 第三方登录
    */
   get(url: '/sso/callback/{type}/{key}', options: RequireKeys<SwaggerOptions<{type: 'oauth2' | 'cas', key: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
   /**
    * @description 适配oauth2标准接入
    * @summary 选择登录方式
-   * @tag 登录集成
+   * @tag 第三方登录
    */
   get(url: '/sso/authorize/{type}/{key}', options: RequireKeys<SwaggerOptions<{type: 'oauth2' | 'cas', key: string}, {}, {}, unknown>, 'path'>): Promise<string>
   /**
@@ -1169,6 +1433,26 @@ export interface SwaggerApi {
    */
   get(url: '/log/api', options: RequireKeys<SwaggerOptions<{}, {query: PageQueryKeywordQuery}, {}, unknown>, 'query'>): Promise<PageResultLogApiDO>
   /**
+   * @summary 签名
+   * @tag 流程管理
+   */
+  get(url: '/flow/{id}/sing', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<unknown>
+  /**
+   * @summary 获取当前待签署的位置坐标
+   * @tag 流程管理
+   */
+  get(url: '/flow/{id}/point', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<UserSignPointVO>>
+  /**
+   * @summary 我的待办
+   * @tag 流程管理
+   */
+  get(url: '/flow/run', options: RequireKeys<SwaggerOptions<{}, {query: PageQueryFlowTaskQuery}, {}, unknown>, 'query'>): Promise<PageResultFlowTaskRunVO>
+  /**
+   * @summary 我的已办
+   * @tag 流程管理
+   */
+  get(url: '/flow/history', options: RequireKeys<SwaggerOptions<{}, {query: PageQueryFlowTaskQuery}, {}, unknown>, 'query'>): Promise<PageResultFlowTaskHistoryVO>
+  /**
    * @summary 文件查询
    * @tag 项目信息
    */
@@ -1183,6 +1467,11 @@ export interface SwaggerApi {
    * @tag 项目信息
    */
   get(url: '/directory', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<DirectoryVO>>
+  /**
+   * @summary 退出
+   * @tag 登录
+   */
+  get(url: '/auth/logout', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<unknown>
   /**
    * @summary 删除分册文件
    * @tag 组册

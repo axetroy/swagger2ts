@@ -1497,6 +1497,52 @@
                 }
             }
         },
+        "/preview": {
+            "post": {
+                "tags": [
+                    "预览"
+                ],
+                "summary": "新增",
+                "operationId": "preview",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PreviewDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PreviewSignVO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/organization/sync": {
             "post": {
                 "tags": [
@@ -1625,7 +1671,7 @@
                     "组册"
                 ],
                 "summary": "查询分册",
-                "operationId": "volume_1",
+                "operationId": "volume_2",
                 "parameters": [
                     {
                         "name": "id",
@@ -1697,12 +1743,168 @@
                     "200": {
                         "description": "请求成功！",
                         "content": {
-                            "*/*": {
+                            "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/KvStringString"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/merge/{id}/volume/file": {
+            "get": {
+                "tags": [
+                    "组册"
+                ],
+                "summary": "下载分册表",
+                "operationId": "volumeDownload",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileSigningUrl"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "组册"
+                ],
+                "summary": "上传分册表",
+                "operationId": "volume_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "file",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "请求成功！"
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/merge/{id}/status": {
+            "post": {
+                "tags": [
+                    "组册"
+                ],
+                "summary": "状态变更",
+                "operationId": "event",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "状态",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "状态",
+                            "enum": [
+                                "1",
+                                "2",
+                                "3",
+                                "4",
+                                "5",
+                                "6"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！"
                     },
                     "400": {
                         "description": "请求失败！请求信息错误"
@@ -1999,6 +2201,59 @@
                 }
             }
         },
+        "/flow/start/sing": {
+            "post": {
+                "tags": [
+                    "流程管理"
+                ],
+                "summary": "发起签名",
+                "operationId": "sign",
+                "parameters": [
+                    {
+                        "name": "achievementFileList",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/AchievementFileDTO"
+                            }
+                        }
+                    },
+                    {
+                        "name": "userList",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SignUserDTO"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！"
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/dict": {
             "get": {
                 "tags": [
@@ -2115,6 +2370,98 @@
                 }
             }
         },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "登录"
+                ],
+                "summary": "登录",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenVO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户信息",
+                "operationId": "info",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserVO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/template/list": {
             "get": {
                 "tags": [
@@ -2157,7 +2504,7 @@
         "/sso/callback/{type}/{key}": {
             "get": {
                 "tags": [
-                    "登录集成"
+                    "第三方登录"
                 ],
                 "summary": "登录回调",
                 "description": "登录回调地址，携带授权码 code",
@@ -2209,7 +2556,7 @@
         "/sso/authorize/{type}/{key}": {
             "get": {
                 "tags": [
-                    "登录集成"
+                    "第三方登录"
                 ],
                 "summary": "选择登录方式",
                 "description": "适配oauth2标准接入",
@@ -2370,7 +2717,7 @@
                     "组册"
                 ],
                 "summary": "查询信息",
-                "operationId": "step",
+                "operationId": "info_1",
                 "parameters": [
                     {
                         "name": "id",
@@ -2483,6 +2830,186 @@
                             "*/*": {
                                 "schema": {
                                     "$ref": "#/components/schemas/PageResultLogApiDO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/flow/{id}/sing": {
+            "get": {
+                "tags": [
+                    "流程管理"
+                ],
+                "summary": "签名",
+                "operationId": "sign_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！"
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/flow/{id}/point": {
+            "get": {
+                "tags": [
+                    "流程管理"
+                ],
+                "summary": "获取当前待签署的位置坐标",
+                "operationId": "point",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserSignPointVO"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/flow/run": {
+            "get": {
+                "tags": [
+                    "流程管理"
+                ],
+                "summary": "我的待办",
+                "operationId": "queryRun",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/PageQueryFlowTaskQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageResultFlowTaskRunVO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/flow/history": {
+            "get": {
+                "tags": [
+                    "流程管理"
+                ],
+                "summary": "我的已办",
+                "operationId": "queryHistory",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/PageQueryFlowTaskQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageResultFlowTaskHistoryVO"
                                 }
                             }
                         }
@@ -2624,6 +3151,35 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "tags": [
+                    "登录"
+                ],
+                "summary": "退出",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "请求成功！"
                     },
                     "400": {
                         "description": "请求失败！请求信息错误"
@@ -2945,6 +3501,37 @@
                     }
                 }
             },
+            "PreviewDTO": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PreviewSignVO": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CreateByVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "description": "操作人"
+            },
             "MergeBaseVO": {
                 "type": "object",
                 "properties": {
@@ -2968,6 +3555,13 @@
                     "projectId": {
                         "type": "string",
                         "description": "项目ID"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "时间"
+                    },
+                    "createBy": {
+                        "$ref": "#/components/schemas/CreateByVO"
                     }
                 }
             },
@@ -3070,6 +3664,74 @@
                 },
                 "description": "签章位置信息"
             },
+            "AchievementFileDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "projectName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SignUserDTO": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "userName": {
+                        "type": "string"
+                    },
+                    "sort": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "point": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "float"
+                            }
+                        }
+                    }
+                }
+            },
+            "LoginDTO": {
+                "required": [
+                    "password",
+                    "username"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "账号"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "密码"
+                    }
+                }
+            },
+            "TokenVO": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
             "VolumeFileVO": {
                 "type": "object",
                 "properties": {
@@ -3111,6 +3773,33 @@
                     },
                     "url": {
                         "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "名称"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "电子邮箱"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "description": "手机"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "description": "电话"
                     }
                 }
             },
@@ -3666,6 +4355,226 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/LogApiDO"
+                        }
+                    }
+                }
+            },
+            "UserSignPointVO": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "point": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "float"
+                            }
+                        }
+                    },
+                    "signImgBase64": {
+                        "type": "string"
+                    }
+                }
+            },
+            "FlowTaskQuery": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "description": "查询条件信息"
+            },
+            "PageQueryFlowTaskQuery": {
+                "required": [
+                    "page",
+                    "size"
+                ],
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "页码",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "每页显示数量(最多200条)",
+                        "format": "int32",
+                        "example": 20
+                    },
+                    "query": {
+                        "$ref": "#/components/schemas/FlowTaskQuery"
+                    }
+                }
+            },
+            "FlowTaskRunVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "flowId": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "待办类型",
+                        "enum": [
+                            "SIGN",
+                            "STAMP"
+                        ]
+                    },
+                    "achievementFileList": {
+                        "type": "array",
+                        "description": "组测的文件",
+                        "items": {
+                            "$ref": "#/components/schemas/AchievementFileDTO"
+                        }
+                    },
+                    "achievementName": {
+                        "type": "string",
+                        "description": "册名"
+                    },
+                    "achievementNumber": {
+                        "type": "integer",
+                        "description": "册数",
+                        "format": "int32"
+                    },
+                    "projectName": {
+                        "type": "string",
+                        "description": "项目名称"
+                    },
+                    "startUserId": {
+                        "type": "string",
+                        "description": "发起人ID"
+                    },
+                    "startUserName": {
+                        "type": "string",
+                        "description": "发起人名称"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "电子签章状态",
+                        "enum": [
+                            "WAIT",
+                            "PROCESSING",
+                            "ERROR"
+                        ]
+                    },
+                    "gmtStart": {
+                        "type": "string",
+                        "description": "发起时间",
+                        "format": "date-time"
+                    },
+                    "gmtArrive": {
+                        "type": "string",
+                        "description": "到达时间",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "PageResultFlowTaskRunVO": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FlowTaskRunVO"
+                        }
+                    }
+                }
+            },
+            "FlowTaskHistoryVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "flowId": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "处理结果状态",
+                        "enum": [
+                            "SUCCESS",
+                            "REFUSE"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "待办类型",
+                        "enum": [
+                            "SIGN",
+                            "STAMP"
+                        ]
+                    },
+                    "achievementId": {
+                        "type": "string",
+                        "description": "册ID"
+                    },
+                    "achievementName": {
+                        "type": "string",
+                        "description": "册名"
+                    },
+                    "achievementNumber": {
+                        "type": "integer",
+                        "description": "册数",
+                        "format": "int32"
+                    },
+                    "projectName": {
+                        "type": "string",
+                        "description": "项目名称"
+                    },
+                    "startUserId": {
+                        "type": "string",
+                        "description": "发起人ID"
+                    },
+                    "startUserName": {
+                        "type": "string",
+                        "description": "发起人名称"
+                    },
+                    "gmtStart": {
+                        "type": "string",
+                        "description": "发起时间",
+                        "format": "date-time"
+                    },
+                    "gmtArrive": {
+                        "type": "string",
+                        "description": "到达时间",
+                        "format": "date-time"
+                    },
+                    "gmtHandler": {
+                        "type": "string",
+                        "description": "处理时间",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "PageResultFlowTaskHistoryVO": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FlowTaskHistoryVO"
                         }
                     }
                 }
