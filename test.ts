@@ -1,7 +1,19 @@
-import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
-import { assertEquals, assert } from "https://deno.land/std@0.105.0/testing/asserts.ts";
+import * as path from "https://deno.land/std@0.126.0/path/mod.ts";
+import { assertEquals, assert } from "https://deno.land/std@0.126.0/testing/asserts.ts";
 import { generate } from "./swagger2ts.ts";
-import { URL2filepath } from "./helper.ts";
+
+/**
+ * cover URL to filepath
+ * @param fileURL
+ * @returns
+ */
+function URL2filepath(fileURL: URL): string {
+  // Unix: file:///home/runner/work/swagger2ts/swagger2ts/test.ts
+  // Windows: file:///D:/a/swagger2ts/swagger2ts/test.ts
+  const reg = Deno.build.os === "windows" ? /^file:\/\/\// : /^file:\/\//;
+
+  return fileURL.toString().replace(reg, "");
+}
 
 async function testDir(dirName: string) {
   const testDir = URL2filepath(new URL(`./__test__/${dirName}`, import.meta.url));
@@ -12,10 +24,10 @@ async function testDir(dirName: string) {
 
       const expect = await Deno.readTextFile(path.join(testDir, dirEntry.name.replace(/\.json$/, ".ts")));
 
-      if (Deno.build.os !== 'windows') {
+      if (Deno.build.os !== "windows") {
         assertEquals(actual.trim(), expect.trim());
       } else {
-        assert(actual.length !== 0)
+        assert(actual.length !== 0);
       }
     }
   }

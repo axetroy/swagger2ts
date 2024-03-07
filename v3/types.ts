@@ -19,13 +19,15 @@ export interface ISwagger {
     version: string;
   };
   servers?: Array<IServerObject>;
-  paths: {
-    [url: string]: IPathItemObject;
-  };
+  paths: IPathsComponent;
   components?: IComponentsObject;
   security?: ISecurityRequirementObject[];
   tags?: ITagObject[];
   externalDocs?: IExternalDocumentationObject;
+}
+
+export interface IPathsComponent {
+  [url: string]: IPathItemObject;
 }
 
 interface ISecurityRequirementObject {
@@ -56,11 +58,11 @@ export interface IOperationObject {
     [key: string]: ICallbackObject | IReferenceObject;
   };
   deprecated?: boolean;
-  security: ISecurityRequirementObject[];
-  servers: IServerObject[];
+  security?: ISecurityRequirementObject[];
+  servers?: IServerObject[];
 }
 
-interface IComponentsObject {
+export interface IComponentsObject {
   schemas: { [key: string]: ISchemaObject | IReferenceObject };
   responses: { [key: string]: IResponseObject | IReferenceObject };
   parameters: { [key: string]: IParameterObject | IReferenceObject };
@@ -116,8 +118,8 @@ export interface IRequestBodyObject {
 }
 
 export interface IResponsesObject {
-  default: IResponseObject | IReferenceObject;
-  [httpCode: string]: IResponseObject | IReferenceObject;
+  default?: IResponseObject | IReferenceObject;
+  [httpCode: string]: IResponseObject | IReferenceObject | void;
 }
 
 export interface IResponseObject {
@@ -144,9 +146,9 @@ interface ILinkObject {
 
 interface IMediaTypeObject {
   schema?: ISchemaObject | IReferenceObject;
-  example: any;
-  examples: any; // TODO
-  encoding: {
+  example?: any;
+  examples?: any; // TODO
+  encoding?: {
     [key: string]: IEncodingObject;
   };
 }
@@ -167,7 +169,7 @@ interface JSONSchema {
   uniqueItems?: number;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
+  required?: boolean | string[];
   enum?: Array<string | number>;
 
   // swagger extension
@@ -178,7 +180,7 @@ interface JSONSchema {
   not?: ISchemaObject[];
   items?: ISchemaObject | IReferenceObject;
   properties?: { [key: string]: ISchemaObject };
-  additionalProperties?: { [key: string]: ISchemaObject };
+  additionalProperties?: ISchemaObject | IReferenceObject;
   description?: string;
   format?: string;
 }

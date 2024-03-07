@@ -27,16 +27,16 @@ async function generate(target) {
 
   const sdkFilepath = new URL("./runtime/fetch.ts", import.meta.url);
 
-  const definition = v3.generateDefinition(swaggerJSONContent);
-  const implement = v3.generateImplement(swaggerJSONContent, new TextDecoder().decode(readFileSync(sdkFilepath)), domain);
+  const definition = v3.generateInterface(swaggerJSONContent);
+  const implement = v3.generateRuntime(swaggerJSONContent, new TextDecoder().decode(readFileSync(sdkFilepath)), domain);
 
   const result = `// Generate by swagger2ts
-  ${definition}
+${definition}
 
-  ${implement}
+${implement}
   `;
 
-  return result
+  return result.trim();
 }
 
 export { generate };

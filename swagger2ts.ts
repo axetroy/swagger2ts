@@ -1,5 +1,5 @@
-import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
-import { generateDefinition, generateImplement } from "./v3/index.ts";
+import * as path from "https://deno.land/std@0.126.0/path/mod.ts";
+import * as v3 from "./v3/mod.ts";
 import "./runtime/fetch.ts"; // import to check type and download deps
 
 async function getDeps(url: string): Promise<string | undefined> {
@@ -36,12 +36,12 @@ export async function generate(target: string): Promise<string> {
   // remote file
   if (/^https?:\/\//.test(target)) {
     const url = new URL(target);
-    const headers = new Headers()
+    const headers = new Headers();
 
-    headers.set("Content-Type", "application/json;charset=UTF-8")
+    headers.set("Content-Type", "application/json;charset=UTF-8");
 
     const resp = await fetch(url, {
-      headers: headers
+      headers: headers,
     });
 
     swaggerJSONContent = await resp.text();
@@ -63,14 +63,14 @@ export async function generate(target: string): Promise<string> {
     throw new Error("can not found sdk file");
   }
 
-  const definition = generateDefinition(swaggerJSONContent);
-  const implement = generateImplement(swaggerJSONContent, new TextDecoder().decode(await Deno.readFile(sdkFilepath)), domain);
+  const definition = v3.generateInterface(swaggerJSONContent);
+  const implement = v3.generateRuntime(swaggerJSONContent, new TextDecoder().decode(Deno.readFileSync(sdkFilepath)), domain);
 
   const result = `// Generate by swagger2ts
 ${definition}
 
 ${implement}
-`;
+  `;
 
   return result.trim();
 }
@@ -78,5 +78,5 @@ ${implement}
 if (import.meta.main) {
   const result = await generate(Deno.args[0]);
 
-  Deno.stdout.writeSync(new TextEncoder().encode(result))
+  Deno.stdout.writeSync(new TextEncoder().encode(result));
 }

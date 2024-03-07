@@ -1,5 +1,5 @@
 import { camelCase } from "https://deno.land/x/case@v2.1.0/mod.ts";
-import { IServerObject, ISwagger } from "./types.ts";
+import { IServerObject, ISwagger } from "../types.ts";
 
 function getServerUrl(serverInfo: IServerObject): URL {
   let urlStr = serverInfo.url;
@@ -56,12 +56,16 @@ function path2apiName(serverInfo: IServerObject): string {
 }
 
 // generate HTTP implement for swagger api
-export function generateImplement(content: string, sdkContent: string, domain: string): string {
+export function generateRuntime(
+  content: string,
+  sdkContent: string,
+  domain: string,
+): string {
   const swagger = JSON.parse(content) as ISwagger;
 
   domain = domain.replace(/\/$/, "");
 
-  sdkContent += "\nexport type IClient = SwaggerApi & IRuntime"
+  sdkContent += "\nexport type IClient = SwaggerApi & IRuntime";
 
   if (swagger.servers) {
     const apis: string[] = [];
@@ -70,14 +74,16 @@ export function generateImplement(content: string, sdkContent: string, domain: s
       const apiName = path2apiName(server);
       const serverURL = getServerUrl(server);
 
-      const api = `export const ${apiName} = new Runtime("${domain}", "${serverURL.pathname}") as unknown as IClient`;
+      const api =
+        `export const ${apiName} = new Runtime("${domain}", "${serverURL.pathname}") as unknown as IClient`;
 
       apis.push(api);
     }
 
     sdkContent += "\n" + apis.join("\n");
   } else {
-    sdkContent += `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as IClient`;
+    sdkContent +=
+      `\nexport const defaultApi = new Runtime("${domain}", "") as unknown as IClient`;
   }
 
   return sdkContent;

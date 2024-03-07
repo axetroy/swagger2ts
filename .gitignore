@@ -5,3 +5,4 @@ swagger.json
 swagger
 swagger.exe
 dist/*.js
+dist/*.mjs

@@ -1,4 +1,4 @@
-import * as path from "https://deno.land/std@0.105.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.126.0/path/mod.ts";
 import { generate } from "../swagger2ts.ts";
 
 async function generateTest(dirName: string) {
