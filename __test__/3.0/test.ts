@@ -142,6 +142,20 @@ export interface PreviewSignVO {
   url?: string
 }
 
+export interface FileSigningUrlDTO {
+  name?: string
+  path: string
+}
+
+export interface FileSigningUrl {
+  /**
+   * @format int64
+   */
+  expires_in?: number
+  url?: string
+  name?: string
+}
+
 /**
  * @description 操作人
  */
@@ -286,6 +300,7 @@ export interface TokenVO {
 export interface VolumeFileVO {
   id?: string
   name?: string
+  path?: string
   tableName?: string
   code?: string
   /**
@@ -301,15 +316,6 @@ export interface VolumeFileVO {
    * @format date-time
    */
   gmtModified?: string
-}
-
-export interface FileSigningUrl {
-  /**
-   * @format int64
-   */
-  expires_in?: number
-  url?: string
-  name?: string
 }
 
 export interface UserVO {
@@ -602,6 +608,27 @@ export interface VolumeVO {
   children?: Array<VolumeVO>
 }
 
+export interface VolumeBaseVO {
+  id?: string
+  name?: string
+  parent?: string
+  /**
+   * @description 文件数量
+   * @format int32
+   */
+  files?: number
+  /**
+   * @description 页码
+   * @format int32
+   */
+  page?: number
+  /**
+   * @description 大小
+   * @format int64
+   */
+  length?: number
+}
+
 export interface FlyPageVO {
   /**
    * @description 文件名称
@@ -681,6 +708,77 @@ export interface VolumeFileBaseVO {
    * @description 篇章
    */
   chapter?: string
+}
+
+export interface MergeRecordVO {
+  id?: string
+  name?: string
+  /**
+   * @description 状态
+   * @format int32
+   */
+  status?: number
+  /**
+   * @description 时间
+   * @format date-time
+   */
+  gmtCreate?: string
+  createBy?: User
+  /**
+   * @description 分册信息
+   */
+  data?: Array<MergeVolumeInfoVO>
+}
+
+/**
+ * @description 分册信息
+ */
+export interface MergeVolumeInfoVO {
+  id?: string
+  /**
+   * @description 册名
+   */
+  name?: string
+  /**
+   * @description 大小
+   * @format int64
+   */
+  size?: number
+  /**
+   * @description 页码
+   * @format int32
+   */
+  page?: number
+  /**
+   * @description 文件数
+   * @format int32
+   */
+  files?: number
+  /**
+   * @description 签名状态
+   * @format int32
+   */
+  signature?: number
+  /**
+   * @description 盖章
+   */
+  stamp?: boolean
+  /**
+   * @description 归档
+   */
+  archived?: boolean
+  /**
+   * @description 放行
+   */
+  release?: boolean
+}
+
+/**
+ * @description 组册人
+ */
+export interface User {
+  id?: string
+  name?: string
 }
 
 /**
@@ -976,6 +1074,26 @@ export interface DictTreeVO {
   children?: Array<DictTreeVO>
 }
 
+export interface CurrentUserVO {
+  id?: string
+  /**
+   * @description 名称
+   */
+  name?: string
+  /**
+   * @description 电子邮箱
+   */
+  email?: string
+  /**
+   * @description 手机
+   */
+  mobile?: string
+  /**
+   * @description 电话
+   */
+  tel?: string
+}
+
 
 
 /** ===== build-in interface start ===== */
@@ -1211,6 +1329,12 @@ export interface SwaggerApi {
    */
   post(url: '/preview', options?: SwaggerOptions<{}, {}, {}, PreviewDTO>): Promise<PreviewSignVO>
   /**
+   * @description 当前默认30分钟
+   * @summary 创建
+   * @tag 文件url签名
+   */
+  post(url: '/oss/sign', options?: SwaggerOptions<{}, {}, {}, FileSigningUrlDTO>): Promise<FileSigningUrl>
+  /**
    * @summary 同步数据
    * @tag 组织机构
    */
@@ -1393,7 +1517,7 @@ export interface SwaggerApi {
    * @summary 列表查询
    * @tag 模板管理
    */
-  get(url: '/template/list', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<TemplateBaseVO>>
+  get(url: '/template/list', options?: SwaggerOptions<{}, {type?: number}, {}, unknown>): Promise<Array<TemplateBaseVO>>
   /**
    * @description 登录回调地址，携带授权码 code
    * @summary 登录回调
@@ -1418,6 +1542,11 @@ export interface SwaggerApi {
    */
   get(url: '/navbar', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<MenuTreeVO>>
   /**
+   * @summary 分册信息
+   * @tag 组册
+   */
+  get(url: '/merge/{id}/volume/info', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<VolumeBaseVO>>
+  /**
    * @summary 查询信息
    * @tag 组册
    */
@@ -1427,6 +1556,11 @@ export interface SwaggerApi {
    * @tag 组册
    */
   get(url: '/merge/{id}/catalog', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<CatalogVO>>
+  /**
+   * @summary 查询
+   * @tag 组册管理
+   */
+  get(url: '/manage/merge/{id}', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<MergeRecordVO>
   /**
    * @summary 查询
    * @tag 日志管理
@@ -1458,6 +1592,11 @@ export interface SwaggerApi {
    */
   get(url: '/directory/{id}/files', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<Array<DirectoryFileVO>>
   /**
+   * @summary 下载文件
+   * @tag 项目信息
+   */
+  get(url: '/directory/{id}/download', options: RequireKeys<SwaggerOptions<{id: string}, {}, {}, unknown>, 'path'>): Promise<FileSigningUrl>
+  /**
    * @summary 目录查询
    * @tag 项目信息
    */
@@ -1467,6 +1606,11 @@ export interface SwaggerApi {
    * @tag 项目信息
    */
   get(url: '/directory', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<Array<DirectoryVO>>
+  /**
+   * @summary 当前用户信息
+   * @tag 公共接口
+   */
+  get(url: '/common/user/info', options?: SwaggerOptions<{}, {}, {}, unknown>): Promise<CurrentUserVO>
   /**
    * @summary 退出
    * @tag 登录

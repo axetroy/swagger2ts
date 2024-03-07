@@ -248,7 +248,7 @@
                     "数据字典"
                 ],
                 "summary": "查询选项",
-                "operationId": "query_7",
+                "operationId": "query_8",
                 "parameters": [
                     {
                         "name": "id",
@@ -1543,6 +1543,53 @@
                 }
             }
         },
+        "/oss/sign": {
+            "post": {
+                "tags": [
+                    "文件url签名"
+                ],
+                "summary": "创建",
+                "description": "当前默认30分钟",
+                "operationId": "signing",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FileSigningUrlDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileSigningUrl"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/organization/sync": {
             "post": {
                 "tags": [
@@ -2261,7 +2308,7 @@
                 ],
                 "summary": "查询分类",
                 "description": "取得所以的分类",
-                "operationId": "query_6",
+                "operationId": "query_7",
                 "responses": {
                     "200": {
                         "description": "请求成功！",
@@ -2469,6 +2516,17 @@
                 ],
                 "summary": "列表查询",
                 "operationId": "list",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "请求成功！",
@@ -2711,6 +2769,55 @@
                 }
             }
         },
+        "/merge/{id}/volume/info": {
+            "get": {
+                "tags": [
+                    "组册"
+                ],
+                "summary": "分册信息",
+                "operationId": "volumes",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/VolumeBaseVO"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/merge/{id}/info": {
             "get": {
                 "tags": [
@@ -2784,6 +2891,52 @@
                                     "items": {
                                         "$ref": "#/components/schemas/CatalogVO"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/manage/merge/{id}": {
+            "get": {
+                "tags": [
+                    "组册管理"
+                ],
+                "summary": "查询",
+                "operationId": "query_4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MergeRecordVO"
                                 }
                             }
                         }
@@ -3081,13 +3234,59 @@
                 }
             }
         },
+        "/directory/{id}/download": {
+            "get": {
+                "tags": [
+                    "项目信息"
+                ],
+                "summary": "下载文件",
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileSigningUrl"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
         "/directory/{id}": {
             "get": {
                 "tags": [
                     "项目信息"
                 ],
                 "summary": "目录查询",
-                "operationId": "query_4",
+                "operationId": "query_5",
                 "parameters": [
                     {
                         "name": "id",
@@ -3136,7 +3335,7 @@
                     "项目信息"
                 ],
                 "summary": "目录查询",
-                "operationId": "query_5",
+                "operationId": "query_6",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -3148,6 +3347,42 @@
                                     "items": {
                                         "$ref": "#/components/schemas/DirectoryVO"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求失败！请求信息错误"
+                    },
+                    "401": {
+                        "description": "请求失败！未经过身份认证"
+                    },
+                    "403": {
+                        "description": "请求失败！拒绝执行此请求"
+                    },
+                    "404": {
+                        "description": "请求失败！请求信息不存在"
+                    },
+                    "429": {
+                        "description": "请求失败！请求太频繁"
+                    }
+                }
+            }
+        },
+        "/common/user/info": {
+            "get": {
+                "tags": [
+                    "公共接口"
+                ],
+                "summary": "当前用户信息",
+                "operationId": "userInfo",
+                "responses": {
+                    "200": {
+                        "description": "请求成功！",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CurrentUserVO"
                                 }
                             }
                         }
@@ -3520,6 +3755,35 @@
                     }
                 }
             },
+            "FileSigningUrlDTO": {
+                "required": [
+                    "path"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    }
+                }
+            },
+            "FileSigningUrl": {
+                "type": "object",
+                "properties": {
+                    "expires_in": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
             "CreateByVO": {
                 "type": "object",
                 "properties": {
@@ -3741,6 +4005,9 @@
                     "name": {
                         "type": "string"
                     },
+                    "path": {
+                        "type": "string"
+                    },
                     "tableName": {
                         "type": "string"
                     },
@@ -3761,21 +4028,6 @@
                     "gmtModified": {
                         "type": "string",
                         "format": "date-time"
-                    }
-                }
-            },
-            "FileSigningUrl": {
-                "type": "object",
-                "properties": {
-                    "expires_in": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "url": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
                     }
                 }
             },
@@ -4169,6 +4421,35 @@
                     }
                 }
             },
+            "VolumeBaseVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "string"
+                    },
+                    "files": {
+                        "type": "integer",
+                        "description": "文件数量",
+                        "format": "int32"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "页码",
+                        "format": "int32"
+                    },
+                    "length": {
+                        "type": "integer",
+                        "description": "大小",
+                        "format": "int64"
+                    }
+                }
+            },
             "FlyPageVO": {
                 "type": "object",
                 "properties": {
@@ -4279,6 +4560,94 @@
                     }
                 },
                 "description": "文件信息"
+            },
+            "MergeRecordVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "状态",
+                        "format": "int32"
+                    },
+                    "gmtCreate": {
+                        "type": "string",
+                        "description": "时间",
+                        "format": "date-time"
+                    },
+                    "createBy": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "data": {
+                        "type": "array",
+                        "description": "分册信息",
+                        "items": {
+                            "$ref": "#/components/schemas/MergeVolumeInfoVO"
+                        }
+                    }
+                }
+            },
+            "MergeVolumeInfoVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "册名"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "description": "大小",
+                        "format": "int64"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "页码",
+                        "format": "int32"
+                    },
+                    "files": {
+                        "type": "integer",
+                        "description": "文件数",
+                        "format": "int32"
+                    },
+                    "signature": {
+                        "type": "integer",
+                        "description": "签名状态",
+                        "format": "int32"
+                    },
+                    "stamp": {
+                        "type": "boolean",
+                        "description": "盖章"
+                    },
+                    "archived": {
+                        "type": "boolean",
+                        "description": "归档"
+                    },
+                    "release": {
+                        "type": "boolean",
+                        "description": "放行"
+                    }
+                },
+                "description": "分册信息"
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "description": "组册人"
             },
             "KeywordQuery": {
                 "type": "object",
@@ -4692,6 +5061,30 @@
                         "items": {
                             "$ref": "#/components/schemas/DictTreeVO"
                         }
+                    }
+                }
+            },
+            "CurrentUserVO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "名称"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "电子邮箱"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "description": "手机"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "description": "电话"
                     }
                 }
             }
