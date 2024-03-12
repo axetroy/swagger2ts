@@ -1,6 +1,6 @@
 {
   "name": "@axetroy/swagger2ts",
-  "version": "0.2.34",
+  "version": "0.2.35",
   "description": "Generate typescript code from swagger JSON",
   "main": "index.mjs",
   "type": "module",
