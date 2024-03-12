@@ -1885,19 +1885,18 @@ export class Runtime implements IRuntime {
   }
 
   private _timeout<T>(ms: number, promise: Promise<T>) {
+    if (ms <= 0) return promise
+
     return new Promise<T>((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new RuntimeError(`timeout of ${ms}ms`));
       }, ms);
 
       promise
-        .then((value) => {
+        .then(resolve)
+        .catch(reject)
+        .finally(() => {
           clearTimeout(timer);
-          resolve(value);
-        })
-        .catch((reason) => {
-          clearTimeout(timer);
-          reject(reason);
         });
     });
   }
@@ -1970,7 +1969,7 @@ export class Runtime implements IRuntime {
       }
     }
 
-    const timeout = config.timeout || defaults.timeout;
+    const timeout = config.timeout ?? defaults.timeout;
 
     const body =
       config.body === undefined
